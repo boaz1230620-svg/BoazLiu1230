@@ -266,7 +266,10 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
   const app = $('#app');
   const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const store = {
-    get(k, d){ try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch(e){ return d; } },
+    // 草稿存過 null（存完詩歌後清空草稿就是存 null）時，JSON.parse 會回傳 null，
+    // 不能直接當成物件用，否則新增表單在讀 v.zhNo 時就會崩潰、畫面停在目錄。
+    // 所以解析出來是 null 也要回預設值。
+    get(k, d){ try { const v = localStorage.getItem(k); if (v == null) return d; const p = JSON.parse(v); return p == null ? d : p; } catch(e){ return d; } },
     set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
   };
   function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('on'), 1800); }
@@ -579,7 +582,7 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
   function viewEdit(editId){
     const h = editId ? find(editId) : null;
     const v = h ? { id:h.id, zhNo:h.zhNo || '', koNo:h.koNo || '', zhTitle:h.zhTitle || '', koTitle:h.koTitle || '', zh:versesToText(h,'zh'), ko:versesToText(h,'ko') }
-                : store.get('kh-draft', { id:'', zhNo:'', koNo:'', zhTitle:'', koTitle:'', zh:'', ko:'' });
+                : (store.get('kh-draft', { id:'', zhNo:'', koNo:'', zhTitle:'', koTitle:'', zh:'', ko:'' }) || { id:'', zhNo:'', koNo:'', zhTitle:'', koTitle:'', zh:'', ko:'' });
     app.innerHTML =
       '<div class="help">貼上中文和韓文歌詞：<b>節與節之間空一行</b>（或每節第一行寫節號）。兩邊同一節會配對；若句數不同（例如韓文 2 行、中文 4 行），會自動依比例合併對齊。拼音和注音會自動產生。<br>不用先手動刪節號和標題：直接貼 app 分享出來的原始文字，貼上時會自動去掉網址行；開頭的標題行在標題欄空白時會自動移到標題欄，開頭的編號行在號碼欄空白時會自動移到號碼欄。標題欄已有內容時不會覆蓋，開頭那行請再手動刪一次。</div>' +
       '<div class="form" style="margin-top:12px">' +
