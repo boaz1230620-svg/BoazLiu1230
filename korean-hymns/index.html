@@ -449,6 +449,76 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
   // ---------- 新增詩歌 ----------
   const LABEL_RE = /^\s*(\d+|副歌?|후렴|C|chorus)\s*[\.、:：)）]?\s*(.*)$/i;
   const LABEL_ONLY = /^\s*(\d+|副歌?|후렴|C|chorus)\s*[\.、:：)）]?\s*$/i;
+  // 貼上自動清理：原封不動貼 app 分享出來的文字即可。
+  // 只做三件事，不改任何歌詞行本身：
+  // 1) 去掉單獨一行的網址；2) 把開頭的標題／編號行抽出來（見 applyClean 的欄位規則）；
+  // 3) 把連續空行壓成一個。節號（單獨一行或行首）本來就由 parseLyrics 處理，這裡不動它。
+  // 標題抽出的判斷很保守，避免把無標題、無節號的第一節誤當標題：
+  // - 開頭第一段只有一行，且後面出現帶節號的段，才當作標題／編號；
+  // - 或開頭第一段第一行不是節號、第二行就是節號（中間沒有空行），才把節號前的行當作標題／編號。
+  // 無標題、無節號的詩歌（例如韓文 1 號那種）完全符合「不抽出」的條件，原樣通過。
+  function isLabelLine(ln){ return LABEL_ONLY.test(ln) || LABEL_RE.test(ln); }
+  function cleanPasted(text){
+    const rawLines = String(text || '').replace(/\r/g, '').split('\n');
+    const lines = [];
+    let urlRemoved = 0;
+    for (const ln of rawLines){
+      const t = ln.trim();
+      if (/^(https?:\/\/|www\.)\S*$/i.test(t)){ urlRemoved++; continue; }
+      lines.push(t);
+    }
+    while (lines.length && !lines[0]) lines.shift();
+    while (lines.length && lines[lines.length - 1] === '') lines.pop();
+    let header = null, headerKind = null;
+    const firstLabelIdx = lines.findIndex(ln => ln && isLabelLine(ln));
+    if (firstLabelIdx > 0){
+      const blankBefore = lines.slice(0, firstLabelIdx).includes('');
+      if (!blankBefore){
+        header = lines.slice(0, firstLabelIdx).join(' ');
+        lines.splice(0, firstLabelIdx);
+      } else {
+        const firstBlank = lines.indexOf('');
+        const firstBlock = lines.slice(0, firstBlank);
+        if (firstBlock.length === 1){
+          header = firstBlock[0];
+          lines.splice(0, firstBlank + 1);
+        }
+      }
+    }
+    const out = [];
+    let prevBlank = false;
+    for (const ln of lines){
+      if (!ln){ if (!prevBlank) out.push(''); prevBlank = true; }
+      else { out.push(ln); prevBlank = false; }
+    }
+    while (out.length && !out[0]) out.shift();
+    while (out.length && out[out.length - 1] === '') out.pop();
+    if (header){
+      const h = header.trim();
+      if (/^(大本|小本|補充本)/.test(h) || (/^[^\s]{1,8}$/.test(h) && /\d/.test(h))) headerKind = 'number';
+      else headerKind = 'title';
+      return { text: out.join('\n'), header: h, headerKind, urlRemoved };
+    }
+    return { text: out.join('\n'), header: null, headerKind: null, urlRemoved };
+  }
+  // 把 cleanPasted 的結果套用到一個歌詞框。
+  // 標題／編號只有在對應欄位空白時才填入，絕不覆蓋已填的內容；
+  // 若欄位已有內容，開頭那行會留在歌詞裡（只去掉網址、壓空行），由使用者手動刪，
+  // 這樣按兩次清理也不會吃掉第一節。
+  function applyClean(textarea, isKo){
+    const res = cleanPasted(textarea.value);
+    const titleEl = document.querySelector(isKo ? '#f-koTitle' : '#f-zhTitle');
+    const noEl = document.querySelector(isKo ? '#f-koNo' : '#f-zhNo');
+    let applied = null;
+    if (res.header){
+      if (res.headerKind === 'number' && noEl && !noEl.value.trim()){ noEl.value = res.header; applied = 'number'; }
+      else if (res.headerKind === 'title' && titleEl && !titleEl.value.trim()){ titleEl.value = res.header; applied = 'title'; }
+    }
+    if (applied) textarea.value = res.text;
+    else if (res.header) textarea.value = res.header + '\n\n' + res.text;
+    else textarea.value = res.text;
+    return { applied, urlRemoved: res.urlRemoved, header: res.header };
+  }
   function parseLyrics(text){
     const raw = String(text || '').replace(/\r/g, '').split('\n').map(s => s.trim());
     const blocks = []; let cur = null;
@@ -503,7 +573,7 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
     const v = h ? { id:h.id, zhNo:h.zhNo || '', koNo:h.koNo || '', zhTitle:h.zhTitle || '', koTitle:h.koTitle || '', zh:versesToText(h,'zh'), ko:versesToText(h,'ko') }
                 : store.get('kh-draft', { id:'', zhNo:'', koNo:'', zhTitle:'', koTitle:'', zh:'', ko:'' });
     app.innerHTML =
-      '<div class="help">貼上中文和韓文歌詞：<b>節與節之間空一行</b>（或每節第一行寫節號）。兩邊同一節會配對；若句數不同（例如韓文 2 行、中文 4 行），會自動依比例合併對齊。拼音和注音會自動產生。</div>' +
+      '<div class="help">貼上中文和韓文歌詞：<b>節與節之間空一行</b>（或每節第一行寫節號）。兩邊同一節會配對；若句數不同（例如韓文 2 行、中文 4 行），會自動依比例合併對齊。拼音和注音會自動產生。<br>不用先手動刪節號和標題：直接貼 app 分享出來的原始文字，貼上時會自動去掉網址行；開頭的標題行在標題欄空白時會自動移到標題欄，開頭的編號行在號碼欄空白時會自動移到號碼欄。標題欄已有內容時不會覆蓋，開頭那行請再手動刪一次。</div>' +
       '<div class="form" style="margin-top:12px">' +
       '<div class="row"><div><label>中文詩歌號碼</label><input type="text" id="f-zhNo" placeholder="例：大本 1" value="' + esc(v.zhNo) + '"></div>' +
       '<div><label>韓文詩歌號碼</label><input type="text" id="f-koNo" value="' + esc(v.koNo) + '"></div></div>' +
@@ -512,6 +582,7 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
       '<div class="row"><div><label>中文歌詞</label><textarea id="f-zh" placeholder="1\n第一句\n第二句\n\n副\n副歌第一句">' + esc(v.zh) + '</textarea></div>' +
       '<div><label>韓文歌詞</label><textarea id="f-ko" placeholder="1\n첫째 줄\n둘째 줄\n\n후렴\n…">' + esc(v.ko) + '</textarea></div></div>' +
       '<div class="btns"><button class="btn" id="b-save">存到這台裝置</button>' +
+      '<button class="btn ghost" id="b-clean">自動清理貼上的文字</button>' +
       '<button class="btn ghost" id="b-dl">下載加密的 hymns.js（含全部詩歌）</button>' +
       '<button class="btn ghost" id="b-clear">清空</button></div>' +
       '<p class="note">「存到這台裝置」只有你這支手機／電腦看得到。要放上網站，按「下載加密的 hymns.js」，再上傳到 GitHub 的 korean-hymns 資料夾覆蓋同名檔案；網站上只有知道密碼的人能打開。</p>' +
@@ -526,6 +597,19 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
         : '<p class="empty">貼上歌詞後，這裡會顯示對照。</p>';
     };
     ids.forEach(k => $('#f-' + k).addEventListener('input', preview));
+    // 貼上後自動清理一次（只在貼上當下跑，不會在打字時亂動內容）。
+    // 標題／編號欄位空白時才會被填入；已有內容時不覆蓋。
+    const cleanOne = (key, isKo) => {
+      const el = $('#f-' + key);
+      const r = applyClean(el, isKo);
+      if (r.applied === 'title') toast('已把開頭標題移到標題欄');
+      else if (r.applied === 'number') toast('已把開頭編號移到號碼欄');
+      else if (r.urlRemoved) toast('已去掉貼上文字裡的網址行');
+      preview();
+    };
+    $('#f-zh').addEventListener('paste', () => setTimeout(() => cleanOne('zh', false), 0));
+    $('#f-ko').addEventListener('paste', () => setTimeout(() => cleanOne('ko', true), 0));
+    $('#b-clean').onclick = () => { cleanOne('zh', false); cleanOne('ko', true); toast('已清理兩邊貼上的文字，請看預覽確認'); };
     preview();
     $('#b-save').onclick = () => {
       const f = read();
