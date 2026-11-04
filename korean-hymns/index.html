@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>韓語詩歌對照</title>
+<style>
+:root{
+  --bg:#FFFDF5; --card:#ffffff; --ink:#2b2b2b; --muted:#666666; --line:#eeeae0;
+  --accent:#86641A; --accent-soft:#FFF6DE; --ko:#1d4f7a; --roman:#7a4a1d; --zy:#2f6b3f; --chg:#b3261e;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#171614; --card:#211f1c; --ink:#ece7df; --muted:#a39d93; --line:#34302b;
+    --accent:#d9a66b; --accent-soft:#3a2f23; --ko:#8cc0ec; --roman:#e2b27f; --zy:#8fcf9e; --chg:#ff8a80;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#171614; --card:#211f1c; --ink:#ece7df; --muted:#a39d93; --line:#34302b;
+  --accent:#d9a66b; --accent-soft:#3a2f23; --ko:#8cc0ec; --roman:#e2b27f; --zy:#8fcf9e; --chg:#ff8a80;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"PingFang TC","Noto Sans TC","Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.5;font-size:calc(16px * var(--scale,1))}
+.wrap{max-width:860px;margin:0 auto;padding:16px 16px 80px}
+a{color:var(--accent)}
+header .back{font-size:.9em;text-decoration:none}
+h1{font-size:1.5em;margin:.4em 0 .2em}
+.intro{color:var(--muted);margin:0 0 1em;font-size:.95em}
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.tabs button{background:none;border:none;padding:10px 12px;font:inherit;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer}
+.tabs button.on{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+input[type=search],input[type=text],textarea{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+textarea{min-height:180px;font-family:inherit;line-height:1.6}
+.list{list-style:none;padding:0;margin:12px 0}
+.list li a{display:flex;gap:12px;align-items:baseline;padding:12px 14px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:8px;text-decoration:none;color:var(--ink)}
+.list .no{color:var(--accent);font-weight:600;min-width:4.5em;font-size:.9em}
+.list .ko{color:var(--ko);font-size:.9em}
+.list .tag{margin-left:auto;font-size:.75em;color:var(--muted)}
+.empty{color:var(--muted);padding:20px 0}
+.toolbar{position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0;display:flex;flex-wrap:wrap;gap:6px;border-bottom:1px solid var(--line);margin-bottom:12px}
+.chip-btn{font:inherit;font-size:.82em;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted);cursor:pointer}
+.chip-btn.on{background:var(--accent-soft);color:var(--ink);border-color:var(--accent)}
+.hymn-title h2{margin:.2em 0 0;font-size:1.3em}
+.hymn-title .kot{color:var(--ko);font-size:1.05em}
+.hymn-title .nos{color:var(--muted);font-size:.85em}
+.verse{margin:18px 0}
+.vlabel{display:inline-block;background:var(--accent);color:var(--bg);font-weight:700;border-radius:8px;padding:0 9px;font-size:.85em;margin-bottom:6px}
+.vlabel.chorus{background:var(--ko)}
+.ln{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;display:grid;grid-template-columns:1fr auto;gap:4px 8px}
+.ln .zh{grid-column:1;font-size:1.02em}
+.ln .play{grid-column:2;grid-row:1 / span 3;align-self:start;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--accent-soft);color:var(--accent);font-size:15px;cursor:pointer}
+.ln .play.speaking{background:var(--accent);color:var(--bg)}
+.syls{grid-column:1;display:flex;flex-wrap:wrap;gap:6px 14px}
+.w{display:flex;gap:2px}
+.s{display:flex;flex-direction:column;align-items:center;min-width:1.9em;padding:2px 3px;border-radius:6px;cursor:pointer}
+.s:hover{background:var(--accent-soft)}
+.s .h{color:var(--ko);font-size:1.25em;line-height:1.2}
+.s .p{color:var(--chg);font-size:.72em;line-height:1.2}
+.s .r{color:var(--roman);font-size:.72em;line-height:1.3}
+.s .z{color:var(--zy);font-size:.72em;line-height:1.3;white-space:nowrap}
+.pn{align-self:flex-start;color:var(--muted);font-size:1.2em;padding-top:2px}
+.flat{grid-column:1;display:flex;flex-direction:column;gap:1px}
+.flat .h{color:var(--ko);font-size:1.15em}
+.flat .p{color:var(--chg);font-size:.85em}
+.flat .r{color:var(--roman);font-size:.9em}
+.flat .z{color:var(--zy);font-size:.9em}
+body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
+.legend{font-size:.78em;color:var(--muted);margin:6px 0 0;display:flex;flex-wrap:wrap;gap:4px 12px}
+.legend b{font-weight:500}
+.legend .k{color:var(--ko)} .legend .r{color:var(--roman)} .legend .z{color:var(--zy)} .legend .p{color:var(--chg)}
+.form{display:grid;gap:10px}
+.form .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form label{font-size:.85em;color:var(--muted);display:block;margin-bottom:3px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.btn{font:inherit;padding:9px 14px;border-radius:10px;border:1px solid var(--accent);background:var(--accent);color:var(--bg);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.help{font-size:.85em;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.help code{background:var(--accent-soft);padding:0 4px;border-radius:4px}
+.note{font-size:.82em;color:var(--muted);margin:8px 0}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:999px;font-size:.9em;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+@media (max-width:520px){.form .row{grid-template-columns:1fr}.syls{gap:6px 10px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="back" href="../">← 回首頁</a>
+    <h1>主恢復詩歌 韓中對照</h1>
+    <p class="intro">逐節逐句：中文、韓文原文、實際發音、羅馬拼音、注音近似音。點任一字聽單字，按 ▶ 聽整句。</p>
+  </header>
+  <nav class="tabs">
+    <button data-tab="list" class="on">詩歌目錄</button>
+    <button data-tab="edit">新增詩歌</button>
+  </nav>
+  <main id="app"></main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="hymns.js" onerror="window.HYMNS=window.HYMNS||[]"></script>
+<script>
+/* 韓文發音引擎：拆字 → 套用發音規則 → 羅馬拼音 + 注音近似音 */
+(function (root) {
+  const L_LIST = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+  const V_LIST = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
+  const T_LIST = ['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+
+  function decompose(ch) {
+    const c = ch.charCodeAt(0) - 0xAC00;
+    if (c < 0 || c > 11171) return null;
+    return { L: L_LIST[Math.floor(c / 588)], V: V_LIST[Math.floor((c % 588) / 28)], T: T_LIST[c % 28] };
+  }
+  function compose(s) {
+    const l = L_LIST.indexOf(s.L), v = V_LIST.indexOf(s.V), t = T_LIST.indexOf(s.T);
+    if (l < 0 || v < 0 || t < 0) return '?';
+    return String.fromCharCode(0xAC00 + (l * 21 + v) * 28 + t);
+  }
+
+  // 一行切成：詞（韓文字串）、空白、標點
+  function tokenize(line) {
+    const out = [];
+    let word = null, other = '';
+    const flushWord = () => { if (word) { out.push({ type: 'word', syl: word }); word = null; } };
+    const flushOther = () => { if (other) { out.push({ type: 'punct', text: other }); other = ''; } };
+    for (const ch of line) {
+      const d = decompose(ch);
+      if (d) { flushOther(); (word = word || []).push(Object.assign({ orig: ch }, d)); }
+      else if (/\s/.test(ch)) { flushWord(); flushOther(); if (out.length && out[out.length - 1].type !== 'space') out.push({ type: 'space' }); }
+      else { flushWord(); other += ch; }
+    }
+    flushWord(); flushOther();
+    return out;
+  }
+
+  const SPLIT = { 'ㄳ':['ㄱ','ㅆ'],'ㄵ':['ㄴ','ㅈ'],'ㄺ':['ㄹ','ㄱ'],'ㄻ':['ㄹ','ㅁ'],'ㄼ':['ㄹ','ㅂ'],'ㄽ':['ㄹ','ㅆ'],'ㄾ':['ㄹ','ㅌ'],'ㄿ':['ㄹ','ㅍ'],'ㅄ':['ㅂ','ㅆ'] };
+  const ASPIRATE = { 'ㄱ':'ㅋ','ㄷ':'ㅌ','ㅂ':'ㅍ','ㅈ':'ㅊ' };
+  const H_AFTER = { 'ㄱ':['','ㅋ'],'ㄲ':['','ㅋ'],'ㄳ':['ㄱ','ㅆ'],'ㄺ':['ㄹ','ㅋ'],'ㄷ':['','ㅌ'],'ㅅ':['','ㅌ'],'ㅆ':['','ㅌ'],'ㅈ':['','ㅊ'],'ㅊ':['','ㅊ'],'ㅌ':['','ㅌ'],'ㅂ':['','ㅍ'],'ㅍ':['','ㅍ'],'ㄼ':['ㄹ','ㅍ'],'ㄵ':['ㄴ','ㅊ'],'ㅄ':['','ㅍ'] };
+  const NEUT = { 'ㄱ':'ㄱ','ㄲ':'ㄱ','ㅋ':'ㄱ','ㄳ':'ㄱ','ㄺ':'ㄱ','ㄴ':'ㄴ','ㄵ':'ㄴ','ㄶ':'ㄴ','ㄷ':'ㄷ','ㅅ':'ㄷ','ㅆ':'ㄷ','ㅈ':'ㄷ','ㅊ':'ㄷ','ㅌ':'ㄷ','ㅎ':'ㄷ','ㄹ':'ㄹ','ㄼ':'ㄹ','ㄽ':'ㄹ','ㄾ':'ㄹ','ㅀ':'ㄹ','ㅁ':'ㅁ','ㄻ':'ㅁ','ㅂ':'ㅂ','ㅍ':'ㅂ','ㅄ':'ㅂ','ㄿ':'ㅂ','ㅇ':'ㅇ','':'' };
+  const TENSE = { 'ㄱ':'ㄲ','ㄷ':'ㄸ','ㅂ':'ㅃ','ㅅ':'ㅆ','ㅈ':'ㅉ' };
+  const NASAL = { 'ㄱ':'ㅇ','ㄷ':'ㄴ','ㅂ':'ㅁ' };
+
+  // 一個詞內套用發音規則，回傳實際發音的音節
+  function pronounce(syl) {
+    const p = syl.map(s => ({ L: s.L, V: s.V, T: s.T }));
+    const n = p.length;
+    const pairs = f => { for (let i = 0; i < n - 1; i++) f(p[i], p[i + 1]); };
+
+    // 1. ㅎ 激音化／脫落
+    pairs((a, b) => {
+      if (a.T === 'ㅎ' || a.T === 'ㄶ' || a.T === 'ㅀ') {
+        const rem = a.T === 'ㅎ' ? '' : (a.T === 'ㄶ' ? 'ㄴ' : 'ㄹ');
+        if (ASPIRATE[b.L]) { b.L = ASPIRATE[b.L]; a.T = rem; }
+        else if (b.L === 'ㅅ') { b.L = 'ㅆ'; a.T = rem; }
+        else if (b.L === 'ㄴ') { a.T = rem || 'ㄴ'; }
+        else if (b.L === 'ㅇ') { a.T = ''; if (rem) b.L = rem; }
+      } else if (b.L === 'ㅎ' && H_AFTER[a.T]) {
+        const r = H_AFTER[a.T]; a.T = r[0]; b.L = r[1];
+        if (b.L === 'ㅌ' && b.V === 'ㅣ') b.L = 'ㅊ';
+      }
+    });
+    // 2. 連音
+    pairs((a, b) => {
+      if (b.L !== 'ㅇ' || !a.T || a.T === 'ㅇ') return;
+      if (SPLIT[a.T]) { const s = SPLIT[a.T]; a.T = s[0]; b.L = s[1]; }
+      else { b.L = a.T; a.T = ''; }
+      if (b.V === 'ㅣ') { if (b.L === 'ㄷ') b.L = 'ㅈ'; else if (b.L === 'ㅌ') b.L = 'ㅊ'; }
+    });
+    // 3. 收尾音代表音
+    for (let i = 0; i < n; i++) {
+      const a = p[i], b = p[i + 1];
+      if (a.T === 'ㄺ' && b && b.L === 'ㄱ') { a.T = 'ㄹ'; b.L = 'ㄲ'; }
+      else a.T = NEUT[a.T] !== undefined ? NEUT[a.T] : a.T;
+    }
+    // 4. ㄹ 相關
+    pairs((a, b) => {
+      if (b.L === 'ㄹ') {
+        if (a.T === 'ㄴ') a.T = 'ㄹ';
+        else if (a.T === 'ㅁ' || a.T === 'ㅇ' || NASAL[a.T]) b.L = 'ㄴ';
+      }
+      if (a.T === 'ㄹ' && b.L === 'ㄴ') b.L = 'ㄹ';
+    });
+    // 5. 鼻音化
+    pairs((a, b) => { if ((b.L === 'ㄴ' || b.L === 'ㅁ') && NASAL[a.T]) a.T = NASAL[a.T]; });
+    // 6. 緊音化
+    pairs((a, b) => { if (NASAL[a.T] && TENSE[b.L]) b.L = TENSE[b.L]; });
+    // 7. 母音
+    p.forEach((s, i) => {
+      if (s.V === 'ㅢ') {
+        if (syl[i].L !== 'ㅇ') s.V = 'ㅣ';
+        else if (i > 0 && i === n - 1) s.V = 'ㅔ';   // 助詞「의」
+        else if (i > 0) s.V = 'ㅣ';
+      }
+      if (s.V === 'ㅖ' && s.L !== 'ㅇ' && s.L !== 'ㄹ') s.V = 'ㅔ';
+    });
+    return p;
+  }
+
+  const RR_L = { 'ㄱ':'g','ㄲ':'kk','ㄴ':'n','ㄷ':'d','ㄸ':'tt','ㄹ':'r','ㅁ':'m','ㅂ':'b','ㅃ':'pp','ㅅ':'s','ㅆ':'ss','ㅇ':'','ㅈ':'j','ㅉ':'jj','ㅊ':'ch','ㅋ':'k','ㅌ':'t','ㅍ':'p','ㅎ':'h' };
+  const RR_V = { 'ㅏ':'a','ㅐ':'ae','ㅑ':'ya','ㅒ':'yae','ㅓ':'eo','ㅔ':'e','ㅕ':'yeo','ㅖ':'ye','ㅗ':'o','ㅘ':'wa','ㅙ':'wae','ㅚ':'oe','ㅛ':'yo','ㅜ':'u','ㅝ':'wo','ㅞ':'we','ㅟ':'wi','ㅠ':'yu','ㅡ':'eu','ㅢ':'ui','ㅣ':'i' };
+  const RR_T = { '':'','ㄱ':'k','ㄴ':'n','ㄷ':'t','ㄹ':'l','ㅁ':'m','ㅂ':'p','ㅇ':'ng' };
+
+  function roman(s, prev) {
+    const l = (s.L === 'ㄹ' && prev && prev.T === 'ㄹ') ? 'l' : RR_L[s.L];
+    return l + RR_V[s.V] + (RR_T[s.T] !== undefined ? RR_T[s.T] : '');
+  }
+
+  const ZI = { 'ㄱ':'ㄍ','ㄲ':'ㄍ','ㄴ':'ㄋ','ㄷ':'ㄉ','ㄸ':'ㄉ','ㄹ':'ㄌ','ㅁ':'ㄇ','ㅂ':'ㄅ','ㅃ':'ㄅ','ㅅ':'ㄙ','ㅆ':'ㄙ','ㅇ':'','ㅈ':'ㄗ','ㅉ':'ㄗ','ㅊ':'ㄘ','ㅋ':'ㄎ','ㅌ':'ㄊ','ㅍ':'ㄆ','ㅎ':'ㄏ' };
+  const ZV = { 'ㅏ':'ㄚ','ㅐ':'ㄝ','ㅑ':'ㄧㄚ','ㅒ':'ㄧㄝ','ㅓ':'ㄛ','ㅔ':'ㄝ','ㅕ':'ㄧㄛ','ㅖ':'ㄧㄝ','ㅗ':'ㄡ','ㅘ':'ㄨㄚ','ㅙ':'ㄨㄝ','ㅚ':'ㄨㄝ','ㅛ':'ㄧㄡ','ㅜ':'ㄨ','ㅝ':'ㄨㄛ','ㅞ':'ㄨㄝ','ㅟ':'ㄨㄧ','ㅠ':'ㄧㄨ','ㅡ':'ㄜ','ㅢ':'ㄜㄧ','ㅣ':'ㄧ' };
+  const ZT = { 'ㄹ':'ˡ','ㅁ':'ᵐ','ㄱ':'ᵏ','ㄷ':'ᵗ','ㅂ':'ᵖ' };
+
+  function zhuyin(s) {
+    let i = ZI[s.L], v = ZV[s.V];
+    if (v[0] === 'ㄧ') i = ({ 'ㄙ':'ㄒ','ㄗ':'ㄐ','ㄘ':'ㄑ' })[i] || i;
+    const last = v[v.length - 1], head = v.slice(0, -1);
+    if (s.T === 'ㄴ') {
+      if (v === 'ㄧㄛ') v = 'ㄧㄢ';
+      else if (last === 'ㄚ') v = head + 'ㄢ';
+      else if (last === 'ㄛ' || last === 'ㄜ') v = head + 'ㄣ';
+      else if (last === 'ㄧ' || last === 'ㄨ') v = v + 'ㄣ';
+      else v = v + 'ⁿ';
+    } else if (s.T === 'ㅇ') {
+      if (last === 'ㄚ') v = head + 'ㄤ';
+      else if (last === 'ㄛ' || last === 'ㄜ') v = head + 'ㄥ';
+      else if (v === 'ㄡ') v = 'ㄨㄥ';
+      else if (v === 'ㄧㄡ') v = 'ㄩㄥ';
+      else if (last === 'ㄧ' || last === 'ㄨ') v = v + 'ㄥ';
+      else v = v + 'ⁿᵍ';
+    } else if (ZT[s.T]) v = v + ZT[s.T];
+    return i + v;
+  }
+
+  // 一整行 → token 陣列，每個音節帶 orig / pron / roman / zy
+  function analyze(line) {
+    return tokenize(line || '').map(tok => {
+      if (tok.type !== 'word') return tok;
+      const pr = pronounce(tok.syl);
+      return {
+        type: 'word',
+        syl: tok.syl.map((s, i) => ({
+          orig: s.orig,
+          pron: compose(pr[i]),
+          roman: roman(pr[i], pr[i - 1]),
+          zy: zhuyin(pr[i])
+        }))
+      };
+    });
+  }
+  function lineRoman(tokens) {
+    return tokens.map(t => t.type === 'word' ? t.syl.map(s => s.roman).join('') : t.type === 'space' ? ' ' : t.text).join('');
+  }
+  function lineZhuyin(tokens) {
+    return tokens.map(t => t.type === 'word' ? t.syl.map(s => s.zy).join(' ') : t.type === 'space' ? '　' : t.text).join('');
+  }
+  function linePron(tokens) {
+    return tokens.map(t => t.type === 'word' ? t.syl.map(s => s.pron).join('') : t.type === 'space' ? ' ' : t.text).join('');
+  }
+
+  root.KoPron = { analyze, lineRoman, lineZhuyin, linePron };
+  if (typeof module !== 'undefined') module.exports = root.KoPron;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+(function(){
+  const $ = s => document.querySelector(s);
+  const app = $('#app');
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const store = {
+    get(k, d){ try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch(e){ return d; } },
+    set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+  };
+  function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('on'), 1800); }
+
+  // ---------- 設定 ----------
+  const prefs = Object.assign({ zh:true, p:true, r:true, z:true, mode:'syl', scale:1, rate:0.8 }, store.get('kh-prefs', {}));
+  function applyPrefs(){
+    document.body.classList.toggle('hide-zh', !prefs.zh);
+    document.body.classList.toggle('hide-p', !prefs.p);
+    document.body.classList.toggle('hide-r', !prefs.r);
+    document.body.classList.toggle('hide-z', !prefs.z);
+    document.documentElement.style.setProperty('--scale', prefs.scale);
+    store.set('kh-prefs', prefs);
+  }
+  applyPrefs();
+
+  // ---------- 資料 ----------
+  const builtIn = (window.HYMNS || []).map(h => Object.assign({}, h, { _src:'site' }));
+  let local = store.get('kh-local', []);
+  const all = () => {
+    const ids = new Set(local.map(h => h.id));
+    return builtIn.filter(h => !ids.has(h.id)).concat(local.map(h => Object.assign({}, h, { _src:'local' })));
+  };
+  const find = id => all().find(h => h.id === id);
+
+  // ---------- 發音 ----------
+  let koVoice = null;
+  function pickVoice(){
+    if (!('speechSynthesis' in window)) return;
+    const vs = speechSynthesis.getVoices();
+    koVoice = vs.find(v => /^ko(-|_|$)/i.test(v.lang)) || null;
+  }
+  if ('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+  let speakingBtn = null;
+  function speak(text, btn){
+    if (!('speechSynthesis' in window)) { toast('這個瀏覽器不支援語音朗讀'); return; }
+    speechSynthesis.cancel();
+    if (speakingBtn) speakingBtn.classList.remove('speaking');
+    if (btn && btn === speakingBtn) { speakingBtn = null; return; }
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'ko-KR'; u.rate = prefs.rate;
+    if (koVoice) u.voice = koVoice;
+    if (btn){ btn.classList.add('speaking'); speakingBtn = btn; }
+    u.onend = u.onerror = () => { if (btn) btn.classList.remove('speaking'); if (speakingBtn === btn) speakingBtn = null; };
+    speechSynthesis.speak(u);
+  }
+
+  // ---------- 畫面 ----------
+  function renderLine(line){
+    const toks = KoPron.analyze(line.ko);
+    let ko;
+    if (prefs.mode === 'syl'){
+      ko = '<div class="syls">' + toks.map(t => {
+        if (t.type === 'space') return '';
+        if (t.type === 'punct') return '<span class="pn">' + esc(t.text) + '</span>';
+        return '<span class="w">' + t.syl.map(s =>
+          '<span class="s" data-say="' + esc(s.orig) + '"><span class="h">' + esc(s.orig) + '</span>' +
+          '<span class="p">' + (s.pron !== s.orig ? esc(s.pron) : '&nbsp;') + '</span>' +
+          '<span class="r">' + esc(s.roman) + '</span><span class="z">' + esc(s.zy) + '</span></span>'
+        ).join('') + '</span>';
+      }).join('') + '</div>';
+    } else {
+      const pron = KoPron.linePron(toks);
+      ko = '<div class="flat"><span class="h">' + esc(line.ko) + '</span>' +
+        (pron !== line.ko ? '<span class="p">［' + esc(pron) + '］</span>' : '') +
+        '<span class="r">' + esc(KoPron.lineRoman(toks)) + '</span><span class="z">' + esc(KoPron.lineZhuyin(toks)) + '</span></div>';
+    }
+    return '<div class="ln">' + (line.zh ? '<div class="zh">' + esc(line.zh) + '</div>' : '') + ko +
+      (line.ko ? '<button class="play" data-line="' + esc(line.ko) + '" aria-label="朗讀這一句">▶</button>' : '') + '</div>';
+  }
+
+  function viewList(){
+    const q = (viewList.q || '').trim().toLowerCase();
+    const items = all().filter(h => !q || [h.zhNo, h.koNo, h.zhTitle, h.koTitle].join(' ').toLowerCase().includes(q));
+    app.innerHTML =
+      '<input type="search" id="q" placeholder="搜尋號碼或標題" value="' + esc(viewList.q || '') + '">' +
+      (items.length ? '<ul class="list">' + items.map(h =>
+        '<li><a href="#h=' + encodeURIComponent(h.id) + '"><span class="no">' + esc(h.zhNo || h.koNo || '') + '</span>' +
+        '<span><div>' + esc(h.zhTitle) + '</div><div class="ko">' + esc(h.koTitle) + '</div></span>' +
+        (h._src === 'local' ? '<span class="tag">本機</span>' : '') + '</a></li>').join('') + '</ul>'
+      : '<p class="empty">還沒有詩歌。到「新增詩歌」貼上歌詞就能產生對照。</p>');
+    const qi = $('#q');
+    qi.oninput = () => { viewList.q = qi.value; const pos = qi.selectionStart; viewList(); const n = $('#q'); n.focus(); n.setSelectionRange(pos, pos); };
+  }
+
+  function toolbarHTML(){
+    const b = (k, label) => '<button class="chip-btn' + (prefs[k] ? ' on' : '') + '" data-pref="' + k + '">' + label + '</button>';
+    return '<div class="toolbar">' +
+      '<button class="chip-btn' + (prefs.mode === 'syl' ? ' on' : '') + '" data-mode="syl">逐字</button>' +
+      '<button class="chip-btn' + (prefs.mode === 'flat' ? ' on' : '') + '" data-mode="flat">整句</button>' +
+      b('zh','中文') + b('p','發音變化') + b('r','拼音') + b('z','注音') +
+      '<button class="chip-btn" data-scale="-1">A−</button><button class="chip-btn" data-scale="1">A+</button>' +
+      '<button class="chip-btn" data-rate="1">語速 ' + prefs.rate.toFixed(1) + '</button>' +
+      '</div>';
+  }
+
+  function viewHymn(id){
+    const h = find(id);
+    if (!h){ app.innerHTML = '<p class="empty">找不到這首詩歌。<a href="#">回目錄</a></p>'; return; }
+    const nos = [h.zhNo && ('中 ' + h.zhNo), h.koNo && ('韓 ' + h.koNo)].filter(Boolean).join('　');
+    app.innerHTML =
+      '<p><a href="#">← 詩歌目錄</a></p>' +
+      '<div class="hymn-title"><div class="nos">' + esc(nos) + '</div><h2>' + esc(h.zhTitle) + '</h2><div class="kot">' + esc(h.koTitle) + '</div></div>' +
+      toolbarHTML() +
+      '<div class="legend"><b class="k">韓文</b><b class="p">實際發音</b><b class="r">羅馬拼音</b><b class="z">注音近似</b></div>' +
+      (h.verses || []).map(v =>
+        '<section class="verse"><span class="vlabel' + (/副|chorus|c/i.test(v.label) ? ' chorus' : '') + '">' + esc(v.label) + '</span>' +
+        (v.lines || []).map(renderLine).join('') + '</section>').join('') +
+      (h._src === 'local' ? '<div class="btns"><button class="btn ghost" data-edit="' + esc(h.id) + '">編輯這首</button><button class="btn ghost" data-del="' + esc(h.id) + '">從本機刪除</button></div>' : '') +
+      (('speechSynthesis' in window) && !koVoice ? '<p class="note">朗讀若沒有聲音：手機請到系統設定加入「韓文」語音。</p>' : '');
+    app.onclick = e => {
+      const t = e.target.closest('button,.s');
+      if (!t) return;
+      if (t.dataset.pref){ prefs[t.dataset.pref] = !prefs[t.dataset.pref]; applyPrefs(); t.classList.toggle('on'); }
+      else if (t.dataset.mode){ prefs.mode = t.dataset.mode; applyPrefs(); viewHymn(id); }
+      else if (t.dataset.scale){ prefs.scale = Math.min(1.6, Math.max(0.8, +(prefs.scale + 0.1 * t.dataset.scale).toFixed(1))); applyPrefs(); }
+      else if (t.dataset.rate){ prefs.rate = prefs.rate >= 1.0 ? 0.5 : +(prefs.rate + 0.1).toFixed(1); applyPrefs(); t.textContent = '語速 ' + prefs.rate.toFixed(1); }
+      else if (t.dataset.line){ speak(t.dataset.line, t); }
+      else if (t.dataset.say){ speak(t.dataset.say); }
+      else if (t.dataset.edit){ location.hash = 'edit=' + encodeURIComponent(t.dataset.edit); }
+      else if (t.dataset.del){ if (confirm('從這台裝置刪除這首？')){ local = local.filter(x => x.id !== t.dataset.del); store.set('kh-local', local); location.hash = ''; } }
+    };
+  }
+
+  // ---------- 新增詩歌 ----------
+  const LABEL_RE = /^\s*(\d+|副歌?|후렴|C|chorus)\s*[\.、:：)）]?\s*(.*)$/i;
+  function parseLyrics(text){
+    const blocks = String(text || '').replace(/\r/g, '').split(/\n\s*\n/).map(b => b.split('\n').map(s => s.trim()).filter(Boolean)).filter(b => b.length);
+    let auto = 0;
+    return blocks.map(lines => {
+      let label = null;
+      const m = lines[0].match(LABEL_RE);
+      if (m){ label = /^\d+$/.test(m[1]) ? m[1] : '副'; if (m[2]) lines[0] = m[2]; else lines.shift(); }
+      if (!label) label = String(++auto); else if (/^\d+$/.test(label)) auto = +label;
+      return { label, lines };
+    });
+  }
+  function buildHymn(f){
+    const zv = parseLyrics(f.zh), kv = parseLyrics(f.ko);
+    const n = Math.max(zv.length, kv.length);
+    const verses = [];
+    for (let i = 0; i < n; i++){
+      const z = zv[i] || { lines:[] }, k = kv[i] || { lines:[] };
+      const m = Math.max(z.lines.length, k.lines.length);
+      const lines = [];
+      for (let j = 0; j < m; j++) lines.push({ zh: z.lines[j] || '', ko: k.lines[j] || '' });
+      verses.push({ label: (k.label || z.label || String(i + 1)), lines });
+    }
+    const id = f.id || ('h' + (f.zhNo || f.koNo || Date.now()).toString().replace(/\W+/g, '') || 'h' + Date.now());
+    return { id, zhNo: f.zhNo, koNo: f.koNo, zhTitle: f.zhTitle, koTitle: f.koTitle, verses };
+  }
+  function versesToText(h, key){
+    return (h.verses || []).map(v => v.label + '\n' + v.lines.map(l => l[key]).join('\n')).join('\n\n');
+  }
+  function downloadFile(name, text){
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text], { type:'text/javascript' }));
+    a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  }
+  function cleanForExport(h){ const c = Object.assign({}, h); delete c._src; return c; }
+
+  function viewEdit(editId){
+    const h = editId ? find(editId) : null;
+    const v = h ? { id:h.id, zhNo:h.zhNo || '', koNo:h.koNo || '', zhTitle:h.zhTitle || '', koTitle:h.koTitle || '', zh:versesToText(h,'zh'), ko:versesToText(h,'ko') }
+                : store.get('kh-draft', { id:'', zhNo:'', koNo:'', zhTitle:'', koTitle:'', zh:'', ko:'' });
+    app.innerHTML =
+      '<div class="help">貼上中文和韓文歌詞：<b>節與節之間空一行</b>，每節第一行可寫節號（<code>1</code>、<code>2</code>、<code>副</code>），兩邊同一節的句子會逐句配對。拼音和注音會自動產生。</div>' +
+      '<div class="form" style="margin-top:12px">' +
+      '<div class="row"><div><label>中文詩歌號碼</label><input type="text" id="f-zhNo" placeholder="例：大本 1" value="' + esc(v.zhNo) + '"></div>' +
+      '<div><label>韓文詩歌號碼</label><input type="text" id="f-koNo" value="' + esc(v.koNo) + '"></div></div>' +
+      '<div class="row"><div><label>中文標題</label><input type="text" id="f-zhTitle" value="' + esc(v.zhTitle) + '"></div>' +
+      '<div><label>韓文標題</label><input type="text" id="f-koTitle" value="' + esc(v.koTitle) + '"></div></div>' +
+      '<div class="row"><div><label>中文歌詞</label><textarea id="f-zh" placeholder="1\n第一句\n第二句\n\n副\n副歌第一句">' + esc(v.zh) + '</textarea></div>' +
+      '<div><label>韓文歌詞</label><textarea id="f-ko" placeholder="1\n첫째 줄\n둘째 줄\n\n후렴\n…">' + esc(v.ko) + '</textarea></div></div>' +
+      '<div class="btns"><button class="btn" id="b-save">存到這台裝置</button>' +
+      '<button class="btn ghost" id="b-dl">下載 hymns.js（含全部詩歌）</button>' +
+      '<button class="btn ghost" id="b-clear">清空</button></div>' +
+      '<p class="note">「存到這台裝置」只有你這支手機／電腦看得到。要讓網站上所有人看到，按「下載 hymns.js」，再到 GitHub 的 korean-hymns 資料夾上傳覆蓋同名檔案。</p>' +
+      '</div><h3 style="margin-top:22px">預覽</h3><div id="preview"></div>';
+    const ids = ['zhNo','koNo','zhTitle','koTitle','zh','ko'];
+    const read = () => { const f = { id: v.id }; ids.forEach(k => f[k] = $('#f-' + k).value.trim()); return f; };
+    const preview = () => {
+      const f = read(); if (!editId) store.set('kh-draft', f);
+      const hh = buildHymn(f);
+      $('#preview').innerHTML = hh.verses.length ? hh.verses.map(vv =>
+        '<section class="verse"><span class="vlabel">' + esc(vv.label) + '</span>' + vv.lines.map(renderLine).join('') + '</section>').join('')
+        : '<p class="empty">貼上歌詞後，這裡會顯示對照。</p>';
+    };
+    ids.forEach(k => $('#f-' + k).addEventListener('input', preview));
+    preview();
+    $('#b-save').onclick = () => {
+      const f = read();
+      if (!f.zhTitle && !f.koTitle){ toast('請至少填一個標題'); return; }
+      const hh = buildHymn(f);
+      local = local.filter(x => x.id !== hh.id).concat([hh]);
+      store.set('kh-local', local);
+      if (!editId) store.set('kh-draft', null);
+      toast('已存到這台裝置');
+      location.hash = 'h=' + encodeURIComponent(hh.id);
+    };
+    $('#b-dl').onclick = () => {
+      const f = read();
+      let list = all().map(cleanForExport);
+      if (f.zhTitle || f.koTitle){ const hh = buildHymn(f); list = list.filter(x => x.id !== hh.id).concat([hh]); }
+      list = list.filter(x => x.id !== 'demo');
+      downloadFile('hymns.js', '// 主恢復詩歌 韓中對照資料（由網頁產生）\nwindow.HYMNS = ' + JSON.stringify(list, null, 2) + ';\n');
+    };
+    $('#b-clear').onclick = () => { if (confirm('清空表單？')){ store.set('kh-draft', null); viewEdit(); } };
+    app.onclick = e => { const t = e.target.closest('.play,.s'); if (!t) return; if (t.dataset.line) speak(t.dataset.line, t); else if (t.dataset.say) speak(t.dataset.say); };
+  }
+
+  // ---------- 路由 ----------
+  function route(){
+    const hs = location.hash.slice(1);
+    const tab = hs.startsWith('edit') ? 'edit' : 'list';
+    document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+    app.onclick = null;
+    if ('speechSynthesis' in window) speechSynthesis.cancel();
+    if (hs.startsWith('h=')) viewHymn(decodeURIComponent(hs.slice(2)));
+    else if (hs.startsWith('edit=')) viewEdit(decodeURIComponent(hs.slice(5)));
+    else if (hs === 'edit') viewEdit();
+    else viewList();
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => { location.hash = b.dataset.tab === 'edit' ? 'edit' : ''; });
+  window.addEventListener('hashchange', route);
+  route();
+})();
+</script>
+</body>
+</html>
