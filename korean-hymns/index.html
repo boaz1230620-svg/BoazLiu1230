@@ -448,16 +448,24 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
 
   // ---------- 新增詩歌 ----------
   const LABEL_RE = /^\s*(\d+|副歌?|후렴|C|chorus)\s*[\.、:：)）]?\s*(.*)$/i;
+  const LABEL_ONLY = /^\s*(\d+|副歌?|후렴|C|chorus)\s*[\.、:：)）]?\s*$/i;
   function parseLyrics(text){
-    const blocks = String(text || '').replace(/\r/g, '').split(/\n\s*\n/).map(b => b.split('\n').map(s => s.trim()).filter(Boolean)).filter(b => b.length);
+    const raw = String(text || '').replace(/\r/g, '').split('\n').map(s => s.trim());
+    const blocks = []; let cur = null;
+    for (const ln of raw){
+      if (!ln){ cur = null; continue; }
+      if (LABEL_ONLY.test(ln)){ cur = [ln]; blocks.push(cur); continue; }
+      if (!cur){ cur = []; blocks.push(cur); }
+      cur.push(ln);
+    }
     let auto = 0;
-    return blocks.map(lines => {
+    return blocks.filter(b => b.length).map(lines => {
       let label = null;
       const m = lines[0].match(LABEL_RE);
       if (m){ label = /^\d+$/.test(m[1]) ? m[1] : '副'; if (m[2]) lines[0] = m[2]; else lines.shift(); }
       if (!label) label = String(++auto); else if (/^\d+$/.test(label)) auto = +label;
       return { label, lines };
-    });
+    }).filter(v => v.lines.length);
   }
   function buildHymn(f){
     const zv = parseLyrics(f.zh), kv = parseLyrics(f.ko);
