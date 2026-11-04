@@ -396,12 +396,20 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
     const q = (viewList.q || '').trim().toLowerCase();
     const items = all().filter(h => !q || [h.zhNo, h.koNo, h.zhTitle, h.koTitle].join(' ').toLowerCase().includes(q));
     app.innerHTML =
+      '<div class="btns" style="margin-bottom:10px"><button class="btn" id="b-add">＋ 新增詩歌</button></div>' +
       '<div style="display:flex;gap:8px"><input type="search" id="q" placeholder="搜尋號碼或標題" value="' + esc(viewList.q || '') + '"><button class="chip-btn" id="b-lock" title="上鎖">🔒 上鎖</button></div>' +
       (items.length ? '<ul class="list">' + items.map(h =>
         '<li><a href="#h=' + encodeURIComponent(h.id) + '"><span class="no">' + esc(h.zhNo || h.koNo || '') + '</span>' +
         '<span><div>' + esc(h.zhTitle) + '</div><div class="ko">' + esc(h.koTitle) + '</div></span>' +
         (h._src === 'local' ? '<span class="tag">本機</span>' : '') + '</a></li>').join('') + '</ul>'
       : '<p class="empty">還沒有詩歌。到「新增詩歌」貼上歌詞就能產生對照。</p>');
+    // 目錄裡的直接新增按鈕：不只靠網址雜湊換頁，點了就直接叫 route() 重繪，
+    // 就算網址已經是 #edit、瀏覽器不觸發 hashchange，也能換到表單。
+    // 若表單本身載入出錯，這裡會把錯誤顯示出來，不會靜悄悄留著目錄。
+    $('#b-add').onclick = () => {
+      try { location.hash = 'edit'; route(); }
+      catch (e) { app.innerHTML = '<p class="empty">新增表單載入失敗，請截圖給我：' + esc(e && e.message ? e.message : String(e)) + '</p>'; }
+    };
     $('#b-lock').onclick = lock;
     const qi = $('#q');
     qi.oninput = () => { viewList.q = qi.value; const pos = qi.selectionStart; viewList(); const n = $('#q'); n.focus(); n.setSelectionRange(pos, pos); };
@@ -642,10 +650,16 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
     app.onclick = null;
     if ('speechSynthesis' in window) speechSynthesis.cancel();
     if (password === null){ viewLock(); return; }
-    if (hs.startsWith('h=')) viewHymn(decodeURIComponent(hs.slice(2)));
-    else if (hs.startsWith('edit=')) viewEdit(decodeURIComponent(hs.slice(5)));
-    else if (hs.startsWith('edit')) viewEdit();
-    else viewList();
+    // 換頁出錯時不要靜悄悄留著舊畫面（例如分頁已是新增詩歌、內容還是目錄），
+    // 直接把錯誤顯示出來，使用者截圖就能知道卡在哪一步。
+    try {
+      if (hs.startsWith('h=')) viewHymn(decodeURIComponent(hs.slice(2)));
+      else if (hs.startsWith('edit=')) viewEdit(decodeURIComponent(hs.slice(5)));
+      else if (hs.startsWith('edit')) viewEdit();
+      else viewList();
+    } catch (e) {
+      app.innerHTML = '<p class="empty">載入失敗，請截圖給我：' + esc(e && e.message ? e.message : String(e)) + '</p>';
+    }
     window.scrollTo(0, 0);
   }
   // 分頁點擊必須每次都重繪：若網址雜湊已經是目標值，瀏覽器不會觸發 hashchange，
