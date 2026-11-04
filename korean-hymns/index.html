@@ -360,6 +360,9 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
   let speakingBtn = null;
   function speak(text, btn){
     if (!('speechSynthesis' in window)) { toast('這個瀏覽器不支援語音朗讀'); return; }
+    // 點按當下再抓一次韓文語音：剛開頁時瀏覽器的語音清單常常還是空的，
+    // 只靠開頁時抓的那一次，之後點了也可能找不到韓文語音而無聲。
+    pickVoice();
     speechSynthesis.cancel();
     if (speakingBtn) speakingBtn.classList.remove('speaking');
     if (btn && btn === speakingBtn) { speakingBtn = null; return; }
@@ -367,7 +370,9 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
     u.lang = 'ko-KR'; u.rate = prefs.rate;
     if (koVoice) u.voice = koVoice;
     if (btn){ btn.classList.add('speaking'); speakingBtn = btn; }
-    u.onend = u.onerror = () => { if (btn) btn.classList.remove('speaking'); if (speakingBtn === btn) speakingBtn = null; };
+    u.onend = () => { if (btn) btn.classList.remove('speaking'); if (speakingBtn === btn) speakingBtn = null; };
+    // 以前出錯時沒有任何提示，看起來就是點了沒聲音，現在直接告訴使用者。
+    u.onerror = () => { if (btn) btn.classList.remove('speaking'); if (speakingBtn === btn) speakingBtn = null; toast('朗讀出錯：這台裝置可能還沒有韓文語音，請到系統設定加入韓文語音'); };
     speechSynthesis.speak(u);
   }
 
