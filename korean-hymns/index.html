@@ -467,15 +467,22 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
       return { label, lines };
     }).filter(v => v.lines.length);
   }
+  // 行數多的一邊依比例併成和另一邊一樣多行
+  function group(arr, j, n, sep){
+    if (!arr.length) return '';
+    if (arr.length <= n) return arr[j] || '';
+    return arr.slice(Math.floor(j * arr.length / n), Math.floor((j + 1) * arr.length / n)).join(sep);
+  }
   function buildHymn(f){
     const zv = parseLyrics(f.zh), kv = parseLyrics(f.ko);
     const n = Math.max(zv.length, kv.length);
     const verses = [];
     for (let i = 0; i < n; i++){
       const z = zv[i] || { lines:[] }, k = kv[i] || { lines:[] };
-      const m = Math.max(z.lines.length, k.lines.length);
+      const zl = z.lines, kl = k.lines;
+      const n = (zl.length && kl.length) ? Math.min(zl.length, kl.length) : Math.max(zl.length, kl.length);
       const lines = [];
-      for (let j = 0; j < m; j++) lines.push({ zh: z.lines[j] || '', ko: k.lines[j] || '' });
+      for (let j = 0; j < n; j++) lines.push({ zh: group(zl, j, n, ''), ko: group(kl, j, n, ' ') });
       verses.push({ label: (k.label || z.label || String(i + 1)), lines });
     }
     const id = f.id || ('h' + (f.zhNo || f.koNo || Date.now()).toString().replace(/\W+/g, '') || 'h' + Date.now());
@@ -496,7 +503,7 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
     const v = h ? { id:h.id, zhNo:h.zhNo || '', koNo:h.koNo || '', zhTitle:h.zhTitle || '', koTitle:h.koTitle || '', zh:versesToText(h,'zh'), ko:versesToText(h,'ko') }
                 : store.get('kh-draft', { id:'', zhNo:'', koNo:'', zhTitle:'', koTitle:'', zh:'', ko:'' });
     app.innerHTML =
-      '<div class="help">貼上中文和韓文歌詞：<b>節與節之間空一行</b>，每節第一行可寫節號（<code>1</code>、<code>2</code>、<code>副</code>），兩邊同一節的句子會逐句配對。拼音和注音會自動產生。</div>' +
+      '<div class="help">貼上中文和韓文歌詞：<b>節與節之間空一行</b>（或每節第一行寫節號）。兩邊同一節會配對；若句數不同（例如韓文 2 行、中文 4 行），會自動依比例合併對齊。拼音和注音會自動產生。</div>' +
       '<div class="form" style="margin-top:12px">' +
       '<div class="row"><div><label>中文詩歌號碼</label><input type="text" id="f-zhNo" placeholder="例：大本 1" value="' + esc(v.zhNo) + '"></div>' +
       '<div><label>韓文詩歌號碼</label><input type="text" id="f-koNo" value="' + esc(v.koNo) + '"></div></div>' +
