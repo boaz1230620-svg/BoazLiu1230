@@ -97,7 +97,7 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
 </div>
 <div class="toast" id="toast"></div>
 
-<script src="hymns.js" onerror="window.HYMNS=window.HYMNS||[]"></script>
+<script src="hymns.js" onerror="window.HYMNS_ENC=window.HYMNS_ENC||null"></script>
 <script>
 /* 韓文發音引擎：拆字 → 套用發音規則 → 羅馬拼音 + 注音近似音 */
 (function (root) {
@@ -284,7 +284,61 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
   applyPrefs();
 
   // ---------- 資料 ----------
-  const builtIn = (window.HYMNS || []).map(h => Object.assign({}, h, { _src:'site' }));
+  let builtIn = [];
+  const ENC = window.HYMNS_ENC || null;
+
+  // ---------- 加密 ----------
+  const te = new TextEncoder(), td = new TextDecoder();
+  const b64 = u8 => btoa(String.fromCharCode.apply(null, u8));
+  const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  async function deriveKey(pw, salt){
+    const base = await crypto.subtle.importKey('raw', te.encode(pw), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey({ name:'PBKDF2', salt, iterations:250000, hash:'SHA-256' }, base, { name:'AES-GCM', length:256 }, false, ['encrypt','decrypt']);
+  }
+  async function encryptList(list, pw){
+    const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+    const key = await deriveKey(pw, salt);
+    const data = new Uint8Array(await crypto.subtle.encrypt({ name:'AES-GCM', iv }, key, te.encode(JSON.stringify(list))));
+    return { v:1, salt:b64(salt), iv:b64(iv), data:b64(data) };
+  }
+  async function decryptList(enc, pw){
+    const key = await deriveKey(pw, unb64(enc.salt));
+    const plain = await crypto.subtle.decrypt({ name:'AES-GCM', iv:unb64(enc.iv) }, key, unb64(enc.data));
+    return JSON.parse(td.decode(plain));
+  }
+  let password = null;   // 解鎖後的密碼（只在記憶體）
+  async function tryUnlock(pw){
+    if (ENC){ builtIn = (await decryptList(ENC, pw)).map(h => Object.assign({}, h, { _src:'site' })); }
+    password = pw;
+  }
+  function lock(){
+    password = null; builtIn = [];
+    try { localStorage.removeItem('kh-pw'); sessionStorage.removeItem('kh-pw'); } catch(e){}
+    location.hash = ''; route();
+  }
+  function viewLock(){
+    app.innerHTML =
+      '<div class="help" style="margin-top:8px">' + (ENC ? '這個頁面已上鎖，請輸入密碼。' : '第一次使用：請設定一組密碼。之後下載的 hymns.js 會用這組密碼加密，網站上沒有密碼的人看不到內容。') + '</div>' +
+      '<div class="form" style="margin-top:12px;max-width:360px">' +
+      '<div><label>密碼</label><input type="text" id="pw" autocomplete="current-password" style="-webkit-text-security:disc"></div>' +
+      (ENC ? '' : '<div><label>再輸入一次</label><input type="text" id="pw2" style="-webkit-text-security:disc"></div>') +
+      '<label style="display:flex;gap:8px;align-items:center;color:var(--ink)"><input type="checkbox" id="remember"> 在這台裝置記住密碼</label>' +
+      '<div class="btns"><button class="btn" id="b-unlock">' + (ENC ? '解鎖' : '設定密碼') + '</button></div>' +
+      '<p class="note" id="pw-msg"></p></div>';
+    const go = async () => {
+      const pw = $('#pw').value;
+      if (!pw){ $('#pw-msg').textContent = '請輸入密碼'; return; }
+      if (!ENC && pw !== $('#pw2').value){ $('#pw-msg').textContent = '兩次輸入的密碼不一樣'; return; }
+      $('#pw-msg').textContent = '解鎖中…';
+      try {
+        await tryUnlock(pw);
+        try { ($('#remember').checked ? localStorage : sessionStorage).setItem('kh-pw', pw); } catch(e){}
+        route();
+      } catch(e){ $('#pw-msg').textContent = '密碼不對'; }
+    };
+    $('#b-unlock').onclick = go;
+    app.querySelectorAll('input[type=text]').forEach(i => i.addEventListener('keydown', e => { if (e.key === 'Enter') go(); }));
+  }
   let local = store.get('kh-local', []);
   const all = () => {
     const ids = new Set(local.map(h => h.id));
@@ -342,12 +396,13 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
     const q = (viewList.q || '').trim().toLowerCase();
     const items = all().filter(h => !q || [h.zhNo, h.koNo, h.zhTitle, h.koTitle].join(' ').toLowerCase().includes(q));
     app.innerHTML =
-      '<input type="search" id="q" placeholder="搜尋號碼或標題" value="' + esc(viewList.q || '') + '">' +
+      '<div style="display:flex;gap:8px"><input type="search" id="q" placeholder="搜尋號碼或標題" value="' + esc(viewList.q || '') + '"><button class="chip-btn" id="b-lock" title="上鎖">🔒 上鎖</button></div>' +
       (items.length ? '<ul class="list">' + items.map(h =>
         '<li><a href="#h=' + encodeURIComponent(h.id) + '"><span class="no">' + esc(h.zhNo || h.koNo || '') + '</span>' +
         '<span><div>' + esc(h.zhTitle) + '</div><div class="ko">' + esc(h.koTitle) + '</div></span>' +
         (h._src === 'local' ? '<span class="tag">本機</span>' : '') + '</a></li>').join('') + '</ul>'
       : '<p class="empty">還沒有詩歌。到「新增詩歌」貼上歌詞就能產生對照。</p>');
+    $('#b-lock').onclick = lock;
     const qi = $('#q');
     qi.oninput = () => { viewList.q = qi.value; const pos = qi.selectionStart; viewList(); const n = $('#q'); n.focus(); n.setSelectionRange(pos, pos); };
   }
@@ -442,9 +497,9 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
       '<div class="row"><div><label>中文歌詞</label><textarea id="f-zh" placeholder="1\n第一句\n第二句\n\n副\n副歌第一句">' + esc(v.zh) + '</textarea></div>' +
       '<div><label>韓文歌詞</label><textarea id="f-ko" placeholder="1\n첫째 줄\n둘째 줄\n\n후렴\n…">' + esc(v.ko) + '</textarea></div></div>' +
       '<div class="btns"><button class="btn" id="b-save">存到這台裝置</button>' +
-      '<button class="btn ghost" id="b-dl">下載 hymns.js（含全部詩歌）</button>' +
+      '<button class="btn ghost" id="b-dl">下載加密的 hymns.js（含全部詩歌）</button>' +
       '<button class="btn ghost" id="b-clear">清空</button></div>' +
-      '<p class="note">「存到這台裝置」只有你這支手機／電腦看得到。要讓網站上所有人看到，按「下載 hymns.js」，再到 GitHub 的 korean-hymns 資料夾上傳覆蓋同名檔案。</p>' +
+      '<p class="note">「存到這台裝置」只有你這支手機／電腦看得到。要放上網站，按「下載加密的 hymns.js」，再上傳到 GitHub 的 korean-hymns 資料夾覆蓋同名檔案；網站上只有知道密碼的人能打開。</p>' +
       '</div><h3 style="margin-top:22px">預覽</h3><div id="preview"></div>';
     const ids = ['zhNo','koNo','zhTitle','koTitle','zh','ko'];
     const read = () => { const f = { id: v.id }; ids.forEach(k => f[k] = $('#f-' + k).value.trim()); return f; };
@@ -467,12 +522,14 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
       toast('已存到這台裝置');
       location.hash = 'h=' + encodeURIComponent(hh.id);
     };
-    $('#b-dl').onclick = () => {
+    $('#b-dl').onclick = async () => {
       const f = read();
       let list = all().map(cleanForExport);
       if (f.zhTitle || f.koTitle){ const hh = buildHymn(f); list = list.filter(x => x.id !== hh.id).concat([hh]); }
       list = list.filter(x => x.id !== 'demo');
-      downloadFile('hymns.js', '// 主恢復詩歌 韓中對照資料（由網頁產生）\nwindow.HYMNS = ' + JSON.stringify(list, null, 2) + ';\n');
+      const enc = await encryptList(list, password);
+      downloadFile('hymns.js', '// 主恢復詩歌 韓中對照資料（已加密，需密碼才能在網頁上開啟）\nwindow.HYMNS_ENC = ' + JSON.stringify(enc) + ';\n');
+      toast('已用目前的密碼加密');
     };
     $('#b-clear').onclick = () => { if (confirm('清空表單？')){ store.set('kh-draft', null); viewEdit(); } };
     app.onclick = e => { const t = e.target.closest('.play,.s'); if (!t) return; if (t.dataset.line) speak(t.dataset.line, t); else if (t.dataset.say) speak(t.dataset.say); };
@@ -485,6 +542,7 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
     document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
     app.onclick = null;
     if ('speechSynthesis' in window) speechSynthesis.cancel();
+    if (password === null){ viewLock(); return; }
     if (hs.startsWith('h=')) viewHymn(decodeURIComponent(hs.slice(2)));
     else if (hs.startsWith('edit=')) viewEdit(decodeURIComponent(hs.slice(5)));
     else if (hs === 'edit') viewEdit();
@@ -493,7 +551,12 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
   }
   document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => { location.hash = b.dataset.tab === 'edit' ? 'edit' : ''; });
   window.addEventListener('hashchange', route);
-  route();
+  (async () => {
+    let saved = null;
+    try { saved = sessionStorage.getItem('kh-pw') || localStorage.getItem('kh-pw'); } catch(e){}
+    if (saved){ try { await tryUnlock(saved); } catch(e){ password = null; } }
+    route();
+  })();
 })();
 </script>
 </body>
