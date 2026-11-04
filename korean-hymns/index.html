@@ -644,11 +644,18 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
     if (password === null){ viewLock(); return; }
     if (hs.startsWith('h=')) viewHymn(decodeURIComponent(hs.slice(2)));
     else if (hs.startsWith('edit=')) viewEdit(decodeURIComponent(hs.slice(5)));
-    else if (hs === 'edit') viewEdit();
+    else if (hs.startsWith('edit')) viewEdit();
     else viewList();
     window.scrollTo(0, 0);
   }
-  document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => { location.hash = b.dataset.tab === 'edit' ? 'edit' : ''; });
+  // 分頁點擊必須每次都重繪：若網址雜湊已經是目標值，瀏覽器不會觸發 hashchange，
+  // 只改分頁底線、不換內容，就會卡在「分頁是新增詩歌、內容還是目錄」的狀態。
+  // 所以雜湊已是目標時直接呼叫 route() 強制重繪，否則照常改雜湊（會觸發 hashchange）。
+  document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
+    const target = b.dataset.tab === 'edit' ? 'edit' : '';
+    if (location.hash.slice(1) === target) route();
+    else location.hash = target;
+  });
   window.addEventListener('hashchange', route);
   (async () => {
     let saved = null;
