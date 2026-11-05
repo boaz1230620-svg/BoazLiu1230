@@ -82,6 +82,15 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
 .help{font-size:.85em;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
 .help code{background:var(--accent-soft);padding:0 4px;border-radius:4px}
 .note{font-size:.82em;color:var(--muted);margin:8px 0}
+.bcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px}
+.bcard .bhead{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.bcard .bidx{font-weight:700;color:var(--accent)}
+.bcard .first{font-size:.9em;color:var(--muted);margin:2px 0}
+.bcard .first b{color:var(--ink);font-weight:500}
+.bcard select{font:inherit;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);width:100%}
+.bcard .warn{color:var(--chg);font-size:.82em}
+.bcard .ok{color:var(--zy);font-size:.82em}
+.bcard label.skip{display:flex;gap:6px;align-items:center;font-size:.85em;color:var(--muted);margin-left:auto}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:999px;font-size:.9em;opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.on{opacity:1}
 @media (max-width:520px){.form .row{grid-template-columns:1fr}.syls{gap:6px 10px}}
@@ -98,6 +107,7 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
   <nav class="tabs">
     <button data-tab="list" class="on">詩歌目錄</button>
     <button data-tab="edit">新增詩歌</button>
+    <button data-tab="batch">批次貼上</button>
   </nav>
   <main id="app"></main>
 </div>
@@ -1117,10 +1127,136 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
     app.onclick = e => { const t = e.target.closest('.play,.s'); if (!t) return; if (t.dataset.line) speak(t.dataset.line, lang, t); else if (t.dataset.say) speak(t.dataset.say, lang); };
   }
 
+  // ---------- 批次貼上 ----------
+  // 拆首規則（依序）：
+  // 1) 自己加的分隔線 === 或 ---；2) 網址行（app 分享的文字通常最後附網址）；
+  // 3) 帶前綴或後綴的號碼行，例如「大本 12」「韓文 12」「찬송 12」「12장」「#12」「第12首」。
+  //    單獨一個數字視為節號，不拿來拆首。
+  const B_SEP = /^\s*(={3,}|-{3,}|＝{3,}|—{2,}|_{3,})\s*$/;
+  const B_URL = /^(https?:\/\/|www\.)\S*$/i;
+  const B_HEAD = /^\s*(?:(大本|小本|補充本|新詩歌|韓文|中文|泰文|寮文|西班牙文|詩歌|찬송가|찬송|찬양|hymn|himno|no\.?|เพลง|ເພງ|#)\s*(?:第\s*)?(\d{1,4})\s*(?:首|장|번)?|第\s*(\d{1,4})\s*首|(\d{1,4})\s*(?:장|번|首))\s*$/i;
+  function headNum(ln){
+    const m = ln.match(B_HEAD); if (!m) return null;
+    const num = m[2] || m[3] || m[4];
+    return { num: (m[1] && /^(大本|小本|補充本|新詩歌)$/.test(m[1])) ? m[1] + ' ' + num : num, text: ln.trim() };
+  }
+  function splitBatch(text){
+    const items = []; let cur = null;
+    const close = () => { if (cur && cur.lines.some(l => l.trim())) items.push(cur); cur = null; };
+    const ensure = () => { if (!cur) cur = { head: null, lines: [] }; };
+    for (const raw of String(text || '').replace(/\r/g, '').split('\n')){
+      const ln = raw.trim();
+      if (B_SEP.test(ln)){ close(); continue; }
+      if (B_URL.test(ln)){ close(); continue; }
+      const h = ln && headNum(ln);
+      if (h){
+        if (cur && cur.lines.some(l => l.trim())) close();
+        ensure(); cur.head = h; continue;
+      }
+      ensure(); cur.lines.push(ln);
+    }
+    close();
+    return items.map(it => {
+      const res = cleanPasted(it.lines.join('\n'));
+      let title = '', no = it.head ? it.head.num : '';
+      let text = res.text;
+      if (res.header){ if (res.headerKind === 'number' && !no) no = (res.header.match(/\d+/) || [''])[0]; else if (res.headerKind === 'title') title = res.header; }
+      const first = parseLyrics(text).map(v => v.lines[0]).find(Boolean) || '';
+      return { no, headText: it.head ? it.head.text : '', title, text, first, verses: parseLyrics(text).length };
+    });
+  }
+
+  function viewBatch(){
+    const lang = prefs.lang;
+    renderLangs(lang);
+    const L = LANGS[lang];
+    const bkey = 'kh-batch-' + lang;
+    const d = Object.assign({ t:'', zh:'' }, store.get(bkey, null) || {});
+    app.innerHTML =
+      '<div class="help">一次貼好幾首<b>' + L.name + '</b>詩歌（上方可切換語言）。在 app 連續分享、複製，全部貼進同一個框；中文也一樣貼進另一個框。<br>' +
+      '頁面會自動拆首：遇到網址行、或「大本 12」「韓文 12」「12장」「#12」這類號碼行就換下一首。<b>如果沒有拆開</b>，請在兩首之間自己打一行 <code>===</code>。<br>' +
+      '拆好後會逐首列出，預設照順序配對中文；號碼不一樣時，可以在每一首的下拉選單改配對。</div>' +
+      '<div class="form" style="margin-top:12px">' +
+      '<div class="row"><div><label>' + L.name + '詩歌（多首）</label><textarea id="b-t" style="min-height:260px">' + esc(d.t) + '</textarea></div>' +
+      '<div><label>中文詩歌（多首）</label><textarea id="b-zh" style="min-height:260px">' + esc(d.zh) + '</textarea></div></div>' +
+      '<div class="btns"><button class="btn" id="b-split">拆開並配對</button><button class="btn ghost" id="b-bclear">清空</button></div>' +
+      '</div><div id="b-result" style="margin-top:16px"></div>';
+    const save = () => store.set(bkey, { t: $('#b-t').value, zh: $('#b-zh').value });
+    $('#b-t').addEventListener('input', save); $('#b-zh').addEventListener('input', save);
+    $('#b-bclear').onclick = () => { if (confirm('清空兩個框？')){ store.set(bkey, null); viewBatch(); } };
+
+    let T = [], Z = [];
+    const zOpt = (sel) => '<option value="-1"' + (sel === -1 ? ' selected' : '') + '>（不配中文）</option>' +
+      Z.map((z, j) => '<option value="' + j + '"' + (j === sel ? ' selected' : '') + '>中 ' + (j + 1) + (z.no ? '（' + esc(z.no) + '）' : '') + '：' + esc(z.first.slice(0, 18)) + '</option>').join('');
+    function check(i){
+      const c = app.querySelector('.bcard[data-i="' + i + '"]'); if (!c) return;
+      const j = +c.querySelector('.b-zsel').value;
+      const z = Z[j], t = T[i];
+      const el = c.querySelector('.b-chk');
+      if (!z){ el.className = 'b-chk warn'; el.textContent = '沒有配中文，只會存' + L.name + '。'; return; }
+      c.querySelector('.b-zfirst').innerHTML = '中文第一句：<b>' + esc(z.first) + '</b>';
+      if (!c.querySelector('.b-zno').dataset.touched) c.querySelector('.b-zno').value = z.no || '';
+      if (z.verses !== t.verses){ el.className = 'b-chk warn'; el.textContent = '節數不同：' + L.name + ' ' + t.verses + ' 節、中文 ' + z.verses + ' 節，請確認是不是配錯首。'; }
+      else { el.className = 'b-chk ok'; el.textContent = '節數相同（' + t.verses + ' 節）'; }
+    }
+    function existingFor(no){ return no ? all().find(h => h.lang === lang && String(h.no) === String(no)) : null; }
+    $('#b-split').onclick = () => {
+      save();
+      T = splitBatch($('#b-t').value); Z = splitBatch($('#b-zh').value);
+      if (!T.length){ $('#b-result').innerHTML = '<p class="empty">' + L.name + '框裡沒有找到詩歌。</p>'; return; }
+      $('#b-result').innerHTML =
+        '<h3>找到 ' + L.name + ' ' + T.length + ' 首、中文 ' + Z.length + ' 首</h3>' +
+        (T.length === 1 && Z.length <= 1 ? '<p class="note">只拆出 1 首。如果其實有好幾首，請在每兩首之間打一行 <code>===</code> 再按一次。</p>' : '') +
+        (T.length !== Z.length && Z.length ? '<p class="note" style="color:var(--chg)">兩邊首數不一樣，請逐首檢查配對。</p>' : '') +
+        T.map((t, i) => {
+          const ex = existingFor(t.no);
+          return '<div class="bcard" data-i="' + i + '">' +
+            '<div class="bhead"><span class="bidx">第 ' + (i + 1) + ' 首</span>' +
+            '<label class="skip"><input type="checkbox" class="b-skip"> 不要存這首</label></div>' +
+            '<div class="row form" style="gap:8px"><div><label>' + L.name + '號碼</label><input type="text" class="b-no" value="' + esc(t.no) + '"></div>' +
+            '<div><label>' + L.name + '標題</label><input type="text" class="b-title" value="' + esc(t.title || t.first) + '"></div></div>' +
+            '<div class="first">' + L.name + '第一句：<b>' + esc(t.first) + '</b>（' + t.verses + ' 節）</div>' +
+            '<div style="margin-top:8px"><label style="font-size:.85em;color:var(--muted)">配對的中文詩歌</label><select class="b-zsel">' + zOpt(i < Z.length ? i : -1) + '</select></div>' +
+            '<div class="row form" style="gap:8px;margin-top:8px"><div><label>中文號碼</label><input type="text" class="b-zno"></div>' +
+            '<div><label>中文標題</label><input type="text" class="b-ztitle" placeholder="空白就用中文第一句"></div></div>' +
+            '<div class="first b-zfirst"></div><div class="b-chk"></div>' +
+            (ex ? '<div class="warn">這個號碼已經有一首「' + esc(ex.title || ex.zhTitle) + '」，存檔會覆蓋它。</div>' : '') +
+            '</div>';
+        }).join('') +
+        '<div class="btns"><button class="btn" id="b-saveall">全部存到這台裝置</button></div>' +
+        '<p class="note">存好後可以到目錄逐首打開檢查；要放上網站，再到「新增詩歌」按「下載加密的 hymns.js」。</p>';
+      T.forEach((_, i) => check(i));
+      app.querySelectorAll('.bcard').forEach(c => {
+        c.querySelector('.b-zsel').onchange = () => { c.querySelector('.b-zno').dataset.touched = ''; delete c.querySelector('.b-zno').dataset.touched; check(+c.dataset.i); };
+        c.querySelector('.b-zno').oninput = e => { e.target.dataset.touched = '1'; };
+      });
+      $('#b-saveall').onclick = () => {
+        let n = 0;
+        app.querySelectorAll('.bcard').forEach(c => {
+          if (c.querySelector('.b-skip').checked) return;
+          const t = T[+c.dataset.i], z = Z[+c.querySelector('.b-zsel').value];
+          const no = c.querySelector('.b-no').value.trim();
+          const ex = existingFor(no);
+          const hh = buildHymn({
+            id: ex ? ex.id : '', lang, no, title: c.querySelector('.b-title').value.trim(),
+            zhNo: c.querySelector('.b-zno').value.trim(),
+            zhTitle: c.querySelector('.b-ztitle').value.trim() || (z ? z.first : ''),
+            fix: ex ? ex.fix : '', t: t.text, zh: z ? z.text : ''
+          });
+          local = local.filter(x => x.id !== hh.id).concat([hh]);
+          n++;
+        });
+        store.set('kh-local', local);
+        toast('已存 ' + n + ' 首到這台裝置');
+        if (n){ store.set(bkey, null); location.hash = ''; }
+      };
+    };
+  }
+
   // ---------- 路由 ----------
   function route(){
     const hs = location.hash.slice(1);
-    const tab = hs.startsWith('edit') ? 'edit' : 'list';
+    const tab = hs.startsWith('edit') ? 'edit' : hs.startsWith('batch') ? 'batch' : 'list';
     document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
     app.onclick = null;
     if ('speechSynthesis' in window) speechSynthesis.cancel();
@@ -1129,6 +1265,7 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
       if (hs.startsWith('h=')) viewHymn(decodeURIComponent(hs.slice(2)));
       else if (hs.startsWith('edit=')) viewEdit(decodeURIComponent(hs.slice(5)));
       else if (hs.startsWith('edit')) viewEdit();
+      else if (hs.startsWith('batch')) viewBatch();
       else viewList();
     } catch (e) {
       app.innerHTML = '<p class="empty">載入失敗，請截圖給我：' + esc(e && e.message ? e.message : String(e)) + '</p>';
@@ -1137,7 +1274,7 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
   }
   // 網址已是目標時瀏覽器不觸發 hashchange，要直接重繪
   document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
-    const target = b.dataset.tab === 'edit' ? 'edit' : '';
+    const target = b.dataset.tab === 'list' ? '' : b.dataset.tab;
     if (location.hash.slice(1) === target) route(); else location.hash = target;
   });
   window.addEventListener('hashchange', route);
