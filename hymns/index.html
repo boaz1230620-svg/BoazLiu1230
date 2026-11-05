@@ -776,10 +776,20 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
   let builtIn = [];
   let local = store.get('kh-local', []).map(norm);
   const ENC = window.HYMNS_ENC || null;
+  // 刪掉的網站詩歌記在這裡：畫面上不顯示，下載 hymns.js 時也不會包含
+  let deleted = new Set(store.get('kh-deleted', []));
   const all = () => {
     const ids = new Set(local.map(h => h.id));
-    return builtIn.filter(h => !ids.has(h.id)).concat(local.map(h => Object.assign({}, h, { _src:'local' })));
+    return builtIn.filter(h => !ids.has(h.id)).concat(local.map(h => Object.assign({}, h, { _src:'local' })))
+      .filter(h => !deleted.has(h.id));
   };
+  function removeHymn(id){
+    local = local.filter(x => x.id !== id); store.set('kh-local', local);
+    if (builtIn.some(x => x.id === id)){ deleted.add(id); store.set('kh-deleted', Array.from(deleted)); }
+  }
+  function delMsg(h){
+    return '刪除「' + (h.zhTitle || h.title || h.no) + '」？' + (h._src === 'local' ? '' : '\n（這首在網站上：刪除後要下載 hymns.js 重新上傳，其他裝置才會一起消失。）');
+  }
   const find = id => all().find(h => h.id === id);
 
   // ---------- 加密 ----------
@@ -915,9 +925,20 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
       (items.length ? '<ul class="list">' + items.map(h =>
         '<li><a href="#h=' + encodeURIComponent(h.id) + '"><span class="no">' + esc(h.no || h.zhNo || '') + '</span>' +
         '<span><div>' + esc(h.zhTitle) + (h.zhNo ? ' <small style="color:var(--muted)">（中 ' + esc(h.zhNo) + '）</small>' : '') + '</div><div class="ko">' + esc(h.title) + '</div></span>' +
-        (h._src === 'local' ? '<span class="tag">本機</span>' : '') + '</a></li>').join('') + '</ul>'
+        (h._src === 'local' ? '<span class="tag">本機</span>' : '') + '</a>' +
+        '<button class="chip-btn b-del" data-del="' + esc(h.id) + '" title="刪除" style="margin:-4px 0 8px auto;display:block">刪除</button></li>').join('') + '</ul>'
       : '<p class="empty">還沒有' + LANGS[prefs.lang].name + '詩歌。到「新增詩歌」貼上歌詞就能產生對照。</p>');
     $('#b-lock').onclick = lock;
+    app.querySelectorAll('.b-del').forEach(btn => btn.onclick = () => {
+      const h = find(btn.dataset.del); if (!h) return;
+      if (confirm(delMsg(h))){ removeHymn(h.id); toast('已刪除'); viewList(); }
+    });
+    if (deleted.size){
+      const p = document.createElement('p'); p.className = 'note';
+      p.innerHTML = '已刪除 ' + deleted.size + ' 首網站上的詩歌（下載 hymns.js 時不會包含）。<a href="#" id="b-undel">全部復原</a>';
+      app.appendChild(p);
+      $('#b-undel').onclick = e => { e.preventDefault(); deleted = new Set(); store.set('kh-deleted', []); viewList(); };
+    }
     $('#b-add').onclick = () => {
       try { location.hash = 'edit'; route(); }
       catch (e) { app.innerHTML = '<p class="empty">新增表單載入失敗，請截圖給我：' + esc(e && e.message ? e.message : String(e)) + '</p>'; }
@@ -949,7 +970,7 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
       toolbarHTML(L) +
       '<div class="legend">' + L.legend + '</div>' +
       renderVerses(h) +
-      (h._src === 'local' ? '<div class="btns"><button class="btn ghost" data-edit="' + esc(h.id) + '">編輯這首</button><button class="btn ghost" data-del="' + esc(h.id) + '">從本機刪除</button></div>' : '') +
+      '<div class="btns"><button class="btn ghost" data-edit="' + esc(h.id) + '">編輯這首</button><button class="btn ghost" data-del="' + esc(h.id) + '">刪除這首</button></div>' +
       (('speechSynthesis' in window) && !voiceFor(h.lang) ? '<p class="note">朗讀若沒有聲音：請到手機系統設定加入「' + L.name.replace('文','語') + '」語音。</p>' : '') +
       (L.fix ? '<p class="note">發音不對的字，可以按「編輯這首」在「發音修正」欄寫上正確的拼法。</p>' : '');
     app.onclick = e => {
@@ -962,7 +983,7 @@ body.hide-zh .zh, body.hide-r .r, body.hide-z .z, body.hide-p .p{display:none}
       else if (t.dataset.line){ speak(t.dataset.line, h.lang, t); }
       else if (t.dataset.say){ speak(t.dataset.say, h.lang); }
       else if (t.dataset.edit){ location.hash = 'edit=' + encodeURIComponent(t.dataset.edit); }
-      else if (t.dataset.del){ if (confirm('從這台裝置刪除這首？')){ local = local.filter(x => x.id !== t.dataset.del); store.set('kh-local', local); location.hash = ''; } }
+      else if (t.dataset.del){ if (confirm(delMsg(h))){ removeHymn(h.id); toast('已刪除'); location.hash = ''; } }
     };
   }
 
