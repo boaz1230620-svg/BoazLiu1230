@@ -102,7 +102,8 @@ function lesson(n){
   h+=`<h3>一、暖身複習（5 分鐘）</h3><div class="box">${n==1?'先聽老師用西語打招呼，猜猜看是什麼意思；再介紹本課程：南美洲西語、40 堂、每堂 45 分鐘。':'複習第 '+(n-1)+' 堂的詞彙卡片，抽 3 人用上一堂的句型口頭回答。'}${L.c?`<div class="note"><b>文化小知識：</b>${esc(L.c)}</div>`:''}</div>`;
   h+=`<h3>二、發音／語法重點（10 分鐘）</h3><div class="box"><ul>${L.f.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
   h+=`<h3>三、詞彙（12 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>西班牙文</th><th>中文意思</th><th>IPA</th><th>中文近似音</th></tr></thead><tbody>${L.v.map(r=>`<tr><td>${es(r[0])}</td><td>${esc(r[1])}</td><td class="ipa">[${esc(r[2])}]</td><td class="phon">${esc(r[3])}</td></tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>西班牙文</th><th>中文</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${es(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
+  const sp=L.s.some(r=>r[2]);
+  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>西班牙文</th><th>中文</th>${sp?'<th>中文近似音</th>':''}</tr></thead><tbody>${L.s.map(r=>`<tr><td>${es(r[0])}</td><td>${esc(r[1])}</td>${sp?`<td class="phon">${esc(r[2]||'')}</td>`:''}</tr>`).join('')}</tbody></table></div>${sp?'<p style="color:#666;font-size:14px">近似音中的（連音）表示前後字要連在一起唸，例如 un amigo 唸成「烏納密勾」。</p>':''}`;
   h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>西班牙文</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td>${esc(r[0])}</td><td>${es(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
   h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂練習</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><b>回家作業：</b>${esc(L.h)}</div>`;
   h+=`<div class="nav"><button class="btn" ${n==1?'disabled':''} onclick="go('#L${n-1}')">← 上一堂</button><button class="btn" ${n==TOTAL?'disabled':''} onclick="go('#L${n+1}')">下一堂 →</button></div>`;
