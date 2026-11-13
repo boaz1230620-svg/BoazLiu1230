@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>西班牙語學習</title><style>
+body{margin:0;font-family:"PingFang TC","Microsoft JhengHei",sans-serif;background:#FFFDF5;color:#2b2b2b}
+header{background:#FFF6DE;padding:56px 20px 40px;text-align:center;border-bottom:4px solid #E8B84B}
+h1{font-size:44px;margin:0 0 12px}p.lead{font-size:18px;color:#555;max-width:700px;margin:0 auto;line-height:1.7}
+main{max-width:1020px;margin:0 auto;padding:32px 20px 64px}
+a.back{color:#86641A;text-decoration:none}
+h2{font-size:28px;border-left:6px solid #86641A;padding-left:12px}
+h3{font-size:20px;color:#86641A;margin:28px 0 10px}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.tab{border:2px solid #E8B84B;background:#fff;color:#86641A;border-radius:999px;padding:8px 20px;font-size:17px;cursor:pointer;font-family:inherit}
+.tab.on{background:#E8B84B;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.card{background:#fff;border:1px solid #eee;border-top:4px solid #E8B84B;border-radius:14px;padding:18px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .2s,box-shadow .2s}
+.card:hover{box-shadow:0 8px 20px rgba(0,0,0,.14);transform:translateY(-3px)}
+.card .k{font-size:15px;color:#86641A;font-weight:700}.card .t{font-size:18px;margin:6px 0}.card .d{font-size:14px;color:#666;line-height:1.6}
+.box{background:#fff;border:1px solid #eee;border-radius:14px;padding:18px 20px;line-height:1.8}
+.time{display:flex;border-radius:10px;overflow:hidden;font-size:13px;margin:10px 0}
+.time div{padding:8px 6px;text-align:center;color:#5a4410;background:#FFF6DE;border-right:2px solid #fff}
+.time div:nth-child(even){background:#FBE7B0}
+.wrap{overflow-x:auto}.tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid #eee}
+.tbl th{background:#FFF6DE;color:#86641A;text-align:left;padding:10px 12px;font-size:15px;white-space:nowrap}
+.tbl td{padding:10px 12px;border-top:1px solid #f0e9d6;font-size:16px;line-height:1.6;vertical-align:top}
+.es{font-size:19px;color:#1d3b8a;cursor:pointer}.es:hover{text-decoration:underline}
+.es::before{content:"🔊 ";font-size:13px}
+.ipa{color:#7a5a12;font-family:"Charis SIL","Doulos SIL","Lucida Sans Unicode","Segoe UI",sans-serif;white-space:nowrap}
+.phon{color:#555}
+ul{margin:6px 0;padding-left:22px;line-height:1.8}
+.nav{display:flex;justify-content:space-between;margin-top:32px;gap:10px}
+.btn{border:1px solid #E8B84B;background:#fff;color:#86641A;border-radius:10px;padding:10px 16px;cursor:pointer;font-size:15px;font-family:inherit}
+.btn:disabled{opacity:.35;cursor:default}
+.speed{display:flex;gap:8px;align-items:center;justify-content:flex-end;font-size:14px;color:#86641A;margin:0 0 6px}
+.speed button{border:1px solid #E8B84B;background:#fff;color:#86641A;border-radius:999px;padding:4px 12px;cursor:pointer;font-family:inherit}
+.speed button.on{background:#E8B84B;color:#fff}
+.note{background:#F3F7FF;border-left:4px solid #1d3b8a;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:15px;line-height:1.7}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:8px;display:none;font-size:14px}
+footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
+@media(max-width:600px){h1{font-size:32px}.tbl td,.tbl th{font-size:14px;padding:8px}.es{font-size:17px}.time{font-size:11px}.ipa{white-space:normal}}
+</style></head><body>
+<header><h1>西班牙語學習</h1><p class="lead">南美洲西語｜入門、初級、中級、進階各 10 堂，共 40 堂，每堂 45 分鐘。每個詞附國際音標（IPA）與中文近似音，藍色西文點一下就能聽發音。</p></header>
+<main>
+<p style="margin:0 0 16px"><a class="back" href="../">← 回首頁</a></p>
+<div class="speed">朗讀速度：<button data-r="0.65">慢</button><button data-r="0.85" class="on">中</button><button data-r="1">正常</button></div>
+<div id="app"></div>
+</main>
+<div id="toast"></div>
+<footer>音標中的 ˈ 標在重音音節前。中文近似音只是輔助，請以點擊朗讀與老師發音為準。<br>朗讀會優先使用拉丁美洲西語語音（es-419／es-US／es-MX／es-CO／es-AR），若無聲音請在裝置設定中安裝西班牙語語音。</footer>
+<script src="lessons-1.js"></script>
+<script src="lessons-2.js"></script>
+<script src="lessons-3.js"></script>
+<script src="lessons-4.js"></script>
+<script>
+const LESSONS=window.LESSONS||[];
+const PER=10,TOTAL=40;
+const LEVELS=[["入門","第 1–10 堂：字母、發音、重音、問候、自我介紹、數字與 ser／tener"],["初級","第 11–20 堂：現在式動詞、時間、作息、吃飯、購物、問路與嗜好"],["中級","第 21–30 堂：過去式敘事、受詞代名詞、比較、旅行、看醫生、命令式"],["進階","第 31–40 堂：虛擬式、條件句、複句、南美各地口音，以及校園與教會情境"]];
+const TIME=[["0–5","暖身複習"],["5–15","發音／語法重點"],["15–27","詞彙"],["27–33","例句"],["33–40","對話練習"],["40–45","練習與作業"]];
+const W=[5,10,12,6,7,5];
+const app=document.getElementById('app');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let esVoice=null,rate=0.85;
+function pickVoice(){
+  if(!('speechSynthesis' in window))return;
+  const vs=speechSynthesis.getVoices().filter(v=>v.lang.toLowerCase().replace('_','-').startsWith('es'));
+  const pref=['es-419','es-us','es-mx','es-co','es-ar','es-cl','es-pe'];
+  for(const p of pref){const v=vs.find(v=>v.lang.toLowerCase().replace('_','-')===p);if(v){esVoice=v;return;}}
+  esVoice=vs.find(v=>!/es-es/i.test(v.lang.replace('_','-')))||vs[0]||null;
+}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',2500);}
+function speak(text){
+  if(!('speechSynthesis' in window)){toast('這個瀏覽器不支援語音朗讀');return;}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text.replace(/\s*\/\s*/g,', ').replace(/[（(].*?[)）]/g,'').replace(/…/g,', '));
+  u.lang=esVoice?esVoice.lang:'es-MX';u.rate=rate;if(esVoice)u.voice=esVoice;
+  if(!esVoice)toast('找不到西班牙語語音，可能用其他語音朗讀');
+  speechSynthesis.speak(u);
+}
+document.querySelectorAll('.speed button').forEach(b=>b.onclick=()=>{rate=+b.dataset.r;document.querySelectorAll('.speed button').forEach(x=>x.classList.toggle('on',x===b));});
+app.addEventListener('click',e=>{const v=e.target.closest('.es');if(v)speak(v.dataset.say||v.textContent);});
+const es=t=>`<span class="es" data-say="${esc(t)}">${esc(t)}</span>`;
+
+function home(lv){
+  lv=lv||0;
+  let h=`<div class="tabs">${LEVELS.map((l,i)=>`<button class="tab${i==lv?' on':''}" onclick="go('#lv${i}')">${l[0]}</button>`).join('')}</div>`;
+  h+=`<h2>${LEVELS[lv][0]}</h2><p style="color:#666">${LEVELS[lv][1]}</p>`;
+  if(lv==0)h+=soundTable();
+  h+=`<div class="grid">`;
+  for(let i=lv*PER;i<lv*PER+PER;i++){const L=LESSONS[i];if(!L)continue;
+    h+=`<div class="card" onclick="go('#L${i+1}')"><div class="k">第 ${i+1} 堂</div><div class="t">${esc(L.t)}</div><div class="d">${esc(L.g)}</div></div>`;}
+  h+=`</div>`;
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function soundTable(){
+  const T=[["c（e、i 前）／z","cena、zapato","s","「ㄙ」","南美不咬舌，和 s 同音（seseo）"],["ll／y","llamo、yo","ʝ","「ㄐ／ㄧ」之間","大部分南美同音（yeísmo）；阿根廷、烏拉圭唸「ㄕ」"],["j／g（e、i 前）","jugo、gente","x／h","「ㄏ」","哥倫比亞、委內瑞拉等地較輕，像英文 h"],["h","hola","—","不發音","h 永遠不唸"],["b／v","bueno、vamos","b／β","「ㄅ」","兩個字母同音，母音之間嘴唇不閉緊"],["r（單）","pero","ɾ","舌尖輕彈一下","像國語「ㄌ」快速一碰"],["rr／字首 r","perro、Rosa","r","舌尖連續顫動","要練「打嘟嚕」"],["ñ","niño","ɲ","「ㄋㄧ」","像「妞」的聲母"],["字尾 s","más、vamos","s／h","「ㄙ」或輕「ㄏ」","智利、阿根廷、加勒比沿岸常弱化"]];
+  return `<h3>南美洲西語發音特色一覽</h3><div class="wrap"><table class="tbl"><thead><tr><th>字母</th><th>例字</th><th>IPA</th><th>近似音</th><th>說明</th></tr></thead><tbody>${T.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1].split('、').map(es).join('　')}</td><td class="ipa">[${r[2]}]</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('')}</tbody></table></div><br>`;
+}
+function lesson(n){
+  const L=LESSONS[n-1];if(!L)return home(0);const lv=Math.floor((n-1)/PER);
+  let h=`<p><a class="back" href="#lv${lv}">← ${LEVELS[lv][0]}課程列表</a></p>`;
+  h+=`<h2>第 ${n} 堂　${esc(L.t)}</h2><div class="box"><b>學習目標：</b>${esc(L.g)}<br><b>時間：</b>45 分鐘</div>`;
+  h+=`<h3>時間分配</h3><div class="time">${TIME.map((t,i)=>`<div style="flex:${W[i]}">${t[0]} 分<br>${t[1]}</div>`).join('')}</div>`;
+  h+=`<h3>一、暖身複習（5 分鐘）</h3><div class="box">${n==1?'先聽老師用西語打招呼，猜猜看是什麼意思；再介紹本課程：南美洲西語、40 堂、每堂 45 分鐘。':'複習第 '+(n-1)+' 堂的詞彙卡片，抽 3 人用上一堂的句型口頭回答。'}${L.c?`<div class="note"><b>文化小知識：</b>${esc(L.c)}</div>`:''}</div>`;
+  h+=`<h3>二、發音／語法重點（10 分鐘）</h3><div class="box"><ul>${L.f.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
+  h+=`<h3>三、詞彙（12 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>西班牙文</th><th>中文意思</th><th>IPA</th><th>中文近似音</th></tr></thead><tbody>${L.v.map(r=>`<tr><td>${es(r[0])}</td><td>${esc(r[1])}</td><td class="ipa">[${esc(r[2])}]</td><td class="phon">${esc(r[3])}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>西班牙文</th><th>中文</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${es(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>西班牙文</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td>${esc(r[0])}</td><td>${es(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
+  h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂練習</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><b>回家作業：</b>${esc(L.h)}</div>`;
+  h+=`<div class="nav"><button class="btn" ${n==1?'disabled':''} onclick="go('#L${n-1}')">← 上一堂</button><button class="btn" ${n==TOTAL?'disabled':''} onclick="go('#L${n+1}')">下一堂 →</button></div>`;
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function go(h){location.hash=h;}
+function route(){const h=location.hash;let m;
+  if((m=h.match(/^#L(\d+)$/)))lesson(+m[1]);else if((m=h.match(/^#lv(\d)$/)))home(+m[1]);else home(0);}
+window.addEventListener('hashchange',route);route();
+</script>
+</body></html>
