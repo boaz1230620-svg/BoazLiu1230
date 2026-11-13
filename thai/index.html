@@ -1,0 +1,157 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>泰語學習</title><style>
+body{margin:0;font-family:"PingFang TC","Microsoft JhengHei",sans-serif;background:#FFFDF5;color:#2b2b2b}
+header{background:#FFF6DE;padding:56px 20px 40px;text-align:center;border-bottom:4px solid #E8B84B}
+h1{font-size:44px;margin:0 0 12px}p.lead{font-size:18px;color:#555;max-width:720px;margin:0 auto;line-height:1.7}
+main{max-width:1020px;margin:0 auto;padding:32px 20px 64px}
+a.back{color:#86641A;text-decoration:none}
+h2{font-size:28px;border-left:6px solid #86641A;padding-left:12px}
+h3{font-size:20px;color:#86641A;margin:28px 0 10px}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.tab{border:2px solid #E8B84B;background:#fff;color:#86641A;border-radius:999px;padding:8px 20px;font-size:17px;cursor:pointer;font-family:inherit}
+.tab.on{background:#E8B84B;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.card{background:#fff;border:1px solid #eee;border-top:4px solid #E8B84B;border-radius:14px;padding:18px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .2s,box-shadow .2s}
+.card:hover{box-shadow:0 8px 20px rgba(0,0,0,.14);transform:translateY(-3px)}
+.card .k{font-size:15px;color:#86641A;font-weight:700}.card .t{font-size:18px;margin:6px 0}.card .d{font-size:14px;color:#666;line-height:1.6}
+.box{background:#fff;border:1px solid #eee;border-radius:14px;padding:18px 20px;line-height:1.8}
+.time{display:flex;border-radius:10px;overflow:hidden;font-size:13px;margin:10px 0}
+.time div{padding:8px 6px;text-align:center;color:#5a4410;background:#FFF6DE;border-right:2px solid #fff}
+.time div:nth-child(even){background:#FBE7B0}
+.wrap{overflow-x:auto}.tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid #eee}
+.tbl th{background:#FFF6DE;color:#86641A;text-align:left;padding:10px 12px;font-size:15px;white-space:nowrap}
+.tbl td{padding:10px 12px;border-top:1px solid #f0e9d6;font-size:16px;line-height:1.6;vertical-align:top}
+.th{font-size:21px;color:#1d3b8a;cursor:pointer;font-family:"Tahoma","Leelawadee UI","Sukhumvit Set","Thonburi",sans-serif}.th:hover{text-decoration:underline}
+.th::before{content:"🔊 ";font-size:13px}
+.tone{color:#7a5a12;white-space:nowrap}
+.rom{color:#555;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;font-size:15px}
+.sub{display:block;color:#666;font-size:14px;margin-top:2px;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif}
+.cls{font-size:13px;border-radius:6px;padding:1px 6px;color:#fff}
+.c-m{background:#2e8b57}.c-h{background:#c0392b}.c-l{background:#2c5aa0}.c-x{background:#aaa}
+ul{margin:6px 0;padding-left:22px;line-height:1.8}
+.nav{display:flex;justify-content:space-between;margin-top:32px;gap:10px}
+.btn{border:1px solid #E8B84B;background:#fff;color:#86641A;border-radius:10px;padding:10px 16px;cursor:pointer;font-size:15px;font-family:inherit}
+.btn:disabled{opacity:.35;cursor:default}
+.speed{display:flex;gap:8px;align-items:center;justify-content:flex-end;font-size:14px;color:#86641A;margin:0 0 6px}
+.speed button{border:1px solid #E8B84B;background:#fff;color:#86641A;border-radius:999px;padding:4px 12px;cursor:pointer;font-family:inherit}
+.speed button.on{background:#E8B84B;color:#fff}
+.note{background:#F3F7FF;border-left:4px solid #1d3b8a;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:15px;line-height:1.7}
+.lao{background:#F4FBF3;border-left:4px solid #2e8b57;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:15px;line-height:1.7}
+details.ans{background:#fff;border:1px solid #eee;border-radius:10px;padding:10px 14px;margin:8px 0;line-height:1.8}
+details.ans summary{cursor:pointer;font-weight:600}
+details.ans div{margin-top:6px;color:#2d5a1b;background:#F2F9EE;border-radius:8px;padding:8px 12px}
+.plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:10px 0 24px}
+.plan div{background:#fff;border:1px solid #eee;border-radius:12px;padding:14px;line-height:1.7;font-size:15px}
+.plan b{color:#86641A;font-size:17px}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:8px;display:none;font-size:14px}
+footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
+@media(max-width:600px){h1{font-size:32px}.tbl td,.tbl th{font-size:14px;padding:8px}.th{font-size:19px}.time{font-size:11px}.tone{white-space:normal}}
+</style></head><body>
+<header><h1>泰語學習</h1><p class="lead">入門、初級、中級、進階各 15 堂，共 60 堂，每堂 45 分鐘。每個詞與句子都附羅馬拼音與五個聲調，藍色泰文點一下就能聽發音，並附寮語對照，方便泰寮互通。</p></header>
+<main>
+<p style="margin:0 0 16px"><a class="back" href="../">← 回首頁</a></p>
+<div class="speed">朗讀速度：<button data-r="0.6">慢</button><button data-r="0.8" class="on">中</button><button data-r="1">正常</button></div>
+<div id="app"></div>
+</main>
+<div id="toast"></div>
+<footer>拼音說明：長母音寫兩個字母（aa、ii、uu、ee、ɛɛ、ɔɔ、oo、əə、ʉʉ）；k／c／t／p 為不送氣音（像注音 ㄍ／ㄐ／ㄉ／ㄅ），kh／ch／th／ph 為送氣音（像 ㄎ／ㄑ／ㄊ／ㄆ）；ɛ 像「ㄝ」張大嘴，ɔ 像「喔」張大嘴，ʉ 像不圓唇的「ㄨ」，ə 像「ㄜ」。<br>聲調：a 中平、à 低、â 降、á 高、ǎ 升。<br>朗讀使用裝置內建的泰語語音（th-TH），若沒有聲音，請在手機或電腦的語言設定中安裝泰語語音。</footer>
+<script src="lessons-1.js"></script>
+<script src="lessons-2.js"></script>
+<script src="lessons-3.js"></script>
+<script src="lessons-4.js"></script>
+<script>
+const LESSONS=window.LESSONS||[];
+const PER=15,TOTAL=60;
+const LEVELS=[
+ ["入門","第 1–15 堂：五個聲調、44 個子音三大類、母音長短、尾音、聲調規則、問候、數字、基本句型","可讀泰文字母、能做簡單自我介紹"],
+ ["初級","第 16–30 堂：มี／ไม่、時間日期、時態標記、疑問詞、購物點餐、交通、量詞、比較、能願動詞、看醫生","能應付泰國日常生活"],
+ ["中級","第 31–45 堂：經驗、連接詞、ให้、被動、趨向動詞、語氣助詞、關係子句、名詞化、稱謂、職場、節慶、泰寮對應","能長段對話與閱讀短文"],
+ ["進階","第 46–60 堂：書面語、新聞、巴利梵語借詞、成語、正式書信、演講、聖經泰語、福音與召會生活用語、時事討論","能讀新聞、作見證與公開演講"]];
+const TIME=[["0–5","暖身複習"],["5–17","發音／文法重點"],["17–27","詞彙"],["27–33","例句"],["33–40","對話練習"],["40–45","練習與作業"]];
+const W=[5,12,10,6,7,5];
+const app=document.getElementById('app');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let thVoice=null,rate=0.8;
+function pickVoice(){
+  if(!('speechSynthesis' in window))return;
+  const vs=speechSynthesis.getVoices().filter(v=>v.lang.toLowerCase().replace('_','-').startsWith('th'));
+  thVoice=vs.find(v=>/google|kanya|narisa|premwadee|achara/i.test(v.name))||vs[0]||null;
+}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',2500);}
+function speak(text){
+  if(!('speechSynthesis' in window)){toast('這個瀏覽器不支援語音朗讀');return;}
+  speechSynthesis.cancel();
+  const t=text.replace(/[（(][^)）]*[)）]/g,' ').replace(/[「」『』'○]/g,'').replace(/…/g,' ').replace(/\s*\/\s*/g,' ').replace(/_+/g,' ');
+  const u=new SpeechSynthesisUtterance(t);
+  u.lang='th-TH';u.rate=rate;if(thVoice)u.voice=thVoice;
+  if(!thVoice)toast('找不到泰語語音，請在裝置設定中安裝泰語語音');
+  speechSynthesis.speak(u);
+}
+document.querySelectorAll('.speed button').forEach(b=>b.onclick=()=>{rate=+b.dataset.r;document.querySelectorAll('.speed button').forEach(x=>x.classList.toggle('on',x===b));});
+app.addEventListener('click',e=>{const v=e.target.closest('.th');if(v)speak(v.dataset.say||v.textContent);});
+const th=(t,say)=>`<span class="th" data-say="${esc(say||t)}">${esc(t)}</span>`;
+
+function home(lv){
+  lv=lv||0;
+  let h=`<div class="tabs">${LEVELS.map((l,i)=>`<button class="tab${i==lv?' on':''}" onclick="go('#lv${i}')">${l[0]}</button>`).join('')}</div>`;
+  if(lv==0)h+=planBox();
+  h+=`<h2>${LEVELS[lv][0]}</h2><p style="color:#666">${LEVELS[lv][1]}（目標：${LEVELS[lv][2]}）</p>`;
+  if(lv==0)h+=scriptTables();
+  h+=`<div class="grid">`;
+  for(let i=lv*PER;i<lv*PER+PER;i++){const L=LESSONS[i];if(!L)continue;
+    h+=`<div class="card" onclick="go('#L${i+1}')"><div class="k">第 ${i+1} 堂</div><div class="t">${esc(L.t)}</div><div class="d">${esc(L.g)}</div></div>`;}
+  h+=`</div>`;
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function planBox(){
+  return `<h2>學習計畫總覽</h2><div class="plan">${LEVELS.map((l,i)=>`<div><b>${l[0]}</b>（第 ${i*PER+1}–${i*PER+PER} 堂）<br>${esc(l[1].split('：')[1])}<br><span style="color:#86641A">→ ${l[2]}</span></div>`).join('')}</div>
+  <div class="box" style="margin-bottom:24px"><b>每堂 45 分鐘的流程：</b>暖身複習 5 分 → 發音／文法重點 12 分 → 詞彙 10 分 → 例句 6 分 → 對話 7 分 → 練習與作業 5 分。<br><b>建議進度：</b>每週 2 堂，約 30 週完成；每 15 堂結束後做一次總複習。<br><b>泰寮互通：</b>綠色「寮語對照」框整理泰文與寮文的對應規則，學泰文的同時就在替寮語打底。</div>`;
+}
+// 44 子音：[字母, 代表字, 類別 m中/h高/l低/x廢, 首音, 尾音]
+const CONS=[["ก","ไก่","m","k","k"],["ข","ไข่","h","kh","k"],["ฃ","ขวด","x","kh","—"],["ค","ควาย","l","kh","k"],["ฅ","คน","x","kh","—"],["ฆ","ระฆัง","l","kh","k"],["ง","งู","l","ng","ng"],
+["จ","จาน","m","c","t"],["ฉ","ฉิ่ง","h","ch","—"],["ช","ช้าง","l","ch","t"],["ซ","โซ่","l","s","t"],["ฌ","เฌอ","l","ch","—"],["ญ","หญิง","l","y","n"],
+["ฎ","ชฎา","m","d","t"],["ฏ","ปฏัก","m","t","t"],["ฐ","ฐาน","h","th","t"],["ฑ","มณโฑ","l","th","t"],["ฒ","ผู้เฒ่า","l","th","t"],["ณ","เณร","l","n","n"],
+["ด","เด็ก","m","d","t"],["ต","เต่า","m","t","t"],["ถ","ถุง","h","th","t"],["ท","ทหาร","l","th","t"],["ธ","ธง","l","th","t"],["น","หนู","l","n","n"],
+["บ","ใบไม้","m","b","p"],["ป","ปลา","m","p","p"],["ผ","ผึ้ง","h","ph","—"],["ฝ","ฝา","h","f","—"],["พ","พาน","l","ph","p"],["ฟ","ฟัน","l","f","p"],["ภ","สำเภา","l","ph","p"],["ม","ม้า","l","m","m"],
+["ย","ยักษ์","l","y","i"],["ร","เรือ","l","r","n"],["ล","ลิง","l","l","n"],["ว","แหวน","l","w","o"],["ศ","ศาลา","h","s","t"],["ษ","ฤๅษี","h","s","t"],["ส","เสือ","h","s","t"],
+["ห","หีบ","h","h","—"],["ฬ","จุฬา","l","l","n"],["อ","อ่าง","m","ʔ（不發音）","—"],["ฮ","นกฮูก","l","h","—"]];
+const CLS={m:["中","c-m"],h:["高","c-h"],l:["低","c-l"],x:["廢","c-x"]};
+const VOW=[["อะ","a"],["อา","aa"],["อิ","i"],["อี","ii"],["อึ","ʉ"],["อือ","ʉʉ"],["อุ","u"],["อู","uu"],["เอะ","e"],["เอ","ee"],["แอะ","ɛ"],["แอ","ɛɛ"],["โอะ","o"],["โอ","oo"],["เอาะ","ɔ"],["ออ","ɔɔ"],["เออะ","ə"],["เออ","əə"],["เอียะ","ia（短）"],["เอีย","ia"],["เอือะ","ʉa（短）"],["เอือ","ʉa"],["อัวะ","ua（短）"],["อัว","ua"],["อำ","am"],["ใอ","ai"],["ไอ","ai"],["เอา","ao"]];
+function scriptTables(){
+  const nameSay=c=>(c[0]=='อ'?'ออ':c[0]+'อ')+' '+c[1];
+  let h=`<h3>泰文 44 個子音（點一下聽字母名稱）　<span class="cls c-m">中</span> 中音字 <span class="cls c-h">高</span> 高音字 <span class="cls c-l">低</span> 低音字 <span class="cls c-x">廢</span> 已不使用</h3><div class="wrap"><table class="tbl"><tbody>`;
+  chunk(CONS,6).forEach(r=>{h+=`<tr>${r.map(c=>`<td style="text-align:center"><div style="font-size:28px;font-family:Tahoma,'Leelawadee UI',sans-serif">${c[0]}</div>${th(c[1],nameSay(c))}<span class="sub"><span class="cls ${CLS[c[2]][1]}">${CLS[c[2]][0]}</span> 首 ${c[3]}／尾 ${c[4]}</span></td>`).join('')}</tr>`;});
+  h+=`</tbody></table></div><h3>主要母音（อ 為佔位字母；左短右長）</h3><div class="wrap"><table class="tbl"><tbody>`;
+  chunk(VOW,8).forEach(r=>{h+=`<tr>${r.map(v=>`<td style="text-align:center">${th(v[0])}<span class="sub">${v[1]}</span></td>`).join('')}</tr>`;});
+  h+=`</tbody></table></div><h3>聲調規則總表</h3><div class="wrap"><table class="tbl"><thead><tr><th>子音類別</th><th>活音節（無聲調號）</th><th>死音節</th><th>◌่ ไม้เอก</th><th>◌้ ไม้โท</th><th>◌๊ ไม้ตรี</th><th>◌๋ ไม้จัตวา</th></tr></thead><tbody>
+  <tr><td><span class="cls c-m">中</span></td><td>中 ${th('กา')}</td><td>低 ${th('กะ')}</td><td>低 ${th('ก่า')}</td><td>降 ${th('ก้า')}</td><td>高 ${th('ก๊า')}</td><td>升 ${th('ก๋า')}</td></tr>
+  <tr><td><span class="cls c-h">高</span></td><td>升 ${th('ขา')}</td><td>低 ${th('ขะ')}</td><td>低 ${th('ข่า')}</td><td>降 ${th('ข้า')}</td><td>—</td><td>—</td></tr>
+  <tr><td><span class="cls c-l">低</span></td><td>中 ${th('คา')}</td><td>短母音→高 ${th('คะ')}<br>長母音→降 ${th('คาด')}</td><td>降 ${th('ค่า')}</td><td>高 ${th('ค้า')}</td><td>—</td><td>—</td></tr>
+  </tbody></table></div><p style="color:#666;font-size:14px">活音節：長母音結尾，或以 m／n／ng／i／o 結尾。死音節：短母音結尾，或以 k／t／p 結尾。</p><br>`;
+  return h;
+}
+function chunk(a,n){const r=[];for(let i=0;i<a.length;i+=n)r.push(a.slice(i,i+n));return r;}
+function lesson(n){
+  const L=LESSONS[n-1];if(!L)return home(0);const lv=Math.floor((n-1)/PER);
+  let h=`<p><a class="back" href="#lv${lv}">← ${LEVELS[lv][0]}課程列表</a></p>`;
+  h+=`<h2>第 ${n} 堂　${esc(L.t)}</h2><div class="box"><b>學習目標：</b>${esc(L.g)}<br><b>時間：</b>45 分鐘　<b>程度：</b>${LEVELS[lv][0]}</div>`;
+  h+=`<h3>時間分配</h3><div class="time">${TIME.map((t,i)=>`<div style="flex:${W[i]}">${t[0]} 分<br>${t[1]}</div>`).join('')}</div>`;
+  h+=`<h3>一、暖身複習（5 分鐘）</h3><div class="box">${n==1?'先聽老師用泰語打招呼「สวัสดีครับ／ค่ะ」，猜猜看是什麼意思；再介紹本課程：入門到進階共 60 堂、每堂 45 分鐘。':'複習第 '+(n-1)+' 堂的詞彙與句型，抽 3 人用上一堂的句型口頭造句，並檢查回家作業。'}${L.c?`<div class="note"><b>文化小知識：</b>${esc(L.c)}</div>`:''}</div>`;
+  h+=`<h3>二、發音／文法重點（12 分鐘）</h3><div class="box"><ul>${L.f.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>${L.l?`<div class="lao"><b>寮語對照：</b>${esc(L.l)}</div>`:''}</div>`;
+  if(L.gt)h+=`<div class="wrap" style="margin-top:12px"><table class="tbl"><thead><tr>${L.gt.h.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${L.gt.r.map(r=>`<tr>${r.map(x=>`<td>${esc(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>三、詞彙（10 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>泰文</th><th>中文意思</th><th>羅馬拼音</th><th>聲調</th></tr></thead><tbody>${L.v.map(r=>`<tr><td>${th(r[0])}</td><td>${esc(r[1])}</td><td class="rom">${esc(r[2])}</td><td class="tone">${esc(r[3]||'')}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>泰文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${th(r[0])}<span class="sub">${esc(r[2]||'')}</span></td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>泰文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${th(r[1])}<span class="sub">${esc(r[3]||'')}</span></td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
+  h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂活動</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
+  if(L.x)h+=`<b>練習題（點開看答案與解析）</b>${L.x.map((q,i)=>`<details class="ans"><summary>${i+1}. ${esc(q[0])}</summary><div>${esc(q[1])}</div></details>`).join('')}`;
+  h+=`<b>回家作業：</b>${esc(L.h)}</div>`;
+  h+=`<div class="nav"><button class="btn" ${n==1?'disabled':''} onclick="go('#L${n-1}')">← 上一堂</button><button class="btn" ${n==TOTAL?'disabled':''} onclick="go('#L${n+1}')">下一堂 →</button></div>`;
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function go(h){location.hash=h;}
+function route(){const h=location.hash;let m;
+  if((m=h.match(/^#L(\d+)$/)))lesson(+m[1]);else if((m=h.match(/^#lv(\d)$/)))home(+m[1]);else home(0);}
+window.addEventListener('hashchange',route);route();
+</script>
+</body></html>
