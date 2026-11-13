@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>韓語學習</title><style>
+body{margin:0;font-family:"PingFang TC","Microsoft JhengHei",sans-serif;background:#FFFDF5;color:#2b2b2b}
+header{background:#FFF6DE;padding:56px 20px 40px;text-align:center;border-bottom:4px solid #E8B84B}
+h1{font-size:44px;margin:0 0 12px}p.lead{font-size:18px;color:#555;max-width:720px;margin:0 auto;line-height:1.7}
+main{max-width:1020px;margin:0 auto;padding:32px 20px 64px}
+a.back{color:#86641A;text-decoration:none}
+h2{font-size:28px;border-left:6px solid #86641A;padding-left:12px}
+h3{font-size:20px;color:#86641A;margin:28px 0 10px}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.tab{border:2px solid #E8B84B;background:#fff;color:#86641A;border-radius:999px;padding:8px 20px;font-size:17px;cursor:pointer;font-family:inherit}
+.tab.on{background:#E8B84B;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.card{background:#fff;border:1px solid #eee;border-top:4px solid #E8B84B;border-radius:14px;padding:18px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .2s,box-shadow .2s}
+.card:hover{box-shadow:0 8px 20px rgba(0,0,0,.14);transform:translateY(-3px)}
+.card .k{font-size:15px;color:#86641A;font-weight:700}.card .t{font-size:18px;margin:6px 0}.card .d{font-size:14px;color:#666;line-height:1.6}
+.box{background:#fff;border:1px solid #eee;border-radius:14px;padding:18px 20px;line-height:1.8}
+.time{display:flex;border-radius:10px;overflow:hidden;font-size:13px;margin:10px 0}
+.time div{padding:8px 6px;text-align:center;color:#5a4410;background:#FFF6DE;border-right:2px solid #fff}
+.time div:nth-child(even){background:#FBE7B0}
+.wrap{overflow-x:auto}.tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid #eee}
+.tbl th{background:#FFF6DE;color:#86641A;text-align:left;padding:10px 12px;font-size:15px;white-space:nowrap}
+.tbl td{padding:10px 12px;border-top:1px solid #f0e9d6;font-size:16px;line-height:1.6;vertical-align:top}
+.ko{font-size:19px;color:#1d3b8a;cursor:pointer}.ko:hover{text-decoration:underline}
+.ko::before{content:"🔊 ";font-size:13px}
+.pr{color:#7a5a12;white-space:nowrap}
+.rom{color:#555;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;font-size:15px}
+.sub{display:block;color:#666;font-size:14px;margin-top:2px;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif}
+ul{margin:6px 0;padding-left:22px;line-height:1.8}
+.nav{display:flex;justify-content:space-between;margin-top:32px;gap:10px}
+.btn{border:1px solid #E8B84B;background:#fff;color:#86641A;border-radius:10px;padding:10px 16px;cursor:pointer;font-size:15px;font-family:inherit}
+.btn:disabled{opacity:.35;cursor:default}
+.speed{display:flex;gap:8px;align-items:center;justify-content:flex-end;font-size:14px;color:#86641A;margin:0 0 6px}
+.speed button{border:1px solid #E8B84B;background:#fff;color:#86641A;border-radius:999px;padding:4px 12px;cursor:pointer;font-family:inherit}
+.speed button.on{background:#E8B84B;color:#fff}
+.note{background:#F3F7FF;border-left:4px solid #1d3b8a;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:15px;line-height:1.7}
+details.ans{background:#fff;border:1px solid #eee;border-radius:10px;padding:10px 14px;margin:8px 0;line-height:1.8}
+details.ans summary{cursor:pointer;font-weight:600}
+details.ans div{margin-top:6px;color:#2d5a1b;background:#F2F9EE;border-radius:8px;padding:8px 12px}
+.plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:10px 0 24px}
+.plan div{background:#fff;border:1px solid #eee;border-radius:12px;padding:14px;line-height:1.7;font-size:15px}
+.plan b{color:#86641A;font-size:17px}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:8px;display:none;font-size:14px}
+footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
+@media(max-width:600px){h1{font-size:32px}.tbl td,.tbl th{font-size:14px;padding:8px}.ko{font-size:17px}.time{font-size:11px}.pr{white-space:normal}}
+</style></head><body>
+<header><h1>韓語學習</h1><p class="lead">入門、初級、中級、進階各 15 堂，共 60 堂，每堂 45 分鐘，目標 TOPIK II。每個詞與句子都附實際發音與羅馬拼音，藍色韓文點一下就能聽發音。</p></header>
+<main>
+<p style="margin:0 0 16px"><a class="back" href="../">← 回首頁</a></p>
+<div class="speed">朗讀速度：<button data-r="0.6">慢</button><button data-r="0.8" class="on">中</button><button data-r="1">正常</button></div>
+<div id="app"></div>
+</main>
+<div id="toast"></div>
+<footer>「實際發音」欄的［ ］表示照音變規則實際唸出的韓文；空白表示照拼寫唸。羅馬拼音依實際發音標示（含緊音化，如 학교 → hak-kkyo），與官方拼寫法可能不同。<br>朗讀使用裝置內建的韓語語音（ko-KR），若沒有聲音，請在手機或電腦的語言設定中安裝韓語語音。</footer>
+<script src="lessons-1.js"></script>
+<script src="lessons-2.js"></script>
+<script src="lessons-3.js"></script>
+<script src="lessons-4.js"></script>
+<script>
+const LESSONS=window.LESSONS||[];
+const PER=15,TOTAL=60;
+const LEVELS=[
+ ["入門","第 1–15 堂：韓文字母、收尾音、六大音變規則、問候、自我介紹、數字、있다、現在式","約 TOPIK I 1 級"],
+ ["初級","第 16–30 堂：母音縮約、格式體、過去／未來、否定、敬語、原因、六種不規則、冠形詞形","約 TOPIK I 2 級"],
+ ["中級","第 31–45 堂：半語、經驗、推測、條件、引用、被動與使動、名詞化、TOPIK 讀解與聽力策略","約 TOPIK II 3–4 級"],
+ ["進階","第 46–60 堂：書面語、TOPIK 寫作 51–54、高級文法、漢字詞、慣用語、新聞、召會生活韓語、正式演講","約 TOPIK II 5–6 級"]];
+const TIME=[["0–5","暖身複習"],["5–17","發音／文法重點"],["17–27","詞彙"],["27–33","例句"],["33–40","對話練習"],["40–45","練習與作業"]];
+const W=[5,12,10,6,7,5];
+const app=document.getElementById('app');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let koVoice=null,rate=0.8;
+function pickVoice(){
+  if(!('speechSynthesis' in window))return;
+  const vs=speechSynthesis.getVoices().filter(v=>v.lang.toLowerCase().replace('_','-').startsWith('ko'));
+  koVoice=vs.find(v=>/google|yuna|sora|heami|sunhi/i.test(v.name))||vs[0]||null;
+}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',2500);}
+function speak(text){
+  if(!('speechSynthesis' in window)){toast('這個瀏覽器不支援語音朗讀');return;}
+  speechSynthesis.cancel();
+  const t=text.replace(/[（(][^)）]*[)）]/g,' ').replace(/[「」『』'○㉠㉡]/g,'').replace(/…/g,', ').replace(/\s*\/\s*/g,', ');
+  const u=new SpeechSynthesisUtterance(t);
+  u.lang='ko-KR';u.rate=rate;if(koVoice)u.voice=koVoice;
+  if(!koVoice)toast('找不到韓語語音，請在裝置設定中安裝韓語語音');
+  speechSynthesis.speak(u);
+}
+document.querySelectorAll('.speed button').forEach(b=>b.onclick=()=>{rate=+b.dataset.r;document.querySelectorAll('.speed button').forEach(x=>x.classList.toggle('on',x===b));});
+app.addEventListener('click',e=>{const v=e.target.closest('.ko');if(v)speak(v.dataset.say||v.textContent);});
+const ko=(t,say)=>`<span class="ko" data-say="${esc(say||t)}">${esc(t)}</span>`;
+
+function home(lv){
+  lv=lv||0;
+  let h=`<div class="tabs">${LEVELS.map((l,i)=>`<button class="tab${i==lv?' on':''}" onclick="go('#lv${i}')">${l[0]}</button>`).join('')}</div>`;
+  if(lv==0)h+=planBox();
+  h+=`<h2>${LEVELS[lv][0]}</h2><p style="color:#666">${LEVELS[lv][1]}（${LEVELS[lv][2]}）</p>`;
+  if(lv==0)h+=hangulTable();
+  h+=`<div class="grid">`;
+  for(let i=lv*PER;i<lv*PER+PER;i++){const L=LESSONS[i];if(!L)continue;
+    h+=`<div class="card" onclick="go('#L${i+1}')"><div class="k">第 ${i+1} 堂</div><div class="t">${esc(L.t)}</div><div class="d">${esc(L.g)}</div></div>`;}
+  h+=`</div>`;
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function planBox(){
+  return `<h2>學習計畫總覽</h2><div class="plan">${LEVELS.map((l,i)=>`<div><b>${l[0]}</b>（第 ${i*PER+1}–${i*PER+PER} 堂）<br>${esc(l[1].split('：')[1])}<br><span style="color:#86641A">→ ${l[2]}</span></div>`).join('')}</div>
+  <div class="box" style="margin-bottom:24px"><b>每堂 45 分鐘的流程：</b>暖身複習 5 分 → 發音／文法重點 12 分 → 詞彙 10 分 → 例句 6 分 → 對話 7 分 → 練習與作業 5 分。<br><b>建議進度：</b>每週 2 堂，約 30 週完成；每 15 堂結束後做一次總複習。</div>`;
+}
+function hangulTable(){
+  const C=[["ㄱ","가","g／k"],["ㄴ","나","n"],["ㄷ","다","d／t"],["ㄹ","라","r／l"],["ㅁ","마","m"],["ㅂ","바","b／p"],["ㅅ","사","s"],["ㅇ","아","不發音／ng"],["ㅈ","자","j"],["ㅎ","하","h"],["ㅋ","카","k（送氣）"],["ㅌ","타","t（送氣）"],["ㅍ","파","p（送氣）"],["ㅊ","차","ch（送氣）"],["ㄲ","까","kk（緊音）"],["ㄸ","따","tt（緊音）"],["ㅃ","빠","pp（緊音）"],["ㅆ","싸","ss（緊音）"],["ㅉ","짜","jj（緊音）"]];
+  const V=[["ㅏ","아","a"],["ㅑ","야","ya"],["ㅓ","어","eo"],["ㅕ","여","yeo"],["ㅗ","오","o"],["ㅛ","요","yo"],["ㅜ","우","u"],["ㅠ","유","yu"],["ㅡ","으","eu"],["ㅣ","이","i"],["ㅐ","애","ae"],["ㅒ","얘","yae"],["ㅔ","에","e"],["ㅖ","예","ye"],["ㅘ","와","wa"],["ㅙ","왜","wae"],["ㅚ","외","oe"],["ㅝ","워","wo"],["ㅞ","웨","we"],["ㅟ","위","wi"],["ㅢ","의","ui"]];
+  const tb=(title,arr)=>`<h3>${title}</h3><div class="wrap"><table class="tbl"><tbody>${chunk(arr,7).map(r=>`<tr>${r.map(x=>`<td style="text-align:center"><div style="font-size:24px">${x[0]}</div>${ko(x[1])}<span class="sub">${x[2]}</span></td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  return tb('韓文子音 19 個（點一下聽發音）',C)+tb('韓文母音 21 個',V)+'<br>';
+}
+function chunk(a,n){const r=[];for(let i=0;i<a.length;i+=n)r.push(a.slice(i,i+n));return r;}
+function lesson(n){
+  const L=LESSONS[n-1];if(!L)return home(0);const lv=Math.floor((n-1)/PER);
+  let h=`<p><a class="back" href="#lv${lv}">← ${LEVELS[lv][0]}課程列表</a></p>`;
+  h+=`<h2>第 ${n} 堂　${esc(L.t)}</h2><div class="box"><b>學習目標：</b>${esc(L.g)}<br><b>時間：</b>45 分鐘　<b>程度：</b>${LEVELS[lv][0]}（${LEVELS[lv][2]}）</div>`;
+  h+=`<h3>時間分配</h3><div class="time">${TIME.map((t,i)=>`<div style="flex:${W[i]}">${t[0]} 分<br>${t[1]}</div>`).join('')}</div>`;
+  h+=`<h3>一、暖身複習（5 分鐘）</h3><div class="box">${n==1?'先聽老師用韓語打招呼「안녕하세요」，猜猜看是什麼意思；再介紹本課程：入門到進階共 60 堂、每堂 45 分鐘，目標 TOPIK II。':'複習第 '+(n-1)+' 堂的詞彙與句型，抽 3 人用上一堂的句型口頭造句，並檢查回家作業。'}${L.c?`<div class="note"><b>文化小知識：</b>${esc(L.c)}</div>`:''}</div>`;
+  h+=`<h3>二、發音／文法重點（12 分鐘）</h3><div class="box"><ul>${L.f.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
+  if(L.gt)h+=`<div class="wrap" style="margin-top:12px"><table class="tbl"><thead><tr>${L.gt.h.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${L.gt.r.map(r=>`<tr>${r.map(x=>`<td>${esc(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>三、詞彙（10 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>韓文</th><th>中文意思</th><th>實際發音</th><th>羅馬拼音</th></tr></thead><tbody>${L.v.map(r=>`<tr><td>${ko(r[0])}</td><td>${esc(r[1])}</td><td class="pr">${r[2]?esc(r[2]):'<span style="color:#bbb">同拼寫</span>'}</td><td class="rom">${esc(r[3])}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>韓文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${ko(r[0])}<span class="sub">${esc(r[2]||'')}</span></td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>韓文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${ko(r[1])}<span class="sub">${esc(r[3]||'')}</span></td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
+  h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂活動</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
+  if(L.x)h+=`<b>練習題（點開看答案與解析）</b>${L.x.map((q,i)=>`<details class="ans"><summary>${i+1}. ${esc(q[0])}</summary><div>${esc(q[1])}</div></details>`).join('')}`;
+  h+=`<b>回家作業：</b>${esc(L.h)}</div>`;
+  h+=`<div class="nav"><button class="btn" ${n==1?'disabled':''} onclick="go('#L${n-1}')">← 上一堂</button><button class="btn" ${n==TOTAL?'disabled':''} onclick="go('#L${n+1}')">下一堂 →</button></div>`;
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function go(h){location.hash=h;}
+function route(){const h=location.hash;let m;
+  if((m=h.match(/^#L(\d+)$/)))lesson(+m[1]);else if((m=h.match(/^#lv(\d)$/)))home(+m[1]);else home(0);}
+window.addEventListener('hashchange',route);route();
+</script>
+</body></html>
