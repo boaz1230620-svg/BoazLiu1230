@@ -72,6 +72,9 @@ details.ans div{margin-top:6px;color:#2d5a1b;background:#F2F9EE;border-radius:8p
 .sylls span{border:1px solid #E8B84B;border-radius:8px;padding:4px 10px;font-size:22px;cursor:pointer;color:#86641A;background:#fff}
 .sylls span.on{background:#E8B84B;color:#fff}
 @media(max-width:820px){.wgrid{grid-template-columns:1fr}.flash{height:260px}.fk{font-size:42px}.fk.fs{font-size:22px}}
+.secnav{background:#fff;border:1px solid #eee;border-radius:12px;padding:12px 14px;margin-bottom:10px;line-height:2}.secnav b{color:#86641A;font-size:15px}
+.phr.pray{border-left-color:#8e6bbf}
+.chip.pray{border-color:#8e6bbf;color:#6b46a3}
 .tab.church{border-color:#1d3b8a;color:#1d3b8a}.tab.church.on{background:#1d3b8a;color:#fff}
 .plist{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
 .phr{position:relative;background:#fff;border:1px solid #eee;border-left:5px solid #1d3b8a;border-radius:12px;padding:14px 16px 12px;line-height:1.6}
@@ -98,6 +101,7 @@ footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 <script src="lessons-3.js"></script>
 <script src="lessons-4.js"></script>
 <script src="church.js"></script>
+<script src="church-prayer.js"></script>
 <script src="hangul-strokes.js"></script>
 <script src="cards.js"></script>
 <script>
@@ -149,13 +153,16 @@ function home(lv){
 function tabs(cur){return `<div class="tabs">${LEVELS.map((l,i)=>`<button class="tab${i===cur?' on':''}" onclick="go('#lv${i}')">${l[0]}</button>`).join('')}<button class="tab church${cur==='ch'?' on':''}" onclick="go('#church')">⛪ 召會生活</button></div>`;}
 function churchView(){
   const C=window.CHURCH||[];const total=C.reduce((a,g)=>a+g.items.length,0);
-  let h=tabs('ch')+`<h2>召會生活韓語</h2><p style="color:#666">整理自《韓文屬靈用語＿日常用語》，共 ${C.length} 類 ${total} 句：認識、問安、日常對話、訪問家庭、用餐、購物、屬靈對話、問路。每句附實際發音、羅馬拼音與重點單字；綠色「用法提醒」是較自然的說法或拼寫修正。</p>`;
+  const nT=C.filter(g=>g.sec!=='pray').reduce((a,g)=>a+g.items.length,0),nP=total-nT;
+  let h=tabs('ch')+`<h2>召會生活韓語</h2><p style="color:#666">分兩部分：<b>日常用語</b>（${nT} 句，整理自《韓文屬靈用語＿日常用語》）與 <b>🙏 禱告詞</b>（${nP} 句，整理自手寫禱告詞）。每句附實際發音、羅馬拼音與重點單字；綠色「用法提醒」是較自然的說法或拼寫修正。</p>`;
   h+=`<div class="tools"><button class="tool" onclick="go('#csch')"><span>💬</span><div>整句卡<small>${deckSize('ch','s')} 張・翻面記憶</small></div></button><button class="tool" onclick="go('#cwch')"><span>🗂️</span><div>重點單字卡<small>${deckSize('ch','w')} 張</small></div></button><button class="tool" onclick="go('#wrch')"><span>✍️</span><div>手寫練習<small>筆順示範・描紅書寫</small></div></button></div>`;
-  h+=`<div class="chips" style="max-height:none;margin-bottom:10px">${C.map((g,i)=>`<button class="chip" onclick="document.getElementById('cg${i}').scrollIntoView({behavior:'smooth'})">${esc(g.t)}</button>`).join('')}</div>`;
+  const nav=sec=>C.map((g,i)=>((g.sec==='pray')===(sec==='pray'))?`<button class="chip${sec==='pray'?' pray':''}" onclick="document.getElementById('cg${i}').scrollIntoView({behavior:'smooth'})">${esc(g.t.replace(/^禱告/,'').replace(/（.*）$/,''))}</button>`:'').join('');
+  h+=`<div class="secnav"><b>日常用語</b><div class="chips" style="max-height:none">${nav('talk')}</div><b>🙏 禱告詞</b><div class="chips" style="max-height:none">${nav('pray')}</div></div>`;
   C.forEach((g,gi)=>{
+    if(g.sec==='pray'&&(gi===0||C[gi-1].sec!=='pray'))h+=`<h2 id="praytop" style="margin-top:40px">🙏 韓語禱告詞</h2><p style="color:#666">禱告常用語尾：<b>-소서／-(으)소서</b>（求你…，最常用的禱告語尾）、<b>-아/어 주소서</b>（求你為我…）、<b>-게 하소서</b>（使…）、<b>-ㅂ니다</b>（我…，表達心意）。禱告中對主稱「당신」是可以的，但對人不要用。</p>`;
     h+=`<h3 id="cg${gi}" style="scroll-margin-top:10px">${esc(g.t)}　<a class="back" style="font-size:14px" href="#csch-${gi+1}">💬 這一類的整句卡</a></h3><div class="plist">`;
     g.items.forEach(it=>{
-      h+=`<div class="phr"><div class="pz">${esc(it.zh)}</div><div>${ko(it.ko)}</div>
+      h+=`<div class="phr${g.sec==='pray'?' pray':''}"><div class="pz">${esc(it.zh)}</div><div>${ko(it.ko)}</div>
       <div class="pp">${it.pr?`<span class="pr">${esc(it.pr)}</span>　`:''}<span class="rom">${esc(it.rom)}</span></div>
       <div class="pw">${it.w.map(w=>`<span>${ko(w[0])}<em>${esc(w[1])}</em></span>`).join('')}</div>
       ${it.n?`<div class="pn">💡 ${esc(it.n)}</div>`:''}
