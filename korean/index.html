@@ -40,11 +40,43 @@ details.ans div{margin-top:6px;color:#2d5a1b;background:#F2F9EE;border-radius:8p
 .plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:10px 0 24px}
 .plan div{background:#fff;border:1px solid #eee;border-radius:12px;padding:14px;line-height:1.7;font-size:15px}
 .plan b{color:#86641A;font-size:17px}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 22px}
+.tool{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #eee;border-left:5px solid #1d3b8a;border-radius:12px;padding:12px 16px;cursor:pointer;font-size:16px;box-shadow:0 2px 8px rgba(0,0,0,.05);font-family:inherit;color:inherit}
+.tool:hover{box-shadow:0 6px 16px rgba(0,0,0,.12)}.tool span{font-size:24px}.tool small{color:#888;display:block;font-size:13px}
+.cardbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 16px}
+.cardbar select,.wq{border:1px solid #E8B84B;border-radius:999px;padding:6px 12px;font-size:15px;font-family:inherit;background:#fff}
+.wq{border-radius:10px;width:100%;box-sizing:border-box;margin-bottom:8px}
+.chip{border:1px solid #E8B84B;background:#fff;color:#86641A;border-radius:999px;padding:6px 14px;cursor:pointer;font-family:inherit;font-size:15px}
+.chip.on{background:#1d3b8a;border-color:#1d3b8a;color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:6px;max-height:320px;overflow:auto;padding:2px}
+.chips .chip{font-size:17px;color:#1d3b8a}
+.prog{display:flex;justify-content:space-between;color:#86641A;font-size:14px;margin-bottom:6px}
+.bar{height:6px;background:#f3e6c4;border-radius:3px;overflow:hidden;margin-bottom:14px}.bar i{display:block;height:100%;background:#4c9a2a}
+.flash{perspective:1200px;height:300px;cursor:pointer;max-width:620px;margin:0 auto;user-select:none}
+.flash .inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flash.flipped .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#fff;border:1px solid #eee;border-top:6px solid #E8B84B;border-radius:18px;box-shadow:0 6px 20px rgba(0,0,0,.08);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;text-align:center}
+.face.back{transform:rotateY(180deg);border-top-color:#1d3b8a}
+.fk{font-size:52px;color:#1d3b8a;font-family:"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;line-height:1.3}.fk.fs{font-size:28px}
+.fz{font-size:30px;color:#2b2b2b;line-height:1.4}.fd{color:#7a5a12;font-size:17px;margin-top:4px}.fd.rom{color:#555;font-family:"Segoe UI",Arial,sans-serif}
+.tap{position:absolute;bottom:12px;color:#bbb;font-size:13px}
+.badge{position:absolute;top:12px;right:14px;background:#EAF5E3;color:#3d7a22;border-radius:999px;padding:2px 10px;font-size:13px}
+.fbtns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.btn.yes{background:#EAF5E3;border-color:#4c9a2a;color:#3d7a22}.btn.no{background:#FDEDEC;border-color:#d9534f;color:#b03a2e}
+.hint{color:#888;font-size:14px;text-align:center;margin-top:18px;line-height:1.7}
+.wgrid{display:grid;grid-template-columns:400px 1fr;gap:24px;align-items:start}
+.winfo{min-height:52px;margin-bottom:8px}
+.pad{position:relative;margin:0 auto;touch-action:none;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.pad canvas{position:absolute;left:0;top:0}#ci{touch-action:none;cursor:crosshair}
+.sylls{display:flex;gap:6px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+.sylls span{border:1px solid #E8B84B;border-radius:8px;padding:4px 10px;font-size:22px;cursor:pointer;color:#86641A;background:#fff}
+.sylls span.on{background:#E8B84B;color:#fff}
+@media(max-width:820px){.wgrid{grid-template-columns:1fr}.flash{height:260px}.fk{font-size:42px}.fk.fs{font-size:22px}}
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:8px;display:none;font-size:14px}
 footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 @media(max-width:600px){h1{font-size:32px}.tbl td,.tbl th{font-size:14px;padding:8px}.ko{font-size:17px}.time{font-size:11px}.pr{white-space:normal}}
 </style></head><body>
-<header><h1>韓語學習</h1><p class="lead">入門、初級、中級、進階各 15 堂，共 60 堂，每堂 45 分鐘，目標 TOPIK II。每個詞與句子都附實際發音與羅馬拼音，藍色韓文點一下就能聽發音。</p></header>
+<header><h1>韓語學習</h1><p class="lead">入門、初級、中級、進階各 15 堂，共 60 堂，每堂 45 分鐘，目標 TOPIK II。每個詞與句子都附實際發音與羅馬拼音，藍色韓文點一下就能聽發音；每級附單字卡、句子卡與手寫筆順練習。</p></header>
 <main>
 <p style="margin:0 0 16px"><a class="back" href="../">← 回首頁</a></p>
 <div class="speed">朗讀速度：<button data-r="0.6">慢</button><button data-r="0.8" class="on">中</button><button data-r="1">正常</button></div>
@@ -56,6 +88,8 @@ footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 <script src="lessons-2.js"></script>
 <script src="lessons-3.js"></script>
 <script src="lessons-4.js"></script>
+<script src="hangul-strokes.js"></script>
+<script src="cards.js"></script>
 <script>
 const LESSONS=window.LESSONS||[];
 const PER=15,TOTAL=60;
@@ -94,6 +128,7 @@ function home(lv){
   let h=`<div class="tabs">${LEVELS.map((l,i)=>`<button class="tab${i==lv?' on':''}" onclick="go('#lv${i}')">${l[0]}</button>`).join('')}</div>`;
   if(lv==0)h+=planBox();
   h+=`<h2>${LEVELS[lv][0]}</h2><p style="color:#666">${LEVELS[lv][1]}（${LEVELS[lv][2]}）</p>`;
+  h+=`<div class="tools"><button class="tool" onclick="go('#cw${lv}')"><span>🗂️</span><div>單字卡<small>${deckSize(lv,'w')} 張・翻面記憶</small></div></button><button class="tool" onclick="go('#cs${lv}')"><span>💬</span><div>句子卡<small>${deckSize(lv,'s')} 張・例句記憶</small></div></button><button class="tool" onclick="go('#wr${lv}')"><span>✍️</span><div>手寫練習<small>筆順示範・描紅書寫</small></div></button></div>`;
   if(lv==0)h+=hangulTable();
   h+=`<div class="grid">`;
   for(let i=lv*PER;i<lv*PER+PER;i++){const L=LESSONS[i];if(!L)continue;
@@ -120,7 +155,7 @@ function lesson(n){
   h+=`<h3>一、暖身複習（5 分鐘）</h3><div class="box">${n==1?'先聽老師用韓語打招呼「안녕하세요」，猜猜看是什麼意思；再介紹本課程：入門到進階共 60 堂、每堂 45 分鐘，目標 TOPIK II。':'複習第 '+(n-1)+' 堂的詞彙與句型，抽 3 人用上一堂的句型口頭造句，並檢查回家作業。'}${L.c?`<div class="note"><b>文化小知識：</b>${esc(L.c)}</div>`:''}</div>`;
   h+=`<h3>二、發音／文法重點（12 分鐘）</h3><div class="box"><ul>${L.f.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
   if(L.gt)h+=`<div class="wrap" style="margin-top:12px"><table class="tbl"><thead><tr>${L.gt.h.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${L.gt.r.map(r=>`<tr>${r.map(x=>`<td>${esc(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>三、詞彙（10 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>韓文</th><th>中文意思</th><th>實際發音</th><th>羅馬拼音</th></tr></thead><tbody>${L.v.map(r=>`<tr><td>${ko(r[0])}</td><td>${esc(r[1])}</td><td class="pr">${r[2]?esc(r[2]):'<span style="color:#bbb">同拼寫</span>'}</td><td class="rom">${esc(r[3])}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>三、詞彙（10 分鐘）　<a class="back" style="font-size:15px" href="#cw${lv}-${n}">🗂️ 本課單字卡</a>　<a class="back" style="font-size:15px" href="#cs${lv}-${n}">💬 本課句子卡</a></h3><div class="wrap"><table class="tbl"><thead><tr><th>韓文</th><th>中文意思</th><th>實際發音</th><th>羅馬拼音</th></tr></thead><tbody>${L.v.map(r=>`<tr><td>${ko(r[0])}</td><td>${esc(r[1])}</td><td class="pr">${r[2]?esc(r[2]):'<span style="color:#bbb">同拼寫</span>'}</td><td class="rom">${esc(r[3])}</td></tr>`).join('')}</tbody></table></div>`;
   h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>韓文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${ko(r[0])}<span class="sub">${esc(r[2]||'')}</span></td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
   h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>韓文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${ko(r[1])}<span class="sub">${esc(r[3]||'')}</span></td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
   h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂活動</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
@@ -131,7 +166,9 @@ function lesson(n){
 }
 function go(h){location.hash=h;}
 function route(){const h=location.hash;let m;
-  if((m=h.match(/^#L(\d+)$/)))lesson(+m[1]);else if((m=h.match(/^#lv(\d)$/)))home(+m[1]);else home(0);}
+  if((m=h.match(/^#L(\d+)$/)))lesson(+m[1]);
+  else if((m=h.match(/^#c([ws])(\d)(?:-(\d+))?$/))){cardsView(+m[2],m[1],m[3]?+m[3]:0);window.scrollTo(0,0);}
+  else if((m=h.match(/^#wr(\d)(?:\/(.+))?$/))){writerView(+m[1],m[2]?decodeURIComponent(m[2]):'');window.scrollTo(0,0);}else if((m=h.match(/^#lv(\d)$/)))home(+m[1]);else home(0);}
 window.addEventListener('hashchange',route);route();
 </script>
 </body></html>
