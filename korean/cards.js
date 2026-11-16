@@ -5,8 +5,15 @@ function loadKnown(){try{return new Set(JSON.parse(localStorage.getItem(KEY)||'[
 function saveKnown(s){try{localStorage.setItem(KEY,JSON.stringify([...s]));}catch(e){}}
 let known=loadKnown();
 
+const lvName=lv=>lv==='ch'?'召會生活':LEVELS[lv][0];
+const lvHref=lv=>lv==='ch'?'#church':'#lv'+lv;
+const unitName=(lv,n)=>lv==='ch'?(window.CHURCH[n-1]||{}).t:`第 ${n} 堂`;
 function deck(lv,kind){
   const out=[],seen=new Set();
+  if(lv==='ch'){(window.CHURCH||[]).forEach((g,gi)=>g.items.forEach(it=>{
+      if(kind==='s'){if(!seen.has(it.ko)){seen.add(it.ko);out.push({ko:it.ko,zh:it.zh,pr:it.pr,rom:it.rom,n:gi+1});}}
+      else it.w.forEach(w=>{if(seen.has(w[0]))return;seen.add(w[0]);out.push({ko:w[0],zh:w[1],pr:'',rom:'',n:gi+1});});
+    }));return out;}
   for(let i=lv*PER;i<lv*PER+PER;i++){const L=LESSONS[i];if(!L)continue;
     const rows=kind==='w'?L.v:L.s;
     rows.forEach(r=>{const k=r[0];if(seen.has(k))return;seen.add(k);
@@ -30,11 +37,12 @@ function current(){
   return a;
 }
 function build(){
-  const lvName=LEVELS[st.lv][0],kName=st.kind==='w'?'單字卡':'句子卡';
-  const opts=[`<option value="0">全部 ${PER} 堂</option>`];
-  for(let i=st.lv*PER+1;i<=st.lv*PER+PER;i++)opts.push(`<option value="${i}" ${i===st.lessonNo?'selected':''}>第 ${i} 堂</option>`);
-  app.innerHTML=`<p><a class="back" href="#lv${st.lv}">← ${lvName}課程列表</a></p>
-  <h2>${lvName}　${kName}</h2>
+  const lvN=lvName(st.lv),kName=st.kind==='w'?'單字卡':(st.lv==='ch'?'句子卡（整句）':'句子卡');
+  const opts=[`<option value="0">${st.lv==='ch'?'全部分類':'全部 '+PER+' 堂'}</option>`];
+  if(st.lv==='ch')CHURCH.forEach((g,i)=>opts.push(`<option value="${i+1}" ${i+1===st.lessonNo?'selected':''}>${g.t}</option>`));
+  else for(let i=st.lv*PER+1;i<=st.lv*PER+PER;i++)opts.push(`<option value="${i}" ${i===st.lessonNo?'selected':''}>第 ${i} 堂</option>`);
+  app.innerHTML=`<p><a class="back" href="${lvHref(st.lv)}">← 回${lvN}</a></p>
+  <h2>${lvN}　${kName}</h2>
   <div class="cardbar">
     <select id="fl">${opts.join('')}</select>
     <button class="chip" id="bShuf">🔀 洗牌</button>
@@ -62,9 +70,9 @@ function render(){
   const koFace=`<div class="fk ${sent?'fs':''}">${esc(c.ko)}</div>`;
   const zhFace=`<div class="fz">${esc(c.zh)}</div>`;
   const detail=`<div class="fk ${sent?'fs':''}" style="font-size:${sent?'22px':'34px'}">${esc(c.ko)}</div><div class="fz" style="font-size:22px;margin:8px 0">${esc(c.zh)}</div>
-    ${c.pr?`<div class="fd">實際發音 <b>${esc(c.pr)}</b></div>`:''}<div class="fd rom">${esc(c.rom)}</div>`;
+    ${c.pr?`<div class="fd">實際發音 <b>${esc(c.pr)}</b></div>`:''}${c.rom?`<div class="fd rom">${esc(c.rom)}</div>`:''}`;
   const front=st.front==='ko'?koFace:zhFace;
-  box.innerHTML=`<div class="prog"><span>${st.idx+1} / ${list.length}</span><span>第 ${c.n} 堂</span><span>已會 ${kn} / ${total.length}</span></div>
+  box.innerHTML=`<div class="prog"><span>${st.idx+1} / ${list.length}</span><span>${unitName(st.lv,c.n)}</span><span>已會 ${kn} / ${total.length}</span></div>
   <div class="bar"><i style="width:${total.length?kn/total.length*100:0}%"></i></div>
   <div class="flash${st.flip?' flipped':''}" id="flash"><div class="inner">
     <div class="face front">${isK?'<span class="badge">✓ 會了</span>':''}${front}<div class="tap">點一下翻面</div></div>
@@ -104,10 +112,10 @@ let W=null;
 window.writerView=function(lv,text){
   st=null;
   const words=deck(lv,'w');
-  const lvName=LEVELS[lv][0];
+  const lvN=lvName(lv);
   W={lv,text:text||(lv===0?'ㄱ':words[0].ko),chars:[],ci:0,anim:0,guide:true};
-  app.innerHTML=`<p><a class="back" href="#lv${lv}">← ${lvName}課程列表</a></p>
-  <h2>${lvName}　手寫練習</h2>
+  app.innerHTML=`<p><a class="back" href="${lvHref(lv)}">← 回${lvN}</a></p>
+  <h2>${lvN}　手寫練習</h2>
   <div class="wgrid">
     <div>
       <div class="winfo" id="winfo"></div>
@@ -123,11 +131,12 @@ window.writerView=function(lv,text){
     </div>
     <div>
       ${lv===0?`<h3 style="margin-top:0">韓文字母（40 個）</h3><div class="chips">${HANGUL.LETTERS.map(j=>`<button class="chip" data-w="${j}">${j}</button>`).join('')}</div>`:''}
-      <h3 ${lv===0?'':'style="margin-top:0"'}>本級單字（${words.length} 個）</h3>
+      ${lv==='ch'?`<h3 style="margin-top:0">召會生活整句（${deck('ch','s').length} 句）</h3><div class="chips" style="max-height:200px">${deck('ch','s').map(w=>`<button class="chip" data-w="${esc(w.ko)}" title="${esc(w.zh)}">${esc(w.ko)}</button>`).join('')}</div>`:''}
+      <h3 ${lv===0||lv==='ch'?'':'style="margin-top:0"'}>${lv==='ch'?'重點單字':'本級單字'}（${words.length} 個）</h3>
       <input id="wq" placeholder="搜尋韓文或中文…" class="wq">
       <div class="chips" id="wlist">${words.map(w=>`<button class="chip" data-w="${esc(w.ko)}" title="${esc(w.zh)}">${esc(w.ko)}</button>`).join('')}</div>
       <h3>自己輸入</h3>
-      <div style="display:flex;gap:8px"><input id="wown" class="wq" placeholder="輸入任何韓文，例如 사랑해요"><button class="btn" id="wGo">練習</button></div>
+      <div style="display:flex;gap:8px"><input id="wown" class="wq" placeholder="輸入任何韓文，例如 사랑해요"><button class="btn" id="wGo" style="white-space:nowrap">練習</button></div>
     </div>
   </div>
   <p class="hint">灰色是描紅字形，紅色數字是筆順。用手指、觸控筆或滑鼠在格子裡書寫；按「示範筆順」看一筆一筆的寫法。筆畫依韓國標準筆順，字形為示意，正式字體請參考上方的印刷字。</p>`;
@@ -144,8 +153,8 @@ window.writerView=function(lv,text){
 };
 function setText(t){
   W.text=t;W.chars=[...t].filter(HANGUL.isHangul);W.ci=0;
-  const w=deck(W.lv,'w').find(x=>x.ko===t);
-  document.getElementById('winfo').innerHTML=`${ko(t)}${w?`<span class="sub">${esc(w.zh)}${w.pr?'　'+esc(w.pr):''}　${esc(w.rom)}</span>`:''}`;
+  const w=deck(W.lv,'w').concat(deck(W.lv,'s')).find(x=>x.ko===t);
+  document.getElementById('winfo').innerHTML=`${ko(t)}${w?`<span class="sub">${esc(w.zh)}${w.pr?'　'+esc(w.pr):''}${w.rom?'　'+esc(w.rom):''}</span>`:''}`;
   showChar();
 }
 function showChar(){

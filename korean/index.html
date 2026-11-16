@@ -72,6 +72,15 @@ details.ans div{margin-top:6px;color:#2d5a1b;background:#F2F9EE;border-radius:8p
 .sylls span{border:1px solid #E8B84B;border-radius:8px;padding:4px 10px;font-size:22px;cursor:pointer;color:#86641A;background:#fff}
 .sylls span.on{background:#E8B84B;color:#fff}
 @media(max-width:820px){.wgrid{grid-template-columns:1fr}.flash{height:260px}.fk{font-size:42px}.fk.fs{font-size:22px}}
+.tab.church{border-color:#1d3b8a;color:#1d3b8a}.tab.church.on{background:#1d3b8a;color:#fff}
+.plist{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.phr{position:relative;background:#fff;border:1px solid #eee;border-left:5px solid #1d3b8a;border-radius:12px;padding:14px 16px 12px;line-height:1.6}
+.phr .pz{color:#86641A;font-weight:700;font-size:15px;margin-bottom:2px;padding-right:70px}
+.phr .ko{font-size:21px}.phr .pp{font-size:14px;margin:4px 0 8px}
+.pw{display:flex;flex-wrap:wrap;gap:6px}.pw span{background:#FFF8E6;border-radius:8px;padding:2px 8px;font-size:14px}
+.pw .ko{font-size:15px}.pw .ko::before{content:""}.pw em{font-style:normal;color:#666;margin-left:4px}
+.pn{margin-top:8px;background:#F2F9EE;color:#2d5a1b;border-radius:8px;padding:6px 10px;font-size:14px}
+.pwrite{position:absolute;top:12px;right:14px;font-size:13px;color:#86641A;text-decoration:none}
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:8px;display:none;font-size:14px}
 footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 @media(max-width:600px){h1{font-size:32px}.tbl td,.tbl th{font-size:14px;padding:8px}.ko{font-size:17px}.time{font-size:11px}.pr{white-space:normal}}
@@ -88,6 +97,7 @@ footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 <script src="lessons-2.js"></script>
 <script src="lessons-3.js"></script>
 <script src="lessons-4.js"></script>
+<script src="church.js"></script>
 <script src="hangul-strokes.js"></script>
 <script src="cards.js"></script>
 <script>
@@ -125,7 +135,7 @@ const ko=(t,say)=>`<span class="ko" data-say="${esc(say||t)}">${esc(t)}</span>`;
 
 function home(lv){
   lv=lv||0;
-  let h=`<div class="tabs">${LEVELS.map((l,i)=>`<button class="tab${i==lv?' on':''}" onclick="go('#lv${i}')">${l[0]}</button>`).join('')}</div>`;
+  let h=tabs(lv);
   if(lv==0)h+=planBox();
   h+=`<h2>${LEVELS[lv][0]}</h2><p style="color:#666">${LEVELS[lv][1]}（${LEVELS[lv][2]}）</p>`;
   h+=`<div class="tools"><button class="tool" onclick="go('#cw${lv}')"><span>🗂️</span><div>單字卡<small>${deckSize(lv,'w')} 張・翻面記憶</small></div></button><button class="tool" onclick="go('#cs${lv}')"><span>💬</span><div>句子卡<small>${deckSize(lv,'s')} 張・例句記憶</small></div></button><button class="tool" onclick="go('#wr${lv}')"><span>✍️</span><div>手寫練習<small>筆順示範・描紅書寫</small></div></button></div>`;
@@ -134,6 +144,26 @@ function home(lv){
   for(let i=lv*PER;i<lv*PER+PER;i++){const L=LESSONS[i];if(!L)continue;
     h+=`<div class="card" onclick="go('#L${i+1}')"><div class="k">第 ${i+1} 堂</div><div class="t">${esc(L.t)}</div><div class="d">${esc(L.g)}</div></div>`;}
   h+=`</div>`;
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function tabs(cur){return `<div class="tabs">${LEVELS.map((l,i)=>`<button class="tab${i===cur?' on':''}" onclick="go('#lv${i}')">${l[0]}</button>`).join('')}<button class="tab church${cur==='ch'?' on':''}" onclick="go('#church')">⛪ 召會生活</button></div>`;}
+function churchView(){
+  const C=window.CHURCH||[];const total=C.reduce((a,g)=>a+g.items.length,0);
+  let h=tabs('ch')+`<h2>召會生活韓語</h2><p style="color:#666">整理自《韓文屬靈用語＿日常用語》，共 ${C.length} 類 ${total} 句：認識、問安、日常對話、訪問家庭、用餐、購物、屬靈對話、問路。每句附實際發音、羅馬拼音與重點單字；綠色「用法提醒」是較自然的說法或拼寫修正。</p>`;
+  h+=`<div class="tools"><button class="tool" onclick="go('#csch')"><span>💬</span><div>整句卡<small>${deckSize('ch','s')} 張・翻面記憶</small></div></button><button class="tool" onclick="go('#cwch')"><span>🗂️</span><div>重點單字卡<small>${deckSize('ch','w')} 張</small></div></button><button class="tool" onclick="go('#wrch')"><span>✍️</span><div>手寫練習<small>筆順示範・描紅書寫</small></div></button></div>`;
+  h+=`<div class="chips" style="max-height:none;margin-bottom:10px">${C.map((g,i)=>`<button class="chip" onclick="document.getElementById('cg${i}').scrollIntoView({behavior:'smooth'})">${esc(g.t)}</button>`).join('')}</div>`;
+  C.forEach((g,gi)=>{
+    h+=`<h3 id="cg${gi}" style="scroll-margin-top:10px">${esc(g.t)}　<a class="back" style="font-size:14px" href="#csch-${gi+1}">💬 這一類的整句卡</a></h3><div class="plist">`;
+    g.items.forEach(it=>{
+      h+=`<div class="phr"><div class="pz">${esc(it.zh)}</div><div>${ko(it.ko)}</div>
+      <div class="pp">${it.pr?`<span class="pr">${esc(it.pr)}</span>　`:''}<span class="rom">${esc(it.rom)}</span></div>
+      <div class="pw">${it.w.map(w=>`<span>${ko(w[0])}<em>${esc(w[1])}</em></span>`).join('')}</div>
+      ${it.n?`<div class="pn">💡 ${esc(it.n)}</div>`:''}
+      <a class="pwrite" href="#wrch/${encodeURIComponent(it.ko)}">✍️ 寫寫看</a></div>`;
+    });
+    h+=`</div>`;
+  });
+  h+=`<p class="hint">用語以台灣召會常用的韓語說法為參考，實際用法請向韓國聖徒確認。</p>`;
   app.innerHTML=h;window.scrollTo(0,0);
 }
 function planBox(){
@@ -167,8 +197,9 @@ function lesson(n){
 function go(h){location.hash=h;}
 function route(){const h=location.hash;let m;
   if((m=h.match(/^#L(\d+)$/)))lesson(+m[1]);
-  else if((m=h.match(/^#c([ws])(\d)(?:-(\d+))?$/))){cardsView(+m[2],m[1],m[3]?+m[3]:0);window.scrollTo(0,0);}
-  else if((m=h.match(/^#wr(\d)(?:\/(.+))?$/))){writerView(+m[1],m[2]?decodeURIComponent(m[2]):'');window.scrollTo(0,0);}else if((m=h.match(/^#lv(\d)$/)))home(+m[1]);else home(0);}
+  else if(h==='#church')churchView();
+  else if((m=h.match(/^#c([ws])(\d|ch)(?:-(\d+))?$/))){cardsView(m[2]==='ch'?'ch':+m[2],m[1],m[3]?+m[3]:0);window.scrollTo(0,0);}
+  else if((m=h.match(/^#wr(\d|ch)(?:\/(.+))?$/))){writerView(m[1]==='ch'?'ch':+m[1],m[2]?decodeURIComponent(m[2]):'');window.scrollTo(0,0);}else if((m=h.match(/^#lv(\d)$/)))home(+m[1]);else home(0);}
 window.addEventListener('hashchange',route);route();
 </script>
 </body></html>
