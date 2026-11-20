@@ -114,6 +114,10 @@ footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
 .roster{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
 .rosterchip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #ddd;border-radius:999px;padding:4px 10px 4px 4px;font-size:14px;cursor:pointer;color:#234}
 .rosterchip .avatar{width:24px;height:24px;border-radius:50%;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.resrow{display:flex;align-items:center;gap:10px;width:100%;background:#fff;border:1px solid #ddd;border-radius:12px;padding:10px 12px;font-size:16px;cursor:pointer;margin:6px 0;text-align:left;color:#234}
+.resrow .avatar{width:32px;height:32px;border-radius:50%;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex:none}
+.resrow b{flex:1}
+.resrow .fishn{font-size:13px;color:#666}
 .islander.hl{outline:3px solid var(--accent);border-radius:12px}
 .islander{border:1px solid #e5e5e5;border-radius:12px;padding:10px 12px;margin:8px 0;background:#fbfbf7;color:#234}
 .islander .who{font-size:15px}
@@ -235,6 +239,7 @@ footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
 <div><h1>中興學生弟兄姊妹島</h1><p>中興大學 · 弟兄姊妹與福音朋友 · 一起認識主、享受召會生活</p></div>
 <div class="sp"></div>
 <button id="nightBtn" type="button">切換夜晚</button>
+<button id="residentsBtn" type="button">本島居民</button>
 </header>
 <main>
 <section class="welcome">
@@ -286,6 +291,7 @@ footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
 <script>
 const DATA={
 center:{title:"學生中心行動",sub:"聚集 · 讀書 · 相調的空間，不是宿舍",body:`<ol><li>週二與照顧家晨興</li><li>週四校園晨興</li><li>週五集中晚禱</li><li>週六健康新生活</li></ol>`},
+residents:{title:"本島居民",sub:"目前在島上註冊的島民",body:`<div id="residentsList"></div><p class="fine">想加入島民，點中央的中興島看公告欄，在島民與魚池加入。</p>`},
 pray:{title:"代禱小島",sub:"彼此代禱 · 記念",body:`<h4>代禱牆</h4><div id="prayerWall"></div><p><input id="prayName" placeholder="名字" maxlength="20"></p><p><input id="prayDept" placeholder="科系" maxlength="20"></p><p><button class="primary" type="button" id="addPrayerBtn">貼上代禱牆</button></p>`},
 garden:{title:"讀書園地",sub:"近期水流負擔：讀書園",body:`<h4>屬靈負擔</h4><ul><li>近期水流負擔：讀書園。</li></ul><h4>學期例行</h4><ul><li>期中考與期末考各兩週讀書園，安排宵夜。</li></ul>`},
 boat:{title:"福音船",sub:"福音節期 · 福音餐廳",body:`<p class="theme">作得人的漁夫，撒網到水深之處</p><div id="fishGame"></div>`},
@@ -423,6 +429,16 @@ function renderIslanders(){
   box.querySelectorAll('[data-unfish]').forEach(b=>b.addEventListener('click',()=>{if(!confirm('把這條魚從魚池移走嗎？'))return;fishes=fishes.filter(f=>f.id!==b.dataset.unfish);saveJSON('zx_fish_v1',fishes);renderIslanders()}));
   box.querySelectorAll('[data-unislander]').forEach(b=>b.addEventListener('click',()=>{if(!confirm('把這位島民和他的魚池一起移除嗎？'))return;const id=b.dataset.unislander;islanders=islanders.filter(i=>i.id!==id);fishes=fishes.filter(f=>f.ownerId!==id);saveJSON('zx_islanders_v1',islanders);saveJSON('zx_fish_v1',fishes);renderIslanders()}));
 }
+function renderResidents(){
+  const box=document.getElementById('residentsList');if(!box)return;
+  if(!islanders.length){box.innerHTML='<p>還沒有島民。點中央的中興島看公告欄，在島民與魚池加入。</p>';return}
+  const colors=['#e57373','#64b5f6','#81c784','#ffb74d','#ba68c8','#4db6ac'];
+  box.innerHTML=`<p class="fine">目前島上有 ${islanders.length} 位島民，點一下可以到公告欄看他的魚池：</p>`+islanders.map((it,idx)=>{
+    const n=fishes.filter(f=>f.ownerId===it.id).length;
+    return `<button type="button" class="resrow" data-islander="${it.id}"><span class="avatar" style="background:${colors[idx%colors.length]}">${esc(it.name.slice(0,1))}</span><b>${esc(it.name)}</b><span class="fishn">魚池有 ${n} 條魚</span></button>`;
+  }).join('');
+  box.querySelectorAll('.resrow').forEach(r=>r.addEventListener('click',()=>{openIsland('board');setTimeout(()=>{const el=document.getElementById('islander-'+r.dataset.islander);if(el){el.scrollIntoView({behavior:'smooth',block:'nearest'});el.classList.add('hl');setTimeout(()=>el.classList.remove('hl'),2000)}},60)}));
+}
 function addIslander(){
   const inp=document.getElementById('newIslander');const name=(inp.value||'').trim();if(!name)return;
   islanders.push({id:'i'+Date.now(),name:name});saveJSON('zx_islanders_v1',islanders);inp.value='';renderIslanders();
@@ -478,11 +494,12 @@ function baseScale(){const w=document.getElementById('mapwrap').clientWidth||win
 let focus=null;const FOCUS_ZOOM=1.7;
 function islandCenter(k){if(k==='board')return{x:380,y:380};const el=document.querySelector('[data-island="'+k+'"]');if(!el)return null;return{x:parseInt(el.style.left||'0',10)+88,y:parseInt(el.style.top||'0',10)+57}}
 function apply(){const wrap=document.getElementById('mapwrap');const W=wrap.clientWidth||window.innerWidth,H=wrap.clientHeight||window.innerHeight;let s=scale*baseScale(),tx=0,ty=0;if(focus){s*=FOCUS_ZOOM;const cx=(W>820)?(W-376)/2:W/2,cy=H/2;tx=cx-W/2-s*(focus.x-380);ty=cy-0.52*H-s*(focus.y-380)}map.style.transform=`translate(${tx}px,${ty}px) scale(${s})`}
-function openIsland(k){const d=DATA[k];if(!d)return;document.querySelectorAll('.island,.bigbottle,.center').forEach(e=>e.classList.toggle('active',e.dataset.island===k));body.innerHTML=`<h3>${d.title}</h3><div class="sub">${d.sub}</div>${d.body}`;panel.scrollTop=0;panel.classList.add('show');const ECO=['week','camp','boat','garden','board','center','pray'];focus=(ECO.includes(k)&&document.getElementById('mapwrap').clientWidth>820)?islandCenter(k):null;apply();if(k==='letter')renderBottles();if(k==='board'){renderIslanders();const ab=document.getElementById('addIslanderBtn');if(ab)ab.addEventListener('click',addIslander);const ni=document.getElementById('newIslander');if(ni)ni.addEventListener('keydown',e=>{if(e.key==='Enter')addIslander()});}if(k==='boat')renderFishGame();if(k==='pray'){renderPrayerWall();const ap=document.getElementById('addPrayerBtn');if(ap)ap.addEventListener('click',addPrayer);}}
+function openIsland(k){const d=DATA[k];if(!d)return;document.querySelectorAll('.island,.bigbottle,.center').forEach(e=>e.classList.toggle('active',e.dataset.island===k));body.innerHTML=`<h3>${d.title}</h3><div class="sub">${d.sub}</div>${d.body}`;panel.scrollTop=0;panel.classList.add('show');const ECO=['week','camp','boat','garden','board','center','pray'];focus=(ECO.includes(k)&&document.getElementById('mapwrap').clientWidth>820)?islandCenter(k):null;apply();if(k==='letter')renderBottles();if(k==='board'){renderIslanders();const ab=document.getElementById('addIslanderBtn');if(ab)ab.addEventListener('click',addIslander);const ni=document.getElementById('newIslander');if(ni)ni.addEventListener('keydown',e=>{if(e.key==='Enter')addIslander()});}if(k==='boat')renderFishGame();if(k==='residents')renderResidents();if(k==='pray'){renderPrayerWall();const ap=document.getElementById('addPrayerBtn');if(ap)ap.addEventListener('click',addPrayer);}}
 document.querySelectorAll('[data-island]').forEach(e=>e.addEventListener('click',()=>openIsland(e.dataset.island)));
 document.querySelectorAll('[data-open]').forEach(e=>e.addEventListener('click',()=>openIsland(e.dataset.open)));
 document.getElementById('closePanel').addEventListener('click',()=>{panel.classList.remove('show');document.querySelectorAll('.island,.bigbottle,.center').forEach(e=>e.classList.remove('active'));focus=null;apply()});
-document.getElementById('nightBtn').addEventListener('click',()=>{const h=document.documentElement;const n=h.getAttribute('data-theme')==='night'?'':'night';h.setAttribute('data-theme',n);document.getElementById('nightBtn').textContent=n?'切換白天':'切換夜晚'});
+document.getElementById('nightBtn').addEventListener('click',()=>{const h=document.documentElement;const n=h.getAttribute('data-theme')==='night'?'':'night';h.setAttribute('data-theme',n);document.getElementById('nightBtn').textContent=n?'切換白天':'切換夜晚'})
+document.getElementById('residentsBtn').addEventListener('click',()=>openIsland('residents'));
 document.getElementById('whale').addEventListener('click',openReminder);
 document.getElementById('whaleBubble').addEventListener('click',openReminder);
 document.getElementById('dolphin').addEventListener('click',openLife);
