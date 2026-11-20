@@ -191,7 +191,7 @@ function renderBottles(){
     html+=`<button class="bottle" type="button" data-bottle="${i}"><span class="glass"><span class="letter">✉</span>${b.locked?'<span class="lock">🔒</span>':''}</span><span class="cap">${esc(b.to||"給大家")}<br>${b.locked?"設了密碼":"公開"}</span></button>`;
   });
   html+=`</div><div id="bottleRead"></div>`;
-  html+=`<h4>寫一封瓶中信</h4><p><a href="${FORM_URL}" target="_blank" rel="noopener"><button class="primary" type="button">寫一封瓶中信 →</button></a></p><p style="font-size:13px;color:#888;line-height:1.7">點開是 Google 表單，寫給誰、鼓勵的話、公開或設密碼。表單不收集名字和信箱，留白就是匿名。寫好的話會先送到服事者那裡審核，審核通過後才放上島。設密碼的信只是防隨手點開，不是真的保密。</p>`;
+  html+=`<h4>寫一封瓶中信</h4><p><a href="${FORM_URL}" target="_blank" rel="noopener"><button class="primary" type="button">寫一封瓶中信 →</button></a></p>`;
   area.innerHTML=html;
   area.querySelectorAll('[data-bottle]').forEach(btn=>btn.addEventListener('click',()=>readBottle(+btn.dataset.bottle)));
   const empty=area.querySelector('[data-empty]');if(empty)empty.addEventListener('click',()=>{document.getElementById('bottleRead').innerHTML="<p>這只瓶子還是空的，等你寫第一封瓶中信。</p>"});
