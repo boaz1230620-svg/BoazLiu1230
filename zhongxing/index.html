@@ -124,9 +124,15 @@ footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
 .shark svg{width:130px;height:70px;animation:swim 3s ease-in-out infinite}
 @keyframes swim{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .shark .sharkchip{background:#222;color:#fff;border-radius:999px;padding:3px 10px;font-size:13px;font-weight:700;white-space:nowrap}
+.intromodal{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:rgba(20,60,90,.55);padding:20px}
+.intromodal .card{background:var(--card);border-radius:20px;max-width:480px;width:100%;padding:28px 24px;text-align:center;box-shadow:0 16px 40px rgba(0,0,0,.3);border-top:6px solid var(--accent)}
+.intromodal h2{font-size:24px;margin:8px 0;line-height:1.4}
+.intromodal p{line-height:1.8;color:#444;font-size:16px;margin:12px 0 20px}
+.intromodal .primary{font-size:17px;padding:12px 28px}
 </style>
 </head>
 <body>
+<div class="intromodal" id="introModal"><div class="card"><div style="font-size:48px">🏝️</div><h2>歡迎來到中興學生基督徒小島</h2><p>這裡是為著讓大家知道中興大學基督徒的召會生活。</p><button class="primary" type="button" id="enterIsland">進入小島 →</button></div></div>
 <header>
 <div class="logo">中興島</div>
 <div><h1>中興學生弟兄姊妹島</h1><p>中興大學 · 弟兄姊妹與福音朋友 · 一起認識主、享受召會生活</p></div>
@@ -364,6 +370,8 @@ function zoomBy(d){scale=Math.min(1.6,Math.max(0.7,scale+d));apply()}
 document.getElementById('zoomIn').addEventListener('click',()=>zoomBy(0.15));
 document.getElementById('zoomOut').addEventListener('click',()=>zoomBy(-0.15));
 wrap.addEventListener('wheel',e=>{e.preventDefault();scale=Math.min(1.6,Math.max(0.7,scale+(e.deltaY<0?0.08:-0.08)));apply()},{passive:false});
+document.getElementById('enterIsland').addEventListener('click',()=>{document.getElementById('introModal').style.display='none'});
+document.getElementById('introModal').addEventListener('click',e=>{if(e.target.id==='introModal')e.target.style.display='none'});
 window.addEventListener('resize',apply);refreshMascots();updateShark();apply();
 </script>
 </body>
