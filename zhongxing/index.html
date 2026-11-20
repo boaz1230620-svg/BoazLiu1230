@@ -58,7 +58,7 @@ main{display:grid;grid-template-columns:340px 1fr;gap:0;min-height:calc(100vh - 
 .bigbottle .cork{position:absolute;top:0;left:44px;width:32px;height:22px;background:#c9a06a;border:2px solid #a67c52;border-radius:5px;z-index:2}
 .bigbottle .neck{position:absolute;top:20px;left:42px;width:36px;height:26px;background:linear-gradient(90deg,rgba(190,235,220,.9),rgba(120,200,180,.9) 50%,rgba(190,235,220,.9));border:2px solid #7fb8a8;border-bottom:0;border-radius:8px 8px 0 0}
 .bigbottle .glass{position:absolute;top:44px;left:0;width:120px;height:120px;background:linear-gradient(90deg,rgba(190,235,220,.75),rgba(120,200,180,.75) 50%,rgba(190,235,220,.75));border:2px solid #7fb8a8;border-radius:22px 22px 30px 30px;overflow:hidden}
-.bigbottle .glass::after{content:"";position:absolute;left:10px;top:6px;width:14px;height:104px;background:rgba(255,255,255,.5);border-radius:8px}
+.bigbottle .glass::after{content:"";position:absolute;left:10px;top:6px;width:20px;height:104px;background:rgba(255,255,255,.65);border-radius:10px;filter:blur(1px)}
 .bigbottle .glass .letter{position:absolute;width:78px;height:44px;background:#fffdf4;border:1px solid #e8d9a0;border-radius:3px;box-shadow:0 2px 4px rgba(0,0,0,.2);font-size:20px;line-height:44px;text-align:center}
 .bigbottle .glass .l1{left:18px;top:14px;transform:rotate(-6deg)}
 .bigbottle .glass .l2{left:24px;top:56px;transform:rotate(5deg)}
@@ -97,7 +97,7 @@ footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
 .bottles{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0}
 .bottle{width:74px;text-align:center;background:none;border:0;padding:0}
 .bottle .glass{position:relative;width:56px;height:96px;margin:0 auto;background:linear-gradient(90deg,rgba(190,235,220,.85),rgba(120,200,180,.85) 50%,rgba(190,235,220,.85));border:2px solid #7fb8a8;border-radius:14px 14px 20px 20px;overflow:hidden}
-.bottle .glass::after{content:"";position:absolute;left:7px;top:6px;width:8px;height:78px;background:rgba(255,255,255,.45);border-radius:6px}
+.bottle .glass::after{content:"";position:absolute;left:7px;top:6px;width:10px;height:78px;background:rgba(255,255,255,.55);border-radius:6px}
 .bottle .glass::before{content:"";position:absolute;top:-14px;left:18px;width:20px;height:16px;background:#c9a06a;border:2px solid #a67c52;border-radius:4px}
 .bottle .letter{position:absolute;left:8px;right:8px;top:34px;height:52px;background:#fffdf4;border:1px solid #e8d9a0;border-radius:3px;box-shadow:0 2px 4px rgba(0,0,0,.15);font-size:22px;line-height:52px}
 .bottle .lock{position:absolute;right:4px;bottom:4px;font-size:16px}
