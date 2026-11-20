@@ -23,8 +23,7 @@ main{display:grid;grid-template-columns:340px 1fr;gap:0;min-height:calc(100vh - 
 .welcome .chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
 .welcome .chips button{background:#fff6de;border-color:#e8b84b}
 .note{font-size:13px;color:#999;line-height:1.7;border-top:1px dashed #ddd;padding-top:12px;margin-top:16px}
-.mapcol{display:flex;flex-direction:column;min-width:0}
-.mapwrap{position:relative;overflow:hidden;background:linear-gradient(180deg,var(--sky),var(--sea) 40%,var(--sea2));flex:1;min-height:0}
+.mapwrap{position:relative;overflow:hidden;background:linear-gradient(180deg,var(--sky),var(--sea) 40%,var(--sea2))}
 .cloud{position:absolute;font-size:34px;opacity:.85;z-index:1;animation:drift 26s linear infinite}
 @keyframes drift{from{transform:translateX(-20px)}50%{transform:translateX(20px)}to{transform:translateX(-20px)}}
 .wave{position:absolute;left:-10%;width:120%;height:26px;opacity:.45;background:radial-gradient(circle at 20px 12px,rgba(255,255,255,.9) 10px,transparent 11px);background-size:52px 26px;animation:flow 6s linear infinite;z-index:1;pointer-events:none}
@@ -80,7 +79,6 @@ main{display:grid;grid-template-columns:340px 1fr;gap:0;min-height:calc(100vh - 
 .stream{position:absolute;left:0;right:0;bottom:0;z-index:4;overflow:hidden;white-space:nowrap;background:rgba(255,255,255,.75);border-top:2px solid rgba(255,255,255,.9);padding:6px 0;font-size:14px;color:#2a6b5f}
 .stream span{display:inline-block;padding-left:40px;animation:marquee 26s linear infinite}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;padding:10px 14px}
 nav button{background:rgba(255,255,255,.95);box-shadow:0 2px 8px rgba(0,0,0,.12)}
 .hint{position:absolute;left:16px;bottom:44px;font-size:13px;color:#555;background:rgba(255,255,255,.85);border-radius:999px;padding:6px 12px;z-index:5}
 footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
@@ -91,7 +89,7 @@ footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
 .bottle .letter{position:absolute;left:8px;right:8px;top:34px;height:52px;background:#fffdf4;border:1px solid #e8d9a0;border-radius:3px;box-shadow:0 2px 4px rgba(0,0,0,.15);font-size:22px;line-height:52px}
 .bottle .lock{position:absolute;right:4px;bottom:4px;font-size:16px}
 .bottle span.cap{display:block;font-size:12px;color:#666;margin-top:6px;line-height:1.4}
-@media(max-width:820px){main{grid-template-columns:1fr}.welcome{border-right:0;padding:14px 16px}.welcome h2{font-size:20px}.welcome p{font-size:14px;line-height:1.6}.note{font-size:12px}header{flex-wrap:wrap;padding:10px 12px;gap:8px}header .logo{font-size:22px;white-space:nowrap}header h1{font-size:18px}header p{font-size:12px}.mapcol{display:block}.mapwrap{flex:none;min-height:0;height:calc(100vw + 48px);max-height:600px}.panel{width:calc(100% - 32px)}#dolphin{display:none}.mascot{width:56px;height:56px}.mascot .em{font-size:28px}#whale{top:8px;left:8px}nav{flex-direction:column;align-items:flex-end;padding:10px 12px;gap:8px}nav button{padding:8px 14px;font-size:14px}.hint{display:none}.stream{font-size:12px}}
+@media(max-width:820px){main{grid-template-columns:1fr}.welcome{border-right:0;padding:14px 16px}.welcome h2{font-size:20px}.welcome p{font-size:14px;line-height:1.6}.note{font-size:12px}header{flex-wrap:wrap;padding:10px 12px;gap:8px}header .logo{font-size:22px;white-space:nowrap}header h1{font-size:18px}header p{font-size:12px}.mapwrap{min-height:0;height:calc(100vw + 48px);max-height:600px}.panel{width:calc(100% - 32px)}#dolphin{display:none}.mascot{width:56px;height:56px}.mascot .em{font-size:28px}#whale{top:8px;left:8px}.hint{display:none}.stream{font-size:12px}}
 </style>
 </head>
 <body>
@@ -114,7 +112,7 @@ footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
 <p><button class="primary" type="button" data-open="center">開始探索 →</button></p>
 <div class="note">本頁是草稿版：只放已確認的行動；未確認的時間、地點、費用一律標「待公布」，請以正式通啟為準。負責人、預算等內部資料不放在這裡。只給中興學生看，不放 Boaz 禾場首頁。</div>
 </section>
-<div class="mapcol"><section class="mapwrap" id="mapwrap">
+<section class="mapwrap" id="mapwrap">
 <div class="cloud" style="left:8%;top:8%">☁</div>
 <div class="cloud" style="right:12%;top:16%">☁</div>
 <div class="cloud" style="left:20%;bottom:18%">☁</div>
@@ -143,15 +141,6 @@ footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
 <div class="hint">拖曳旋轉 · 滾輪縮放</div>
 <div class="stream"><span>🌊 主日：彼此邀約一同有分 &nbsp;→&nbsp; 小排：週四、週五 &nbsp;→&nbsp; 週三餐廳 &nbsp;→&nbsp; 晨興 &nbsp;→&nbsp; 生命讀經 &nbsp;→&nbsp; 家聚會 &nbsp;→&nbsp; 主日：彼此邀約一同有分 &nbsp;→&nbsp; 小排：週四、週五 &nbsp;→&nbsp; 週三餐廳 &nbsp;→&nbsp; 晨興 &nbsp;→&nbsp; 生命讀經 &nbsp;→&nbsp; 家聚會 &nbsp;→&nbsp;</span></div>
 </section>
-<nav>
-<button type="button" data-open="center">學生中心</button>
-<button type="button" data-open="garden">讀書園</button>
-<button type="button" data-open="boat">福音船</button>
-<button type="button" data-open="camp">寒暑期</button>
-<button type="button" data-open="week">週間行動</button>
-<button type="button" data-open="letter">瓶中信</button>
-</nav>
-</div>
 </main>
 <footer>中興學生弟兄姊妹島 · 草稿版 · 只給中興學生看，不放 Boaz 禾場首頁 · 未確認事項標「待公布」，請以正式通啟為準</footer>
 <script>
@@ -231,7 +220,7 @@ document.getElementById('whale').addEventListener('click',openReminder);
 document.getElementById('dolphin').addEventListener('click',()=>openIsland(document.getElementById('dolphin').dataset.island||'camp'));
 let drag=false,sx=0,sr=0;
 const wrap=document.getElementById('mapwrap');
-wrap.addEventListener('pointerdown',e=>{if(e.target.closest('.panel,nav,button,.mascot'))return;drag=true;sx=e.clientX;sr=rot;wrap.setPointerCapture(e.pointerId)});
+wrap.addEventListener('pointerdown',e=>{if(e.target.closest('.panel,button,.mascot'))return;drag=true;sx=e.clientX;sr=rot;wrap.setPointerCapture(e.pointerId)});
 wrap.addEventListener('pointermove',e=>{if(!drag)return;rot=sr+(e.clientX-sx)*0.2;apply()});
 wrap.addEventListener('pointerup',()=>drag=false);
 wrap.addEventListener('wheel',e=>{e.preventDefault();scale=Math.min(1.6,Math.max(0.7,scale+(e.deltaY<0?0.08:-0.08)));apply()},{passive:false});
