@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中興學生弟兄姊妹島</title>
+<style>
+:root{--sea:#9fe3c8;--sea2:#7dd3c0;--sky:#dff3ec;--sand:#ffe9b8;--ink:#234;--card:#fff;--accent:#e8913a;--accent2:#2a9d8f}
+[data-theme="night"]{--sea:#1d3a5f;--sea2:#16324f;--sky:#0f2440;--sand:#2c4a6b;--ink:#eaf2f8;--card:#1c3550;--accent:#f4a259;--accent2:#7dd3c0}
+*{box-sizing:border-box}
+body{margin:0;font-family:"PingFang TC","Microsoft JhengHei",sans-serif;background:var(--sky);color:var(--ink)}
+header{display:flex;align-items:center;gap:12px;padding:12px 18px;background:var(--card);border-bottom:3px solid var(--accent);position:sticky;top:0;z-index:20}
+header .logo{font-size:28px;font-weight:800;color:var(--accent2)}
+header h1{font-size:22px;margin:0}
+header p{margin:2px 0 0;font-size:13px;color:#888}
+header .sp{flex:1}
+button{cursor:pointer;border:0;border-radius:999px;padding:9px 16px;font-size:15px;background:#fff;border:1px solid #ddd}
+button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+main{display:grid;grid-template-columns:340px 1fr;gap:0;min-height:calc(100vh - 65px)}
+.welcome{padding:22px;background:var(--card);border-right:1px solid #eee}
+.welcome h2{font-size:26px;margin:6px 0}
+.welcome p{line-height:1.8;color:#666;font-size:15px}
+.welcome .chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.welcome .chips button{background:#fff6de;border-color:#e8b84b}
+.note{font-size:13px;color:#999;line-height:1.7;border-top:1px dashed #ddd;padding-top:12px;margin-top:16px}
+.mapwrap{position:relative;overflow:hidden;background:linear-gradient(180deg,var(--sky),var(--sea))}
+.cloud{position:absolute;font-size:34px;opacity:.85}
+#map{position:absolute;left:50%;top:52%;width:760px;height:760px;margin:-380px 0 0 -380px;transition:transform .15s ease-out;cursor:grab}
+#map:active{cursor:grabbing}
+.center{position:absolute;left:50%;top:50%;width:210px;height:210px;margin:-105px 0 0 -105px;background:var(--sand);border-radius:50% 50% 46% 54%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.15);border:4px solid #fff}
+.center b{font-size:20px}
+.center span{font-size:13px;color:#777;margin-top:6px}
+.island{position:absolute;width:150px;height:110px;background:#fff;border-radius:50% 50% 46% 54%;box-shadow:0 8px 20px rgba(0,0,0,.14);border:3px solid #fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8px}
+.island .g{font-size:34px;line-height:1}
+.island b{font-size:16px;margin-top:4px}
+.island span{font-size:12px;color:#888}
+.island:hover{transform:scale(1.06)}
+.island.active{outline:4px solid var(--accent)}
+.panel{position:absolute;right:16px;top:16px;width:360px;max-width:calc(100% - 32px);max-height:calc(100% - 32px);overflow:auto;background:var(--card);border-radius:18px;box-shadow:0 12px 32px rgba(0,0,0,.2);padding:20px;display:none;z-index:10}
+.panel.show{display:block}
+.panel h3{margin:4px 0 2px;font-size:22px}
+.panel .sub{color:#888;font-size:13px}
+.panel h4{margin:18px 0 6px;font-size:16px;border-left:5px solid var(--accent);padding-left:8px}
+.panel ul{margin:6px 0;padding-left:20px;line-height:1.9;font-size:15px}
+.panel .tag{display:inline-block;background:#fff6de;border:1px solid #e8b84b;border-radius:999px;padding:2px 10px;font-size:13px;margin:2px 4px 2px 0}
+.close{float:right;background:#eee}
+nav{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:8px;flex-wrap:wrap;justify-content:center;z-index:5;max-width:96%}
+nav button{background:rgba(255,255,255,.95);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.hint{position:absolute;left:16px;bottom:14px;font-size:13px;color:#555;background:rgba(255,255,255,.85);border-radius:999px;padding:6px 12px;z-index:5}
+footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
+@media(max-width:820px){main{grid-template-columns:1fr}.welcome{border-right:0}.mapwrap{min-height:560px}.panel{width:calc(100% - 32px)}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">中興島</div>
+<div><h1>中興學生弟兄姊妹島</h1><p>中興大學 · 弟兄姊妹與福音朋友 · 一起認識主、享受召會生活</p></div>
+<div class="sp"></div>
+<button id="nightBtn" type="button">切換夜晚</button>
+</header>
+<main>
+<section class="welcome">
+<h2>歡迎來到中興島！</h2>
+<p>拖曳旋轉、滾輪縮放，點一下小島，看看島上有什麼行動和負擔。</p>
+<div class="chips">
+<button type="button" data-open="week">週間行動</button>
+<button type="button" data-open="center">學生中心</button>
+<button type="button" data-open="camp">寒暑期生活行動</button>
+<button type="button" data-open="letter">瓶中信</button>
+</div>
+<p><button class="primary" type="button" data-open="center">開始探索 →</button></p>
+<div class="note">本頁是草稿版：只放已確認的行動；未確認的時間、地點、費用一律標「待公布」，請以正式通啟為準。負責人、預算等內部資料不放在這裡。</div>
+</section>
+<section class="mapwrap" id="mapwrap">
+<div class="cloud" style="left:8%;top:8%">☁</div>
+<div class="cloud" style="right:12%;top:16%">☁</div>
+<div class="cloud" style="left:20%;bottom:18%">☁</div>
+<div id="map">
+<div class="center"><b>中興島</b><span>拖曳旋轉 · 滾輪縮放<br>點小島看內容</span></div>
+<button class="island" type="button" data-island="center" style="left:300px;top:30px"><span class="g">⌂</span><b>學生中心行動</b><span>聚集 · 讀書 · 相調</span></button>
+<button class="island" type="button" data-island="pray" style="left:540px;top:150px"><span class="g">✦</span><b>代禱小島</b><span>彼此代禱 · 記念</span></button>
+<button class="island" type="button" data-island="garden" style="left:560px;top:380px"><span class="g">❦</span><b>讀書園地</b><span>近期水流負擔</span></button>
+<button class="island" type="button" data-island="boat" style="left:380px;top:560px"><span class="g">⛵</span><b>福音船</b><span>福音節期 · 福音餐廳</span></button>
+<button class="island" type="button" data-island="camp" style="left:80px;top:520px"><span class="g">▲</span><b>寒暑期生活行動</b><span>特會 · 生活行動</span></button>
+<button class="island" type="button" data-island="week" style="left:40px;top:260px"><span class="g">▦</span><b>週間行動</b><span>主日 · 小排 · 晨興</span></button>
+<button class="island" type="button" data-island="letter" style="left:180px;top:120px"><span class="g">✉</span><b>瓶中信</b><span>匿名鼓勵 · 需審核</span></button>
+</div>
+<div class="panel" id="panel"><button class="close" type="button" id="closePanel">✕</button><div id="panelBody"></div></div>
+<div class="hint">拖曳旋轉 · 滾輪縮放</div>
+<nav>
+<button type="button" data-open="center">學生中心</button>
+<button type="button" data-open="garden">讀書園</button>
+<button type="button" data-open="boat">福音船</button>
+<button type="button" data-open="camp">寒暑期</button>
+<button type="button" data-open="week">週間行動</button>
+<button type="button" data-open="letter">瓶中信</button>
+</nav>
+</section>
+</main>
+<footer>中興學生弟兄姊妹島 · 草稿版 · 只給中興學生看，不放 Boaz 禾場首頁 · 未確認事項標「待公布」，請以正式通啟為準</footer>
+<script>
+const DATA={
+center:{title:"學生中心行動",sub:"聚集 · 讀書 · 相調的空間，不是宿舍",body:`<h4>這裡是做什麼的</h4><ul><li>學生中心是聚集、讀書、相調的空間，不是宿舍。</li><li>每月一次一對一請吃飯交通。</li><li>加強住在學生中心的牧養，成全人出去傳福音、讀聖經真理、成全人牧養人。</li></ul><h4>整棟學生中心事務</h4><ul><li>倒垃圾、採買、飯食整潔、多媒體、彈琴彈吉他。</li></ul><p><span class="tag">時間待公布</span><span class="tag">地點請洽服事者</span></p>`},
+pray:{title:"代禱小島",sub:"彼此代禱 · 記念",body:`<h4>代禱小島</h4><ul><li>彼此代禱，記念校園、福音朋友和新人。</li><li>代禱事項待你提供，確認後再放上來。</li></ul><p>代禱事項的提出方式待確認，在確認之前不寫具體事項。</p>`},
+garden:{title:"讀書園地",sub:"近期水流負擔：讀書園",body:`<h4>屬靈負擔</h4><ul><li>近期水流負擔：讀書園。</li></ul><h4>學期例行</h4><ul><li>期中考與期末考各兩週讀書園，安排宵夜。</li></ul><p><span class="tag">主題待公布</span><span class="tag">日期待公布</span><span class="tag">地點待公布</span></p>`},
+boat:{title:"福音船",sub:"福音節期 · 福音餐廳",body:`<h4>學期例行</h4><ul><li>每學期兩週福音節期。</li><li>週日晚上福音餐廳，一學期 10 次。</li><li>增加學校得救歸主人數。</li></ul><p><span class="tag">時間待公布</span><span class="tag">地點待公布</span></p>`},
+camp:{title:"寒暑期生活行動",sub:"寒暑期特會 · 生活行動",body:`<h4>寒暑期生活行動</h4><ul><li>內容待你提供，確認後再放上來。</li></ul><h4>期末特會</h4><ul><li>第一梯：2026-12-27–29，萊馥度假村，逢甲、中興、中台、中教大，60 人。</li><li>第二梯：2027-01-10–12，萊馥度假村，80 人。</li><li>通啟：11 月第一週，發出情形待確認。</li></ul><h4>現場訓練</h4><ul><li>2027-01-12–15。</li></ul><h4>2027 美國水流職事站大專行動</h4><ul><li>2027-06-29–07-13，報名截止 2027 年 2 月。</li></ul><p><span class="tag">費用待公布</span><span class="tag">報名方式待公布</span></p>`},
+week:{title:"週間行動",sub:"每週的聚集與操練",body:`<h4>每週</h4><ul><li>主日：彼此邀約一同有分。</li><li>小排：週四、週五。本週地點、詩歌、讀經進度：待更新。</li><li>週三餐廳。</li><li>晨興。</li><li>生命讀經。</li><li>家聚會。</li></ul><h4>學期例行</h4><ul><li>學生團聚「讓愛飛揚」：第一個開學的主日。</li><li>大專教職員相調交通。</li></ul><p><span class="tag">小排地點、詩歌、讀經進度每週更新</span><span class="tag">其他時間、地點請洽服事者</span></p>`},
+letter:{title:"瓶中信",sub:"匿名寫話鼓勵供應 · 需審核",body:`<h4>瓶中信</h4><ul><li>大家可以匿名寫些話，彼此鼓勵供應。</li><li>寫好的話需要審核用字遣詞，審核通過後才放上島。</li></ul><p>這頁目前是靜態草稿，還不能在這裡寫信，也不能自動審核。寫好的話要先由服事者收集、審核後再放上島，或另外做一個可以投稿、審核的版本。</p>`}
+};
+let rot=0,scale=1;
+const map=document.getElementById('map'),panel=document.getElementById('panel'),body=document.getElementById('panelBody');
+function apply(){map.style.transform=`rotate(${rot}deg) scale(${scale})`}
+function openIsland(k){const d=DATA[k];if(!d)return;document.querySelectorAll('.island').forEach(e=>e.classList.toggle('active',e.dataset.island===k));body.innerHTML=`<h3>${d.title}</h3><div class="sub">${d.sub}</div>${d.body}`;panel.classList.add('show')}
+document.querySelectorAll('[data-island]').forEach(e=>e.addEventListener('click',()=>openIsland(e.dataset.island)));
+document.querySelectorAll('[data-open]').forEach(e=>e.addEventListener('click',()=>openIsland(e.dataset.open)));
+document.getElementById('closePanel').addEventListener('click',()=>{panel.classList.remove('show');document.querySelectorAll('.island').forEach(e=>e.classList.remove('active'))});
+document.getElementById('nightBtn').addEventListener('click',()=>{const h=document.documentElement;const n=h.getAttribute('data-theme')==='night'?'':'night';h.setAttribute('data-theme',n);document.getElementById('nightBtn').textContent=n?'切換白天':'切換夜晚'});
+let drag=false,sx=0,sr=0;
+const wrap=document.getElementById('mapwrap');
+wrap.addEventListener('pointerdown',e=>{if(e.target.closest('.panel,nav,button'))return;drag=true;sx=e.clientX;sr=rot;wrap.setPointerCapture(e.pointerId)});
+wrap.addEventListener('pointermove',e=>{if(!drag)return;rot=sr+(e.clientX-sx)*0.2;apply()});
+wrap.addEventListener('pointerup',()=>drag=false);
+wrap.addEventListener('wheel',e=>{e.preventDefault();scale=Math.min(1.6,Math.max(0.7,scale+(e.deltaY<0?0.08:-0.08)));apply()},{passive:false});
+apply();
+</script>
+</body>
+</html>
