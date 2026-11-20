@@ -194,7 +194,7 @@ const APPROVED_BOTTLES=[];
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
 function renderBottles(){
   const area=document.getElementById('bottleArea');if(!area)return;
-  let html=`<h4>瓶中信</h4><ul><li>大家可以匿名寫些話，彼此鼓勵供應。</li><li>寫好的話需要審核用字遣詞，審核通過後才放上島。</li></ul>`;
+  let html=`<h4>瓶中信</h4><ul><li>寫一封信，彼此供應</li><li>寫一段字，傳達恩典</li></ul>`;
   html+=`<div class="bottles">`;
   if(!APPROVED_BOTTLES.length){html+=`<button class="bottle" type="button" data-empty="1"><span class="glass"><span class="letter">✉</span></span><span class="cap">這只瓶子還是空的<br>等你寫第一封</span></button>`;}
   APPROVED_BOTTLES.forEach((b,i)=>{
