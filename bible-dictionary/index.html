@@ -1,0 +1,145 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>聖經名字字義辭典</title>
+<style>
+body{margin:0;font-family:"PingFang TC","Microsoft JhengHei",sans-serif;background:#FFFDF5;color:#2b2b2b}
+header{background:#FFF6DE;padding:28px 20px 30px;text-align:center;border-bottom:4px solid #E8B84B}
+.back{display:inline-block;margin-bottom:10px;color:#86641A;text-decoration:none;font-size:15px}
+h1{font-size:38px;margin:4px 0 12px}p.lead{font-size:17px;color:#555;max-width:720px;margin:0 auto;line-height:1.8}
+main{max-width:1080px;margin:0 auto;padding:24px 20px 64px}
+.sbox{position:sticky;top:0;z-index:5;background:#FFFDF5;padding:12px 0 6px}
+.search{width:100%;box-sizing:border-box;padding:14px 16px;font-size:18px;border:2px solid #E8B84B;border-radius:12px;background:#fff}
+.search:focus{outline:none;border-color:#86641A}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 8px}
+.chip{padding:8px 14px;border:1px solid #E8B84B;background:#fff;border-radius:20px;font-size:15px;cursor:pointer;color:#86641A}
+.chip.on{background:#86641A;color:#fff;border-color:#86641A}
+.chip small{opacity:.75;margin-left:3px}
+.row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin:4px 0 14px}
+.count{color:#86641A;font-size:15px}
+.sort{font-size:15px;padding:6px 10px;border:1px solid #E8B84B;border-radius:8px;background:#fff;color:#86641A}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.card{background:#fff;border:1px solid #eee;border-top:4px solid #E8B84B;border-radius:14px;padding:16px 18px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.zh{font-size:24px;font-weight:700;color:#2b2b2b}
+.tag{font-size:12px;padding:3px 9px;border-radius:10px;background:#FFF6DE;color:#86641A;white-space:nowrap}
+.tag.np,.tag.nl{background:#EAF3FB;color:#2E5F8A}
+.tag.g{background:#F4ECFA;color:#6B3F8F}.tag.w{background:#EEF6EC;color:#3F7A3A}
+.orig{font-size:26px;margin:8px 0 2px;line-height:1.4}
+.orig .he{font-family:"SBL Hebrew","Ezra SIL","Noto Serif Hebrew","Times New Roman",serif;direction:rtl;unicode-bidi:isolate}
+.orig .gr{font-family:"SBL Greek","Gentium Plus","Noto Serif","Times New Roman",serif}
+.say{border:1px solid #E8B84B;background:#FFF6DE;border-radius:8px;padding:2px 8px;font-size:14px;cursor:pointer;margin-left:6px;vertical-align:middle}
+.tr{font-family:Georgia,serif;color:#555;font-size:16px}
+.en{color:#888;font-size:15px}
+.mean{font-size:18px;margin:10px 0 6px;line-height:1.7}
+.mean b{color:#86641A}
+.refs{font-size:14px;color:#86641A}
+.note{margin-top:8px;font-size:15px;line-height:1.75;color:#555;background:#FFFBEF;border-left:3px solid #E8B84B;padding:8px 10px;border-radius:0 8px 8px 0}
+mark{background:#FFE58A;color:inherit;padding:0 1px;border-radius:3px}
+.empty{text-align:center;color:#999;padding:40px 0;font-size:17px}
+.about{margin-top:36px;background:#fff;border:1px solid #eee;border-radius:14px;padding:18px 22px;font-size:15px;line-height:1.9;color:#555}
+.about h3{margin:0 0 6px;color:#86641A}
+footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
+@media(max-width:600px){h1{font-size:30px}.list{grid-template-columns:1fr}.zh{font-size:22px}.orig{font-size:24px}}
+</style></head><body>
+<header>
+<a class="back" href="../">← 回到 Boaz的禾場</a>
+<h1>聖經名字字義辭典</h1>
+<p class="lead">新舊約人名、地名、神的名與稱謂，以及經文中保留原文的字詞。每個條目附希伯來文或希臘文原文、音譯、英文、字義和經節出處，並在可能時附上職事亮光。可用中文、英文、原文、音譯或字義搜尋，點 🔊 可以聽原文的讀音。</p>
+</header>
+<main>
+<div class="sbox">
+<input id="q" class="search" type="search" placeholder="搜尋：例如 伯特利、Bethel、בית אל、Πέτρος、平安、創28" autocomplete="off">
+<div class="chips" id="chips"></div>
+</div>
+<div class="row"><div class="count" id="count"></div>
+<select class="sort" id="sort"><option value="book">依類別排列</option><option value="zh">依中文筆畫排列</option><option value="en">依英文字母排列</option></select></div>
+<div class="list" id="list"></div>
+<div class="about">
+<h3>關於這本辭典</h3>
+字義以希伯來文與希臘文的字根為主，並參考主恢復中的職事資料（聖經恢復本經文與註解、生命讀經、李常受文集）。「附註」欄中整理了經文本身對名字的解釋，以及職事對這些名字的屬靈意義所釋放的亮光。<br>
+許多古代名字的字義學者看法不一；凡標「意義不確定」或「或作」的，表示有不止一種解釋。原文的拼法採不加母音符號的寫法，音譯採學術通用的轉寫方式；點 🔊 的讀音是用瀏覽器的現代希伯來語或現代希臘語語音朗讀，僅供參考。<br>
+若要深入研讀，請對照聖經恢復本的註解，以及水流職事站、李常受文集搜尋系統中的相關信息。
+</div>
+</main>
+<footer>Boaz的禾場・聖經名字字義辭典</footer>
+<script src="data-ot-people.js"></script>
+<script src="data-ot-places.js"></script>
+<script src="data-nt.js"></script>
+<script src="data-words.js"></script>
+<script>
+(function(){
+const CATS={op:"舊約人名",ol:"舊約地名",np:"新約人名",nl:"新約地名",g:"神的名與稱謂",w:"原文字詞"};
+const ORDER=["op","ol","np","nl","g","w"];
+// 解析資料
+const D=[];let cat="op",idx=0;
+(window.DICT_RAW||"").split("\n").forEach(l=>{
+  l=l.trim(); if(!l||l.startsWith("//"))return;
+  if(l[0]==="#"){cat=l.slice(1);return;}
+  const f=l.split("|"); if(f.length<6)return;
+  D.push({cat,i:idx++,zh:f[0],orig:f[1],tr:f[2],en:f[3],mean:f[4],refs:f[5],note:f[6]||""});
+});
+// 正規化：去掉希伯來／希臘母音、重音符號，以及音譯的特殊符號
+const strip=s=>s.normalize("NFD").replace(/[̀-֑ͯ-ׇ’‘ʼʻ'\-·]/g,"").replace(/[ς]/g,"σ").toLowerCase();
+// 簡體 → 繁體常見字（方便用簡體搜尋）
+const S2T={"亚":"亞","伯":"伯","约":"約","书":"書","马":"馬","罗":"羅","撒":"撒","冷":"冷","彼":"彼","得":"得","以":"以","利":"利","尔":"爾","赛":"賽","诺":"諾","摩":"摩","西":"西","雅":"雅","各":"各","犹":"猶","太":"太","门":"門","拿":"拿","兰":"蘭","达":"達","乐":"樂","灵":"靈","圣":"聖","经":"經","会":"會","华":"華","恒":"恆","阿":"阿","们":"們","哥":"哥","林":"林","弗":"弗","腓":"腓","帖":"帖","提":"提","来":"來","启":"啟","创":"創","出":"出","民":"民","申":"申","士":"士","路":"路","王":"王","代":"代","拉":"拉","尼":"尼","斯":"斯","伯":"伯","诗":"詩","箴":"箴","传":"傳","歌":"歌","耶":"耶","哀":"哀","结":"結","但":"但","何":"何","珥":"珥","俄":"俄","弥":"彌","鸿":"鴻","哈":"哈","番":"番","该":"該","玛":"瑪","徒":"徒","加":"加","帕":"帕","乌":"烏","迦":"迦","锡":"錫","锐":"銳","汉":"漢","萨":"薩","苏":"蘇","梦":"夢","赐":"賜","爱":"愛","义":"義","话":"話","见":"見","证":"證","岛":"島","国":"國","门":"門","丽":"麗","东":"東","苦":"苦","难":"難","宝":"寶","气":"氣","们":"們","帐":"帳","幕":"幕","说":"說","众":"眾","离":"離","产":"產","业":"業","烧":"燒","祷":"禱","赎":"贖","乐":"樂","开":"開","卫":"衛","萊":"萊","莱":"萊","闪":"閃","挪":"挪","该":"該","隐":"隱","亚":"亞","伦":"倫","泽":"澤","泪":"淚","狮":"獅","谷":"谷","鸽":"鴿","风":"風","长":"長","处":"處","岗":"岡","树":"樹","丰":"豐","满":"滿","时":"時","历":"歷","记":"記","纪":"紀","进":"進","选":"選","远":"遠","边":"邊","陈":"陳","阳":"陽","头":"頭","亲":"親","发":"發","兴":"興","赖":"賴","诗":"詩","复":"復","恢":"恢","职":"職","页":"頁","拦":"攔","忒":"忒","鲁":"魯","买":"買","庙":"廟","殿":"殿","约":"約"};
+const s2t=s=>s.replace(/[一-鿿]/g,c=>S2T[c]||c);
+D.forEach(d=>{d.key=strip([d.zh,d.orig,d.tr,d.en,d.mean,d.refs,d.note].join(" "));});
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const isHe=s=>/[֐-׿]/.test(s);
+let curCat="all";
+const chips=document.getElementById("chips"),list=document.getElementById("list"),cnt=document.getElementById("count"),q=document.getElementById("q"),sortSel=document.getElementById("sort");
+function renderChips(){
+  const n={all:D.length};ORDER.forEach(c=>n[c]=D.filter(d=>d.cat===c).length);
+  chips.innerHTML=[["all","全部"]].concat(ORDER.map(c=>[c,CATS[c]])).map(([c,t])=>`<button class="chip${c===curCat?" on":""}" data-c="${c}">${t}<small>${n[c]}</small></button>`).join("");
+}
+chips.addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;curCat=b.dataset.c;renderChips();render();});
+function hl(text,terms){
+  let h=esc(text); if(!terms.length)return h;
+  terms.forEach(t=>{ if(!t||/[a-zͰ-Ͽ֐-׿]/.test(t))return; // 中文才加亮（原文/音譯含變音符不易對位）
+    h=h.split(esc(t)).join("<mark>"+esc(t)+"</mark>"); });
+  return h;
+}
+function origHTML(o){
+  return o.split(" / ").map(p=>{const he=isHe(p);return `<span class="${he?"he":"gr"}">${esc(p)}</span><button class="say" data-t="${esc(p)}" data-l="${he?"he-IL":"el-GR"}" title="聽讀音">🔊</button>`;}).join(" ");
+}
+function render(){
+  const raw=s2t(q.value.trim());
+  const terms=raw.split(/\s+/).filter(Boolean);
+  const keys=terms.map(strip);
+  let r=D.filter(d=>(curCat==="all"||d.cat===curCat)&&keys.every(k=>d.key.includes(k)));
+  // 排序：名字本身命中者在前
+  const s=sortSel.value;
+  r.sort((a,b)=>{
+    if(keys.length){const sa=score(a,keys),sb=score(b,keys);if(sa!==sb)return sb-sa;}
+    if(s==="zh")return a.zh.localeCompare(b.zh,"zh-Hant-TW-u-co-stroke");
+    if(s==="en")return a.en.localeCompare(b.en,"en");
+    return ORDER.indexOf(a.cat)-ORDER.indexOf(b.cat)||a.i-b.i;
+  });
+  cnt.textContent=`共 ${r.length} 個條目`+(raw?`（搜尋「${raw}」）`:"");
+  if(!r.length){list.innerHTML=`<div class="empty">找不到符合的條目，試試別的寫法，例如英文名或原文。</div>`;return;}
+  list.innerHTML=r.slice(0,600).map(d=>`<div class="card">
+<div class="top"><div class="zh">${hl(d.zh,terms)}</div><span class="tag ${d.cat}">${CATS[d.cat]}</span></div>
+<div class="orig">${origHTML(d.orig)}</div>
+<div><span class="tr">${esc(d.tr)}</span>　<span class="en">${esc(d.en)}</span></div>
+<div class="mean"><b>字義：</b>${hl(d.mean,terms)}</div>
+<div class="refs">📖 ${hl(d.refs,terms)}</div>
+${d.note?`<div class="note">${hl(d.note,terms)}</div>`:""}
+</div>`).join("");
+}
+function score(d,keys){
+  const nm=strip(d.zh+" "+d.en+" "+d.orig+" "+d.tr);let s=0;
+  keys.forEach(k=>{ if(strip(d.zh).replace(/（.*?）/g,"")===k||strip(d.en)===k)s+=10; else if(nm.includes(k))s+=5; else if(strip(d.mean).includes(k))s+=2;});
+  return s;
+}
+list.addEventListener("click",e=>{
+  const b=e.target.closest(".say");if(!b||!("speechSynthesis" in window))return;
+  speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(b.dataset.t);u.lang=b.dataset.l;u.rate=.8;
+  const v=speechSynthesis.getVoices().find(v=>v.lang&&v.lang.startsWith(b.dataset.l.slice(0,2)));if(v)u.voice=v;
+  speechSynthesis.speak(u);
+});
+let t;q.addEventListener("input",()=>{clearTimeout(t);t=setTimeout(()=>{render();const u=new URL(location);q.value?u.searchParams.set("q",q.value):u.searchParams.delete("q");history.replaceState(null,"",u);},120);});
+sortSel.addEventListener("change",render);
+const p=new URLSearchParams(location.search).get("q");if(p)q.value=p;
+renderChips();render();
+})();
+</script>
+</body></html>
