@@ -44,6 +44,9 @@ main{display:grid;grid-template-columns:340px 1fr;gap:0;min-height:calc(100vh - 
 .island .tree{position:absolute;top:2px;right:10px;font-size:18px}
 .island b{font-size:16px;margin-top:2px;color:#234}
 .island span.sub{font-size:12px;color:#4a6b3a}
+.island .deco{font-size:15px;line-height:1.4}
+.center .deco{font-size:16px;line-height:1.4}
+.floatdeco{position:absolute;font-size:20px;z-index:1;animation:bob 5s ease-in-out infinite;pointer-events:none}
 .island:hover{transform:scale(1.06)}
 .island.active{outline:4px solid var(--accent)}
 .bigbottle{position:absolute;width:120px;height:190px;background:none;border:0;padding:0;animation:bob 4s ease-in-out infinite;z-index:3}
@@ -123,14 +126,15 @@ footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
 <path d="M380 380 C 180 460, 120 420, 110 330"/>
 <path class="slow" d="M380 380 C 260 200, 240 180, 250 170"/>
 </svg>
-<div class="center"><span class="tree">🌴</span><b>中興島</b><span>拖曳旋轉 · 滾輪縮放<br>點小島看內容</span></div>
-<button class="island" type="button" data-island="center" style="left:300px;top:30px"><span class="tree">🌴</span><span class="g">⌂</span><b>學生中心行動</b><span class="sub">聚集 · 讀書 · 相調</span></button>
-<button class="island" type="button" data-island="pray" style="left:540px;top:150px"><span class="tree">🌴</span><span class="g">✦</span><b>代禱小島</b><span class="sub">彼此代禱 · 記念</span></button>
-<button class="island" type="button" data-island="garden" style="left:560px;top:380px"><span class="tree">🌴</span><span class="g">❦</span><b>讀書園地</b><span class="sub">近期水流負擔</span></button>
-<button class="island" type="button" data-island="boat" style="left:380px;top:560px"><span class="tree">🌴</span><span class="g">⛵</span><b>福音船</b><span class="sub">福音節期 · 福音餐廳</span></button>
-<button class="island" type="button" data-island="camp" style="left:80px;top:520px"><span class="tree">🌴</span><span class="g">▲</span><b>寒暑期生活行動</b><span class="sub">特會 · 生活行動</span></button>
-<button class="island" type="button" data-island="week" style="left:40px;top:260px"><span class="tree">🌴</span><span class="g">▦</span><b>週間行動</b><span class="sub">主日 · 小排 · 晨興</span></button>
-<button class="bigbottle" type="button" data-island="letter" style="left:150px;top:110px" aria-label="瓶中信"><span class="cork"></span><span class="neck"></span><span class="glass"><span class="letter l1">✉</span><span class="letter l2">✉</span></span><span class="cap">瓶中信</span><span class="sub">彼此勉勵、鼓勵、傳達代禱</span></button>
+<span class="floatdeco" style="left:250px;top:60px">🦋</span><span class="floatdeco" style="left:600px;top:300px;animation-duration:6s">🌸</span><span class="floatdeco" style="left:90px;top:430px;animation-duration:4s">🐦</span><span class="floatdeco" style="left:480px;top:640px;animation-duration:7s">🌼</span><span class="floatdeco" style="left:620px;top:520px;animation-duration:5s">🦋</span>
+<div class="center"><span class="tree">🌴</span><b>中興島</b><span class="deco">🌸 🌼 🦋 🌳</span><span>拖曳旋轉 · 滾輪縮放<br>點小島看內容</span></div>
+<button class="island" type="button" data-island="center" style="left:300px;top:30px;background:linear-gradient(180deg,#b5e48c 0 52%,#7ec850 53% 68%,#ffe9b8 69% 100%)"><span class="tree">🌳</span><span class="g">⌂</span><b>學生中心行動</b><span class="deco">🌸 🐦 🦋</span><span class="sub">聚集 · 讀書 · 相調</span></button>
+<button class="island" type="button" data-island="pray" style="left:540px;top:150px;background:linear-gradient(180deg,#d8f3dc 0 52%,#95d5b2 53% 68%,#ffe9b8 69% 100%)"><span class="tree">🌿</span><span class="g">✦</span><b>代禱小島</b><span class="deco">🕊️ 🌸 🤍</span><span class="sub">彼此代禱 · 記念</span></button>
+<button class="island" type="button" data-island="garden" style="left:560px;top:380px;background:linear-gradient(180deg,#e9f5a1 0 52%,#a3c585 53% 68%,#ffe9b8 69% 100%)"><span class="tree">🌲</span><span class="g">❦</span><b>讀書園地</b><span class="deco">🦉 📚 🍂</span><span class="sub">近期水流負擔</span></button>
+<button class="island" type="button" data-island="boat" style="left:380px;top:560px;background:linear-gradient(180deg,#a8e6cf 0 52%,#5ec8b0 53% 68%,#ffe9b8 69% 100%)"><span class="tree">🐟</span><span class="g">⛵</span><b>福音船</b><span class="deco">🐠 🕊️ 🌊</span><span class="sub">福音節期 · 福音餐廳</span></button>
+<button class="island" type="button" data-island="camp" style="left:80px;top:520px;background:linear-gradient(180deg,#cdeac0 0 52%,#8ab17d 53% 68%,#ffe9b8 69% 100%)"><span class="tree">🌲</span><span class="g">▲</span><b>寒暑期生活行動</b><span class="deco">🏕️ 🔥 🐻</span><span class="sub">特會 · 生活行動</span></button>
+<button class="island" type="button" data-island="week" style="left:40px;top:260px;background:linear-gradient(180deg,#d9ed92 0 52%,#a7c957 53% 68%,#ffe9b8 69% 100%)"><span class="tree">🌻</span><span class="g">▦</span><b>週間行動</b><span class="deco">🌻 🐝 🌞</span><span class="sub">主日 · 小排 · 晨興</span></button>
+<span class="floatdeco" style="left:120px;top:280px;animation-duration:6s">🐚 ⭐ 🐢</span><button class="bigbottle" type="button" data-island="letter" style="left:150px;top:110px" aria-label="瓶中信"><span class="cork"></span><span class="neck"></span><span class="glass"><span class="letter l1">✉</span><span class="letter l2">✉</span></span><span class="cap">瓶中信</span><span class="sub">彼此勉勵、鼓勵、傳達代禱</span></button>
 </div>
 <button class="mascot" type="button" id="whale"><span class="badge" id="whaleBadge" style="display:none">!</span><span class="em">🐋</span><b>鯨魚提醒</b><p id="whaleText">最近的行動載入中……</p></button>
 <button class="mascot" type="button" id="dolphin"><span class="em">🐬</span><b>海豚預告</b><p id="dolphinText">接著要來的行動載入中……</p></button>
