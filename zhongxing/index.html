@@ -144,7 +144,7 @@ footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
 </style>
 </head>
 <body>
-<div class="intromodal" id="introModal"><div class="card"><div style="font-size:48px">🏝️</div><h2>歡迎來到中興學生基督徒小島</h2><p>這裡是為著讓大家知道中興大學基督徒的召會生活。</p><button class="primary" type="button" id="enterIsland">進入小島 →</button></div></div>
+<div class="intromodal" id="introModal"><div class="card"><div id="tourIcon" style="font-size:48px">🏝️</div><h2 id="tourTitle"></h2><p id="tourText"></p><p><button class="primary" type="button" id="tourNext">下一步 →</button></p><p><button type="button" id="tourSkip" style="background:none;border:0;color:#888;cursor:pointer;font-size:14px">跳過介紹</button></p><p id="tourStep" style="color:#999;font-size:13px;margin:0"></p></div></div>
 <header>
 <div class="logo">中興島</div>
 <div><h1>中興學生弟兄姊妹島</h1><p>中興大學 · 弟兄姊妹與福音朋友 · 一起認識主、享受召會生活</p></div>
@@ -392,8 +392,23 @@ function zoomBy(d){scale=Math.min(1.6,Math.max(0.7,scale+d));apply()}
 document.getElementById('zoomIn').addEventListener('click',()=>zoomBy(0.15));
 document.getElementById('zoomOut').addEventListener('click',()=>zoomBy(-0.15));
 wrap.addEventListener('wheel',e=>{e.preventDefault();scale=Math.min(1.6,Math.max(0.7,scale+(e.deltaY<0?0.08:-0.08)));apply()},{passive:false});
-document.getElementById('enterIsland').addEventListener('click',()=>{document.getElementById('introModal').style.display='none'});
+const TOUR_STEPS=[
+{icon:"🏝️",title:"中興島",text:"大家的公告欄和島民聚集的地方，點一下可以看到送給大家的話。"},
+{icon:"🏠",title:"學生中心行動",text:"每週在學生中心的聚集：週二與照顧家晨興、週四校園晨興、週五集中晚禱、週六健康新生活。"},
+{icon:"📅",title:"週間行動",text:"每週的聚集與操練：主日彼此邀約、小排、週三餐廳、晨興、生命讀經、家聚會。"},
+{icon:"📚",title:"讀書園地",text:"期中、期末各兩週讀書園，還有近期的水流負擔。"},
+{icon:"⛵",title:"福音船",text:"作得人的漁夫，撒網到水深之處；還可以玩撒網捕魚，把魚放進島民的魚池。"},
+{icon:"🙏",title:"代禱小島",text:"彼此代禱的代禱牆，把想代禱的人貼上來，大家一起為他禱告。"},
+{icon:"🏕️",title:"寒暑期生活行動",text:"寒暑期特會和生活行動的報名資訊都在這裡。"},
+{icon:"🏝️",title:"歡迎大家來到中興大學生基督徒的島嶼",text:"這裡是為著讓大家知道中興大學基督徒的召會生活。"},
+{icon:"👋",title:"成為島民，讓大家認識你",text:"可以先到中興島上成為島民：點選中興島，輸入名字。",action:"islander"}
+];
+let tourIdx=0;
+function renderTour(){const st=TOUR_STEPS[tourIdx];document.getElementById('tourIcon').textContent=st.icon;document.getElementById('tourTitle').textContent=st.title;document.getElementById('tourText').textContent=st.text;document.getElementById('tourStep').textContent=(tourIdx+1)+' / '+TOUR_STEPS.length;document.getElementById('tourNext').textContent=st.action==='islander'?'去中興島成為島民 →':'下一步 →';document.getElementById('tourSkip').textContent=st.action==='islander'?'直接開始探索':'跳過介紹';}
+document.getElementById('tourNext').addEventListener('click',()=>{const st=TOUR_STEPS[tourIdx];if(st.action==='islander'){document.getElementById('introModal').style.display='none';openIsland('board');return;}tourIdx++;if(tourIdx>=TOUR_STEPS.length){document.getElementById('introModal').style.display='none';return;}renderTour();});
+document.getElementById('tourSkip').addEventListener('click',()=>{document.getElementById('introModal').style.display='none';});
 document.getElementById('introModal').addEventListener('click',e=>{if(e.target.id==='introModal')e.target.style.display='none'});
+renderTour();
 window.addEventListener('resize',apply);refreshMascots();updateShark();apply();
 </script>
 </body>
