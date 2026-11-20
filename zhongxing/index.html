@@ -176,7 +176,7 @@ function refreshMascots(){
   const up=DATED.filter(a=>daysUntil(a.start)>=-2).sort((a,b)=>a.start-b.start);
   const w=up[0],d=up[1];
   const badge=document.getElementById('whaleBadge');
-  if(w){const n=daysUntil(w.start);whaleMsg=n<=0?"正在進行："+w.name+"（"+w.when+"）":"最近的行動："+w.name+"（"+w.when+"），還有 "+n+" 天";badge.style.display=n<=14?"flex":"none";}
+  if(w){const n=daysUntil(w.start);whaleMsg=n<=0?"正在進行："+w.name+"（"+w.when+"）":"最近的行動："+w.name+"（"+w.when+"），還有 "+n+" 天";badge.style.display="flex";}
   else{whaleMsg="目前沒有已確認的臨近行動。";badge.style.display="none";}
   if(d){const n=daysUntil(d.start);dolphinMsg="接著是："+d.name+"（"+d.when+"），還有 "+n+" 天";}
   else{dolphinMsg="再往後還沒有已確認的行動。";}
