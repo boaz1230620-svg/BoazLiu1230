@@ -143,9 +143,9 @@ footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
 .walker2{animation:walk 5s ease-in-out infinite alternate-reverse}
 @keyframes walk{0%{transform:translateX(-12px) translateY(0)}50%{transform:translateX(0) translateY(-2px)}100%{transform:translateX(12px) translateY(0)}}
 .wander{animation:wander 7s ease-in-out infinite}
-@keyframes wander{0%{transform:translate(-16px,0)}25%{transform:translate(8px,-2px)}50%{transform:translate(16px,0)}75%{transform:translate(-6px,-2px)}100%{transform:translate(-16px,0)}}
+@keyframes wander{0%{transform:translate(-24px,0)}25%{transform:translate(12px,-3px)}50%{transform:translate(24px,0)}75%{transform:translate(-8px,-3px)}100%{transform:translate(-24px,0)}}
 .pace{animation:pace 5s ease-in-out infinite}
-@keyframes pace{0%{transform:translate(-8px,0)}50%{transform:translate(8px,0)}100%{transform:translate(-8px,0)}}
+@keyframes pace{0%{transform:translate(-12px,0)}50%{transform:translate(12px,0)}100%{transform:translate(-12px,0)}}
 .bob{animation:bob 3s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 .hop{animation:hop 3.4s ease-in-out infinite}
@@ -167,7 +167,7 @@ footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
 .mascotart{width:56px;height:46px;overflow:visible}
 .emerge{animation:emerge 4s ease-in-out infinite}
 .emerge2{animation:emerge 5s ease-in-out .8s infinite}
-@keyframes emerge{0%,100%{transform:translateY(8px)}50%{transform:translateY(-14px)}}
+@keyframes emerge{0%,100%{transform:translateY(10px)}50%{transform:translateY(-18px)}}
 .lampglow{opacity:0}
 [data-theme="night"] .lampglow{opacity:.85;animation:lampulse 2s ease-in-out infinite alternate}
 @keyframes lampulse{from{opacity:.55}to{opacity:.95}}
@@ -365,6 +365,7 @@ function readBottle(i){
 
 function loadJSON(k){try{return JSON.parse(localStorage.getItem(k)||'[]')}catch(e){return[]}}
 function saveJSON(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function armRemove(b,fn){if(b.dataset.armed!=='1'){b.dataset.armed='1';b.dataset.orig=b.textContent;b.textContent='確定？';setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.textContent=b.dataset.orig||'✕';}},3000);return;}fn();}
 let islanders=loadJSON('zx_islanders_v1');
 let fishes=loadJSON('zx_fish_v1');
 let prayers=loadJSON('zx_prayers_v1');
@@ -428,8 +429,8 @@ function renderIslanders(){
     }).join('');
   }
   box.querySelectorAll('.rosterchip').forEach(ch=>ch.addEventListener('click',()=>{const el=document.getElementById('islander-'+ch.dataset.islander);if(el){el.scrollIntoView({behavior:'smooth',block:'nearest'});el.classList.add('hl');setTimeout(()=>el.classList.remove('hl'),2000)}}));
-  box.querySelectorAll('[data-unfish]').forEach(b=>b.addEventListener('click',()=>{if(!confirm('把這條魚從魚池移走嗎？'))return;fishes=fishes.filter(f=>f.id!==b.dataset.unfish);saveJSON('zx_fish_v1',fishes);renderIslanders()}));
-  box.querySelectorAll('[data-unislander]').forEach(b=>b.addEventListener('click',()=>{if(!confirm('把這位島民和他的魚池一起移除嗎？'))return;const id=b.dataset.unislander;islanders=islanders.filter(i=>i.id!==id);fishes=fishes.filter(f=>f.ownerId!==id);saveJSON('zx_islanders_v1',islanders);saveJSON('zx_fish_v1',fishes);renderIslanders()}));
+  box.querySelectorAll('[data-unfish]').forEach(b=>b.addEventListener('click',()=>armRemove(b,()=>{fishes=fishes.filter(f=>f.id!==b.dataset.unfish);saveJSON('zx_fish_v1',fishes);renderIslanders();})));
+  box.querySelectorAll('[data-unislander]').forEach(b=>b.addEventListener('click',()=>armRemove(b,()=>{const id=b.dataset.unislander;islanders=islanders.filter(i=>i.id!==id);fishes=fishes.filter(f=>f.ownerId!==id);saveJSON('zx_islanders_v1',islanders);saveJSON('zx_fish_v1',fishes);renderIslanders();})));
 }
 function renderResidents(){
   const box=document.getElementById('residentsList');if(!box)return;
@@ -450,7 +451,7 @@ function renderPrayerWall(){
   if(!prayers.length){box.innerHTML='<p>代禱牆還是空的。把名字和科系貼上來，大家一起為他禱告。</p>';return}
   box.innerHTML=prayers.slice().reverse().map(p=>`<div class="prayer"><div><b>${esc(p.name)}</b>${p.dept?' · '+esc(p.dept):''}</div><div class="prayline">請為他禱告 🙏 已有 ${p.count||0} 人禱告</div><div><button type="button" class="mini" data-prayed="${p.id}">🙏 我為他禱告</button> <button type="button" class="mini" data-unpray="${p.id}" aria-label="移除">✕</button></div></div>`).join('');
   box.querySelectorAll('[data-prayed]').forEach(b=>b.addEventListener('click',()=>{const pr=prayers.find(x=>x.id===b.dataset.prayed);if(pr){pr.count=(pr.count||0)+1;saveJSON('zx_prayers_v1',prayers);renderPrayerWall()}}));
-  box.querySelectorAll('[data-unpray]').forEach(b=>b.addEventListener('click',()=>{if(!confirm('把這則代禱從牆上拿下來嗎？'))return;prayers=prayers.filter(x=>x.id!==b.dataset.unpray);saveJSON('zx_prayers_v1',prayers);renderPrayerWall()}));
+  box.querySelectorAll('[data-unpray]').forEach(b=>b.addEventListener('click',()=>armRemove(b,()=>{prayers=prayers.filter(x=>x.id!==b.dataset.unpray);saveJSON('zx_prayers_v1',prayers);renderPrayerWall();})));
 }
 function addPrayer(){
   const n=(document.getElementById('prayName').value||'').trim();
