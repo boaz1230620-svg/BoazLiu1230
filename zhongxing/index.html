@@ -263,7 +263,7 @@ footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
 <button class="mascot" type="button" id="dolphin" title="海豚提醒：點一下看生活方面通知"><span class="badge" id="dolphinBadge">!</span><svg class="mascotart" viewBox="-32 -26 64 52" width="56" height="46" aria-hidden="true"><ellipse cx="0" cy="16" rx="29" ry="7" fill="#4aa8e0"/><path d="M-29,14 Q-15,10 0,14 Q15,18 29,14" stroke="#9ed0ea" stroke-width="2" fill="none"/><g class="emerge2"><use href="#ch-dolphin" transform="translate(0,0)"/></g></svg></button>
 <div class="panel" id="panel"><button class="close" type="button" id="closePanel">✕</button><div id="panelBody"></div></div>
 <div class="hint">點小島看內容 · ＋ － 縮放</div><div class="zoomctl"><button type="button" id="zoomIn" aria-label="放大">＋</button><button type="button" id="zoomOut" aria-label="縮小">－</button></div>
-<div class="stream"><span>🌊 主日：彼此邀約一同有分 &nbsp;→&nbsp; 小排：週四、週五 &nbsp;→&nbsp; 週三餐廳 &nbsp;→&nbsp; 晨興 &nbsp;→&nbsp; 生命讀經 &nbsp;→&nbsp; 家聚會 &nbsp;→&nbsp; 主日：彼此邀約一同有分 &nbsp;→&nbsp; 小排：週四、週五 &nbsp;→&nbsp; 週三餐廳 &nbsp;→&nbsp; 晨興 &nbsp;→&nbsp; 生命讀經 &nbsp;→&nbsp; 家聚會 &nbsp;→&nbsp;</span></div>
+<div class="stream"><span id="streamText"></span></div>
 </section>
 </main>
 <footer>這是照著我所專切期待並盼望的，就是沒有一事會叫我羞愧，只要凡事放膽，無論是生，是死，總叫基督在我身體上，現今也照常顯大，（腓 1:20）</footer>
@@ -295,6 +295,7 @@ function refreshMascots(){
   else{whaleMsg="目前沒有已確認的臨近行動。";whaleHeadline="";badge.style.display="none";document.getElementById('whaleBubble').style.display="none";}
   document.getElementById('whale').dataset.island=w?w.island:"camp";
   document.getElementById('dolphinBadge').style.display=LIFE_NOTICES.length?"flex":"none";
+  const st=document.getElementById('streamText');if(st){const t=whaleHeadline?whaleHeadline+' '+whaleMsg:whaleMsg;st.textContent=(t+'　　•　　').repeat(4);}
 }
 function openReminder(){
   const w=document.getElementById('whale');
