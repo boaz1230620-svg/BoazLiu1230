@@ -46,6 +46,17 @@ main{display:grid;grid-template-columns:340px 1fr;gap:0;min-height:calc(100vh - 
 .island span.sub{font-size:12px;color:#4a6b3a}
 .island:hover{transform:scale(1.06)}
 .island.active{outline:4px solid var(--accent)}
+.bigbottle{position:absolute;width:120px;height:190px;background:none;border:0;padding:0;animation:bob 4s ease-in-out infinite;z-index:3}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+.bigbottle .cork{position:absolute;top:0;left:44px;width:32px;height:22px;background:#c9a06a;border:2px solid #a67c52;border-radius:5px;z-index:2}
+.bigbottle .neck{position:absolute;top:20px;left:42px;width:36px;height:26px;background:linear-gradient(90deg,rgba(190,235,220,.9),rgba(120,200,180,.9) 50%,rgba(190,235,220,.9));border:2px solid #7fb8a8;border-bottom:0;border-radius:8px 8px 0 0}
+.bigbottle .glass{position:absolute;top:44px;left:0;width:120px;height:120px;background:linear-gradient(90deg,rgba(190,235,220,.75),rgba(120,200,180,.75) 50%,rgba(190,235,220,.75));border:2px solid #7fb8a8;border-radius:22px 22px 30px 30px;overflow:hidden}
+.bigbottle .glass .letter{position:absolute;width:78px;height:44px;background:#fffdf4;border:1px solid #e8d9a0;border-radius:3px;box-shadow:0 2px 4px rgba(0,0,0,.2);font-size:20px;line-height:44px;text-align:center}
+.bigbottle .glass .l1{left:18px;top:14px;transform:rotate(-6deg)}
+.bigbottle .glass .l2{left:24px;top:56px;transform:rotate(5deg)}
+.bigbottle .cap{position:absolute;top:170px;left:0;width:120px;text-align:center;font-size:15px;font-weight:700;color:#234}
+.bigbottle .sub{position:absolute;top:192px;left:0;width:120px;text-align:center;font-size:12px;color:#4a6b3a}
+.bigbottle.active .glass{outline:4px solid var(--accent)}
 .mascot{position:absolute;z-index:6;background:rgba(255,255,255,.95);border:1px solid #ddd;border-radius:18px;padding:10px 12px;box-shadow:0 6px 18px rgba(0,0,0,.15);max-width:230px;text-align:left}
 .mascot .em{font-size:30px}
 .mascot b{font-size:15px}
@@ -119,7 +130,7 @@ footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
 <button class="island" type="button" data-island="boat" style="left:380px;top:560px"><span class="tree">🌴</span><span class="g">⛵</span><b>福音船</b><span class="sub">福音節期 · 福音餐廳</span></button>
 <button class="island" type="button" data-island="camp" style="left:80px;top:520px"><span class="tree">🌴</span><span class="g">▲</span><b>寒暑期生活行動</b><span class="sub">特會 · 生活行動</span></button>
 <button class="island" type="button" data-island="week" style="left:40px;top:260px"><span class="tree">🌴</span><span class="g">▦</span><b>週間行動</b><span class="sub">主日 · 小排 · 晨興</span></button>
-<button class="island" type="button" data-island="letter" style="left:180px;top:120px"><span class="tree">🌴</span><span class="g">✉</span><b>瓶中信</b><span class="sub">匿名鼓勵 · 需審核</span></button>
+<button class="bigbottle" type="button" data-island="letter" style="left:150px;top:110px" aria-label="瓶中信"><span class="cork"></span><span class="neck"></span><span class="glass"><span class="letter l1">✉</span><span class="letter l2">✉</span></span><span class="cap">瓶中信</span><span class="sub">匿名鼓勵 · 需審核</span></button>
 </div>
 <button class="mascot" type="button" id="whale"><span class="badge" id="whaleBadge" style="display:none">!</span><span class="em">🐋</span><b>鯨魚提醒</b><p id="whaleText">最近的行動載入中……</p></button>
 <button class="mascot" type="button" id="dolphin"><span class="em">🐬</span><b>海豚預告</b><p id="dolphinText">接著要來的行動載入中……</p></button>
@@ -197,10 +208,10 @@ function readBottle(i){
 let rot=0,scale=1;
 const map=document.getElementById('map'),panel=document.getElementById('panel'),body=document.getElementById('panelBody');
 function apply(){map.style.transform=`rotate(${rot}deg) scale(${scale})`}
-function openIsland(k){const d=DATA[k];if(!d)return;document.querySelectorAll('.island').forEach(e=>e.classList.toggle('active',e.dataset.island===k));body.innerHTML=`<h3>${d.title}</h3><div class="sub">${d.sub}</div>${d.body}`;panel.classList.add('show');if(k==='letter')renderBottles()}
+function openIsland(k){const d=DATA[k];if(!d)return;document.querySelectorAll('.island,.bigbottle').forEach(e=>e.classList.toggle('active',e.dataset.island===k));body.innerHTML=`<h3>${d.title}</h3><div class="sub">${d.sub}</div>${d.body}`;panel.classList.add('show');if(k==='letter')renderBottles()}
 document.querySelectorAll('[data-island]').forEach(e=>e.addEventListener('click',()=>openIsland(e.dataset.island)));
 document.querySelectorAll('[data-open]').forEach(e=>e.addEventListener('click',()=>openIsland(e.dataset.open)));
-document.getElementById('closePanel').addEventListener('click',()=>{panel.classList.remove('show');document.querySelectorAll('.island').forEach(e=>e.classList.remove('active'))});
+document.getElementById('closePanel').addEventListener('click',()=>{panel.classList.remove('show');document.querySelectorAll('.island,.bigbottle').forEach(e=>e.classList.remove('active'))});
 document.getElementById('nightBtn').addEventListener('click',()=>{const h=document.documentElement;const n=h.getAttribute('data-theme')==='night'?'':'night';h.setAttribute('data-theme',n);document.getElementById('nightBtn').textContent=n?'切換白天':'切換夜晚'});
 document.getElementById('whale').addEventListener('click',()=>openIsland(document.getElementById('whale').dataset.island||'camp'));
 document.getElementById('dolphin').addEventListener('click',()=>openIsland(document.getElementById('dolphin').dataset.island||'camp'));
