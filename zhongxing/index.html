@@ -300,7 +300,7 @@ boat:{title:"福音船",sub:"福音節期 · 福音餐廳",body:`<p class="theme
 camp:{title:"寒暑期生活行動",sub:"寒暑期特會 · 生活行動",body:`<p class="slogan">『耶穌到了該撒利亞腓立比的境內，就問祂的門徒說，人說人子是誰？』<span class="ref">太十六13</span></p><h4>報名資訊</h4><p class="signup"><a href="https://forms.gle/khjbF2Vrart9FQUa8" target="_blank" rel="noopener"><button class="primary" type="button">報名資訊 →</button></a></p><h4>寒假期末特會</h4><ul><li>第一梯：2026-12-27–29，萊馥度假村，逢甲、中興、中台、中教大、桃園大專。</li><li>第二梯：2027-01-10–12，萊馥度假村。</li></ul>`},
 week:{title:"週間行動",sub:"每週的聚集與操練",body:`<p class="slogan">『不可放棄我們自己的聚集，好像有些人習慣了一樣，倒要彼此勸勉；既看見那日子臨近，就更當如此。』<span class="ref">來十25</span></p><h4>每週</h4><ul><li>週二：與照顧家晨興。</li><li>週三：福音晚餐。</li><li>週四：校園晨興。</li><li>週五：集中晚禱。</li><li>週六：健康新生活。</li><li>週日：福音晚餐。</li></ul><p><a class="primary" href="https://docs.google.com/spreadsheets/d/1IePGgy8okTFTTTf7D2FnYrQugsyUWUzjf9bUG_VrZJ4/edit?gid=0#gid=0" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none">本學期讀經排讀經進度連結</a></p><h4>學期例行</h4><ul><li>學生團聚「讓愛飛揚」：第一個開學的主日。</li><li>大專教職員相調交通。</li></ul>`},
 letter:{title:"瓶中信",sub:"彼此勉勵、鼓勵、傳達代禱",body:`<div id="bottleArea"></div>`},
-board:{title:"公告欄",sub:"送給大家的話",body:`<h4>島民的話</h4><div class="board"><span class="pin">📌</span><div class="paper"><p class="verse">『願恩典與一切在不朽壞之中，愛我們主耶穌基督的人同在。』</p><p class="ref">弗六24</p></div><p class="cheer">大家加油！一同奔跑屬天賽程。</p></div><h4>重要的事項</h4><ul><li>本學期書報：亞伯拉罕以撒雅各的神。</li></ul><h4>島民與魚池</h4><div id="islanders"></div><p><input id="newIslander" placeholder="島民名字" maxlength="20"></p><p><button class="primary" type="button" id="addIslanderBtn">加入島民</button></p><p class="fine">島民和魚池先存在這支手機裡；想讓大家都看到，可以用共用的表單收集，再由服事者放上來。</p>`}
+board:{title:"公告欄",sub:"送給大家的話",body:`<h4>島民的話</h4><div class="board"><span class="pin">📌</span><div class="paper"><p class="verse">『願恩典與一切在不朽壞之中，愛我們主耶穌基督的人同在。』</p><p class="ref">弗六24</p></div><p class="cheer">大家加油！一同奔跑屬天賽程。</p></div><h4>重要的事項</h4><ul><li>本學期書報：亞伯拉罕以撒雅各的神。</li></ul><h4>島民與魚池</h4><div id="islanders"></div><p><input id="newIslander" placeholder="島民名字" maxlength="20"></p><p><select id="newAvatar"><option>👦 男孩</option><option>👧 女孩</option><option>🧑 同學</option><option>👨 弟兄</option><option>👩 姊妹</option><option>🧑‍🎓 學生</option><option>🐰 兔子</option><option>🦊 狐狸</option><option>🐻 熊熊</option><option>🐼 貓熊</option><option>🦁 獅子</option><option>🐸 青蛙</option></select></p><p><button class="primary" type="button" id="addIslanderBtn">加入島民</button></p><p class="fine">加入後，大家在任何手機上都看得到你和你的魚池。</p>`}
 };
 const DATED=[
 {name:"期末特會第一梯",short:"期末特會",when:"2026-12-27–29",start:new Date(2026,11,27),island:"camp"},
@@ -365,10 +365,40 @@ function readBottle(i){
 
 function loadJSON(k){try{return JSON.parse(localStorage.getItem(k)||'[]')}catch(e){return[]}}
 function saveJSON(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
-function armRemove(b,fn){if(b.dataset.armed!=='1'){b.dataset.armed='1';b.dataset.orig=b.textContent;b.textContent='確定？';setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.textContent=b.dataset.orig||'✕';}},3000);return;}fn();}
-let islanders=loadJSON('zx_islanders_v1');
-let fishes=loadJSON('zx_fish_v1');
-let prayers=loadJSON('zx_prayers_v1');
+const SHEET_ID='1nLd5TiCTYsLB-ukX1mRHrjlBy91nBw7eL6MvEMoPgKg';
+const GID={islanders:1693753822,fish:1603654443,prayers:1746288813};
+const FORM={
+ islander:{url:'https://docs.google.com/forms/d/e/1FAIpQLSdBuXwD9W0Rdm6mJMchIh-6XT4kVzih61AD0hPx1N9BVLIIoQ/formResponse',name:'entry.1002519807',avatar:'entry.912379460',id:'entry.33080698'},
+ fish:{url:'https://docs.google.com/forms/d/e/1FAIpQLSfyxj2Q_K2XbxwJN7-kwKIUt9x7YZHx314vcSER8Wf1zfFD4A/formResponse',kind:'entry.336398770',name:'entry.912824115',owner:'entry.1337145809',id:'entry.863698905'},
+ prayer:{url:'https://docs.google.com/forms/d/e/1FAIpQLSdJ1Y2kA_kuGDoOBZmWcxkNryJKAmeuW1F6euDI3Hh7dn9LfQ/formResponse',name:'entry.1267754037',dept:'entry.674771517',id:'entry.1247845435'}
+};
+const AVATARS=['👦 男孩','👧 女孩','🧑 同學','👨 弟兄','👩 姊妹','🧑‍🎓 學生','🐰 兔子','🦊 狐狸','🐻 熊熊','🐼 貓熊','🦁 獅子','🐸 青蛙'];
+function postForm(url,params){try{const b=new URLSearchParams(params);fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:b.toString()}).catch(()=>{})}catch(e){}}
+function parseCSV(t){const rows=[];let cur=[''],q=false,f='';for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else{q=false}}else{f+=c}}else{if(c=='"'){q=true}else if(c==','){cur.push(f);f=''}else if(c=='\n'){cur.push(f);rows.push(cur);cur=[''];f=''}else if(c!='\r'){f+=c}}}if(f!==''||cur.length>1){cur.push(f);rows.push(cur)}return rows;}
+function csvURL(gid){return 'https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:csv&gid='+gid+'&_='+Date.now();}
+function savePrayed(){saveJSON('zx_prayed_v1',[...prayedIds]);}
+function avatarEmoji(it){const a=(it.avatar||'').trim();if(a)return a.split(' ')[0];return (it.name||'?').slice(0,1);}
+async function loadShared(){
+  try{
+    const [ri,rf,rp]=await Promise.all([fetch(csvURL(GID.islanders)).then(r=>r.text()),fetch(csvURL(GID.fish)).then(r=>r.text()),fetch(csvURL(GID.prayers)).then(r=>r.text())]);
+    const fromI=parseCSV(ri).slice(1).map(r=>({id:(r[3]||'').trim(),name:(r[1]||'').trim(),avatar:(r[2]||'').trim()})).filter(x=>x.id&&x.name);
+    const fromF=parseCSV(rf).slice(1).map(r=>{const kind=(r[1]||'').trim();const k=FISH_KINDS.find(x=>x.label===kind);return{id:(r[4]||'').trim(),label:kind,name:(r[2]||'').trim(),ownerId:(r[3]||'').trim(),em:k?k.em:'🐟',svg:k?k.svg:undefined,vb:k?k.vb:undefined};}).filter(x=>x.id&&x.name);
+    const fromP=parseCSV(rp).slice(1).map(r=>({id:(r[3]||'').trim(),name:(r[1]||'').trim(),dept:(r[2]||'').trim()})).filter(x=>x.id&&x.name);
+    const pendI=loadJSON('zx_pending_islanders_v1'),pendF=loadJSON('zx_pending_fish_v1'),pendP=loadJSON('zx_pending_prayers_v1');
+    const idsI=new Set(fromI.map(x=>x.id)),idsF=new Set(fromF.map(x=>x.id)),idsP=new Set(fromP.map(x=>x.id));
+    islanders=fromI.concat(pendI.filter(x=>x.id&&!idsI.has(x.id)));
+    fishes=fromF.concat(pendF.filter(x=>x.id&&!idsF.has(x.id)));
+    prayers=fromP.concat(pendP.filter(x=>x.id&&!idsP.has(x.id)));
+    saveJSON('zx_pending_islanders_v1',pendI.filter(x=>!idsI.has(x.id)));
+    saveJSON('zx_pending_fish_v1',pendF.filter(x=>!idsF.has(x.id)));
+    saveJSON('zx_pending_prayers_v1',pendP.filter(x=>!idsP.has(x.id)));
+    renderIslanders();renderResidents();renderFishGame();renderPrayerWall();
+  }catch(e){}
+}
+let islanders=loadJSON('zx_pending_islanders_v1');
+let fishes=loadJSON('zx_pending_fish_v1');
+let prayers=loadJSON('zx_pending_prayers_v1');
+let prayedIds=new Set(loadJSON('zx_prayed_v1'));
 const FISH_KINDS=[
 {em:'🦈',label:'鯊魚',w:6,svg:'ch-fish-shark',vb:'-22 -14 40 28'},
 {em:'🐋',label:'鯨魚',w:6,svg:'ch-whale',vb:'-32 -26 64 52'},
@@ -411,8 +441,11 @@ function putFish(){
   const owner=document.getElementById('fishOwner').value;
   if(!name){if(err)err.textContent='請先給這條魚取個名字（福音朋友的名字）。';return}
   if(!owner){if(err)err.textContent='請選一個魚池；還沒有島民的話，先到中興島加入島民。';return}
-  fishes.push({id:'f'+Date.now(),em:pendingFish.em,svg:pendingFish.svg,vb:pendingFish.vb,label:pendingFish.label,name:name,ownerId:owner,ts:Date.now()});
-  saveJSON('zx_fish_v1',fishes);
+  const fid='f'+Date.now().toString(36)+Math.floor(Math.random()*1e6).toString(36);
+  postForm(FORM.fish.url,{[FORM.fish.kind]:pendingFish.label,[FORM.fish.name]:name,[FORM.fish.owner]:owner,[FORM.fish.id]:fid});
+  const nf={id:fid,em:pendingFish.em,svg:pendingFish.svg,vb:pendingFish.vb,label:pendingFish.label,name:name,ownerId:owner,ts:Date.now()};
+  fishes.push(nf);
+  const pendF=loadJSON('zx_pending_fish_v1');pendF.push(nf);saveJSON('zx_pending_fish_v1',pendF);
   const on=ownerName(owner);pendingFish=null;renderFishGame();
   const g=document.getElementById('fishGame');if(g){const ok=document.createElement('p');ok.textContent=name+' 已經游進 '+on+' 的魚池了！';g.prepend(ok)}
 }
@@ -421,16 +454,14 @@ function renderIslanders(){
   if(!islanders.length){box.innerHTML='<p>還沒有島民。把名字加進來，釣到的魚就有自己的魚池了。</p>'}
   else{
     const colors=['#e57373','#64b5f6','#81c784','#ffb74d','#ba68c8','#4db6ac'];
-    const roster=islanders.map((it,idx)=>`<button type="button" class="rosterchip" data-islander="${it.id}"><span class="avatar" style="background:${colors[idx%colors.length]}">${esc(it.name.slice(0,1))}</span>${esc(it.name)}</button>`).join('');
+    const roster=islanders.map((it,idx)=>`<button type="button" class="rosterchip" data-islander="${it.id}"><span class="avatar" style="background:${colors[idx%colors.length]}">${esc(avatarEmoji(it))}</span>${esc(it.name)}</button>`).join('');
     box.innerHTML=`<p class="fine">目前島上有 ${islanders.length} 位島民，點一下可以找到他的魚池：</p><div class="roster">${roster}</div>`+islanders.map(i=>{
       const my=fishes.filter(f=>f.ownerId===i.id);
-      const pond=my.length?my.map(f=>`<span class="fishchip">${fishArt(f,20)} ${esc(f.name)} <button type="button" data-unfish="${f.id}" aria-label="移除這條魚">✕</button></span>`).join(''):'<span class="emptypond">魚池還是空的</span>';
-      return `<div class="islander" id="islander-${i.id}"><div class="who"><b>${esc(i.name)}</b> 的魚池 <button type="button" data-unislander="${i.id}" class="mini" aria-label="移除島民">✕</button></div><div class="pond">${pond}</div></div>`;
+      const pond=my.length?my.map(f=>`<span class="fishchip">${fishArt(f,20)} ${esc(f.name)}</span>`).join(''):'<span class="emptypond">魚池還是空的</span>';
+      return `<div class="islander" id="islander-${i.id}"><div class="who"><b>${esc(i.name)}</b> 的魚池</div><div class="pond">${pond}</div></div>`;
     }).join('');
   }
   box.querySelectorAll('.rosterchip').forEach(ch=>ch.addEventListener('click',()=>{const el=document.getElementById('islander-'+ch.dataset.islander);if(el){el.scrollIntoView({behavior:'smooth',block:'nearest'});el.classList.add('hl');setTimeout(()=>el.classList.remove('hl'),2000)}}));
-  box.querySelectorAll('[data-unfish]').forEach(b=>b.addEventListener('click',()=>armRemove(b,()=>{fishes=fishes.filter(f=>f.id!==b.dataset.unfish);saveJSON('zx_fish_v1',fishes);renderIslanders();})));
-  box.querySelectorAll('[data-unislander]').forEach(b=>b.addEventListener('click',()=>armRemove(b,()=>{const id=b.dataset.unislander;islanders=islanders.filter(i=>i.id!==id);fishes=fishes.filter(f=>f.ownerId!==id);saveJSON('zx_islanders_v1',islanders);saveJSON('zx_fish_v1',fishes);renderIslanders();})));
 }
 function renderResidents(){
   const box=document.getElementById('residentsList');if(!box)return;
@@ -438,26 +469,35 @@ function renderResidents(){
   const colors=['#e57373','#64b5f6','#81c784','#ffb74d','#ba68c8','#4db6ac'];
   box.innerHTML=`<p class="fine">目前島上有 ${islanders.length} 位島民，點一下可以到公告欄看他的魚池：</p>`+islanders.map((it,idx)=>{
     const n=fishes.filter(f=>f.ownerId===it.id).length;
-    return `<button type="button" class="resrow" data-islander="${it.id}"><span class="avatar" style="background:${colors[idx%colors.length]}">${esc(it.name.slice(0,1))}</span><b>${esc(it.name)}</b><span class="fishn">魚池有 ${n} 條魚</span></button>`;
+    return `<button type="button" class="resrow" data-islander="${it.id}"><span class="avatar" style="background:${colors[idx%colors.length]}">${esc(avatarEmoji(it))}</span><b>${esc(it.name)}</b><span class="fishn">魚池有 ${n} 條魚</span></button>`;
   }).join('');
   box.querySelectorAll('.resrow').forEach(r=>r.addEventListener('click',()=>{openIsland('board');setTimeout(()=>{const el=document.getElementById('islander-'+r.dataset.islander);if(el){el.scrollIntoView({behavior:'smooth',block:'nearest'});el.classList.add('hl');setTimeout(()=>el.classList.remove('hl'),2000)}},60)}));
 }
 function addIslander(){
   const inp=document.getElementById('newIslander');const name=(inp.value||'').trim();if(!name)return;
-  islanders.push({id:'i'+Date.now(),name:name});saveJSON('zx_islanders_v1',islanders);inp.value='';renderIslanders();
+  const avSel=document.getElementById('newAvatar');const avatar=avSel?avSel.value:AVATARS[0];
+  const id='i'+Date.now().toString(36)+Math.floor(Math.random()*1e6).toString(36);
+  postForm(FORM.islander.url,{[FORM.islander.name]:name,[FORM.islander.avatar]:avatar,[FORM.islander.id]:id});
+  const it={id:id,name:name,avatar:avatar};
+  islanders.push(it);
+  const pend=loadJSON('zx_pending_islanders_v1');pend.push(it);saveJSON('zx_pending_islanders_v1',pend);
+  inp.value='';renderIslanders();renderResidents();
 }
 function renderPrayerWall(){
   const box=document.getElementById('prayerWall');if(!box)return;
   if(!prayers.length){box.innerHTML='<p>代禱牆還是空的。把名字和科系貼上來，大家一起為他禱告。</p>';return}
-  box.innerHTML=prayers.slice().reverse().map(p=>`<div class="prayer"><div><b>${esc(p.name)}</b>${p.dept?' · '+esc(p.dept):''}</div><div class="prayline">請為他禱告 🙏 已有 ${p.count||0} 人禱告</div><div><button type="button" class="mini" data-prayed="${p.id}">🙏 我為他禱告</button> <button type="button" class="mini" data-unpray="${p.id}" aria-label="移除">✕</button></div></div>`).join('');
-  box.querySelectorAll('[data-prayed]').forEach(b=>b.addEventListener('click',()=>{const pr=prayers.find(x=>x.id===b.dataset.prayed);if(pr){pr.count=(pr.count||0)+1;saveJSON('zx_prayers_v1',prayers);renderPrayerWall()}}));
-  box.querySelectorAll('[data-unpray]').forEach(b=>b.addEventListener('click',()=>armRemove(b,()=>{prayers=prayers.filter(x=>x.id!==b.dataset.unpray);saveJSON('zx_prayers_v1',prayers);renderPrayerWall();})));
+  box.innerHTML=prayers.slice().reverse().map(p=>{const prayed=prayedIds.has(p.id);return `<div class="prayer"><div><b>${esc(p.name)}</b>${p.dept?' · '+esc(p.dept):''}</div><div class="prayline">請為他禱告</div><div><button type="button" class="mini" data-prayed="${p.id}">${prayed?'✓ 已為他禱告':'🙏 我為他禱告'}</button></div></div>`;}).join('');
+  box.querySelectorAll('[data-prayed]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.prayed;if(prayedIds.has(id)){prayedIds.delete(id);}else{prayedIds.add(id);}savePrayed();renderPrayerWall();}));
 }
 function addPrayer(){
   const n=(document.getElementById('prayName').value||'').trim();
   const d=(document.getElementById('prayDept').value||'').trim();
   if(!n)return;
-  prayers.push({id:'p'+Date.now(),name:n,dept:d,count:0,ts:Date.now()});saveJSON('zx_prayers_v1',prayers);
+  const pid='p'+Date.now().toString(36)+Math.floor(Math.random()*1e6).toString(36);
+  postForm(FORM.prayer.url,{[FORM.prayer.name]:n,[FORM.prayer.dept]:d,[FORM.prayer.id]:pid});
+  const pr={id:pid,name:n,dept:d,ts:Date.now()};
+  prayers.push(pr);
+  const pendP=loadJSON('zx_pending_prayers_v1');pendP.push(pr);saveJSON('zx_pending_prayers_v1',pendP);
   document.getElementById('prayName').value='';document.getElementById('prayDept').value='';renderPrayerWall();
 }
 const EXAM_START=new Date(2026,11,7),EXAM_END=new Date(2026,11,25);
@@ -532,7 +572,7 @@ document.getElementById('tourNext').addEventListener('click',()=>{const st=TOUR_
 document.getElementById('tourSkip').addEventListener('click',()=>{document.getElementById('introModal').style.display='none';});
 document.getElementById('introModal').addEventListener('click',e=>{if(e.target.id==='introModal')e.target.style.display='none'});
 renderTour();
-window.addEventListener('resize',apply);refreshMascots();updateShark();apply();
+window.addEventListener('resize',apply);refreshMascots();updateShark();apply();loadShared();
 </script>
 </body>
 </html>
