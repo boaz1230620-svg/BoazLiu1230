@@ -22,7 +22,7 @@ button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
 main{display:grid;grid-template-columns:340px 1fr;gap:0;min-height:calc(100vh - 65px)}
 .welcome{padding:22px;background:var(--card);border-right:1px solid #eee}
 .welcome h2{font-size:26px;margin:6px 0}
-.welcome p{line-height:1.8;color:#666;font-size:15px}
+.welcome p{line-height:1.8;color:var(--ink);opacity:.85;font-size:15px}
 .welcome .chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
 .welcome .chips button{background:#fff6de;border-color:#e8b84b}
 .note{font-size:13px;color:#999;line-height:1.7;border-top:1px dashed #ddd;padding-top:12px;margin-top:16px}
@@ -96,7 +96,7 @@ main{display:grid;grid-template-columns:340px 1fr;gap:0;min-height:calc(100vh - 
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 nav button{background:rgba(255,255,255,.95);box-shadow:0 2px 8px rgba(0,0,0,.12);color:#234}
 .hint{position:absolute;left:16px;bottom:44px;font-size:13px;color:#555;background:rgba(255,255,255,.85);border-radius:999px;padding:6px 12px;z-index:5}
-footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
+footer{text-align:center;color:var(--ink);opacity:.8;padding:18px;font-size:13px;line-height:1.8}
 .bottles{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0}
 .bottle{width:74px;text-align:center;background:none;border:0;padding:0}
 .bottle .glass{position:relative;width:56px;height:96px;margin:0 auto;background:linear-gradient(90deg,rgba(190,235,220,.85),rgba(120,200,180,.85) 50%,rgba(190,235,220,.85));border:2px solid #7fb8a8;border-radius:14px 14px 20px 20px;overflow:hidden}
@@ -127,7 +127,7 @@ footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
 .emptypond{color:#999;font-size:13px}
 .prayer{border:1px solid #e5e5e5;border-radius:12px;padding:10px 12px;margin:8px 0;background:#fbfbf7;color:#234}
 .prayer .prayline{color:#666;font-size:14px;margin:4px 0}
-.fine{font-size:13px;color:#999;line-height:1.7}
+.fine{font-size:13px;color:var(--ink);opacity:.65;line-height:1.7}
 .slogan{font-size:15px;line-height:1.9;color:#2a6b5f;background:#f0f7f4;border-left:4px solid var(--accent2);border-radius:8px;padding:10px 14px;margin:4px 0 12px}
 .slogan .ref{display:block;text-align:right;font-size:13px;color:#888;margin-top:4px}
 .shark{position:absolute;z-index:5;background:none;border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:2px;transform-origin:50% 100%;filter:drop-shadow(0 8px 10px rgba(0,0,0,.3))}
@@ -137,7 +137,7 @@ footer{text-align:center;color:#999;padding:18px;font-size:13px;line-height:1.8}
 .intromodal{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:rgba(20,60,90,.55);padding:20px}
 .intromodal .card{background:var(--card);border-radius:20px;max-width:480px;width:100%;padding:28px 24px;text-align:center;box-shadow:0 16px 40px rgba(0,0,0,.3);border-top:6px solid var(--accent)}
 .intromodal h2{font-size:24px;margin:8px 0;line-height:1.4}
-.intromodal p{line-height:1.8;color:#444;font-size:16px;margin:12px 0 20px}
+.intromodal p{line-height:1.8;color:var(--ink);font-size:16px;margin:12px 0 20px}
 .intromodal .primary{font-size:17px;padding:12px 28px}
 .walker{animation:walk 4s ease-in-out infinite alternate}
 .walker2{animation:walk 5s ease-in-out infinite alternate-reverse}
@@ -374,7 +374,7 @@ const FORM={
 };
 const AVATARS=['👦 男孩','👧 女孩','🧑 同學','👨 弟兄','👩 姊妹','🧑‍🎓 學生','🐰 兔子','🦊 狐狸','🐻 熊熊','🐼 貓熊','🦁 獅子','🐸 青蛙'];
 function postForm(url,params){try{const b=new URLSearchParams(params);fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:b.toString()}).catch(()=>{})}catch(e){}}
-function parseCSV(t){const rows=[];let cur=[''],q=false,f='';for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else{q=false}}else{f+=c}}else{if(c=='"'){q=true}else if(c==','){cur.push(f);f=''}else if(c=='\n'){cur.push(f);rows.push(cur);cur=[''];f=''}else if(c!='\r'){f+=c}}}if(f!==''||cur.length>1){cur.push(f);rows.push(cur)}return rows;}
+function parseCSV(t){const rows=[];let cur=[],q=false,f='';for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else{q=false}}else{f+=c}}else{if(c=='"'){q=true}else if(c==','){cur.push(f);f=''}else if(c=='\n'){cur.push(f);rows.push(cur);cur=[];f=''}else if(c!='\r'){f+=c}}}if(f!==''||cur.length>0){cur.push(f);rows.push(cur)}return rows;}
 function csvURL(gid){return 'https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:csv&gid='+gid+'&_='+Date.now();}
 function savePrayed(){saveJSON('zx_prayed_v1',[...prayedIds]);}
 function avatarEmoji(it){const a=(it.avatar||'').trim();if(a)return a.split(' ')[0];return (it.name||'?').slice(0,1);}
@@ -392,7 +392,7 @@ async function loadShared(){
     saveJSON('zx_pending_islanders_v1',pendI.filter(x=>!idsI.has(x.id)));
     saveJSON('zx_pending_fish_v1',pendF.filter(x=>!idsF.has(x.id)));
     saveJSON('zx_pending_prayers_v1',pendP.filter(x=>!idsP.has(x.id)));
-    renderIslanders();renderResidents();renderFishGame();renderPrayerWall();
+    renderIslanders();renderResidents();if(!pendingFish)renderFishGame();renderPrayerWall();
   }catch(e){}
 }
 let islanders=loadJSON('zx_pending_islanders_v1');
@@ -537,7 +537,7 @@ function baseScale(){const w=document.getElementById('mapwrap').clientWidth||win
 let focus=null;const FOCUS_ZOOM=1.7;
 function islandCenter(k){if(k==='board')return{x:380,y:380};const el=document.querySelector('[data-island="'+k+'"]');if(!el)return null;return{x:parseInt(el.style.left||'0',10)+88,y:parseInt(el.style.top||'0',10)+57}}
 function apply(){const wrap=document.getElementById('mapwrap');const W=wrap.clientWidth||window.innerWidth,H=wrap.clientHeight||window.innerHeight;let s=scale*baseScale(),tx=0,ty=0;if(focus){s*=FOCUS_ZOOM;const cx=(W>820)?(W-376)/2:W/2,cy=H/2;tx=cx-W/2-s*(focus.x-380);ty=cy-0.52*H-s*(focus.y-380)}map.style.transform=`translate(${tx}px,${ty}px) scale(${s})`}
-function openIsland(k){const d=DATA[k];if(!d)return;document.querySelectorAll('.island,.bigbottle,.center').forEach(e=>e.classList.toggle('active',e.dataset.island===k));body.innerHTML=`<h3>${d.title}</h3><div class="sub">${d.sub}</div>${d.body}`;panel.scrollTop=0;panel.classList.add('show');const ECO=['week','camp','boat','garden','board','center','pray'];focus=(ECO.includes(k)&&document.getElementById('mapwrap').clientWidth>820)?islandCenter(k):null;apply();if(k==='letter')renderBottles();if(k==='board'){renderIslanders();const ab=document.getElementById('addIslanderBtn');if(ab)ab.addEventListener('click',addIslander);const ni=document.getElementById('newIslander');if(ni)ni.addEventListener('keydown',e=>{if(e.key==='Enter')addIslander()});}if(k==='boat')renderFishGame();if(k==='residents')renderResidents();if(k==='pray'){renderPrayerWall();const ap=document.getElementById('addPrayerBtn');if(ap)ap.addEventListener('click',addPrayer);}}
+function openIsland(k){const d=DATA[k];if(!d)return;document.querySelectorAll('.island,.bigbottle,.center').forEach(e=>e.classList.toggle('active',e.dataset.island===k));body.innerHTML=`<h3>${d.title}</h3><div class="sub">${d.sub}</div>${d.body}`;panel.scrollTop=0;panel.classList.add('show');const ECO=['week','camp','boat','garden','board','center','pray'];focus=(ECO.includes(k)&&document.getElementById('mapwrap').clientWidth>820)?islandCenter(k):null;apply();if(k==='letter')renderBottles();if(k==='board'){renderIslanders();const ab=document.getElementById('addIslanderBtn');if(ab)ab.addEventListener('click',addIslander);const ni=document.getElementById('newIslander');if(ni)ni.addEventListener('keydown',e=>{if(e.key==='Enter')addIslander()});}if(k==='boat')renderFishGame();if(k==='residents')renderResidents();if(['board','boat','pray','residents'].includes(k))loadShared();if(k==='pray'){renderPrayerWall();const ap=document.getElementById('addPrayerBtn');if(ap)ap.addEventListener('click',addPrayer);}}
 document.querySelectorAll('[data-island]').forEach(e=>e.addEventListener('click',()=>openIsland(e.dataset.island)));
 document.querySelectorAll('[data-open]').forEach(e=>e.addEventListener('click',()=>openIsland(e.dataset.open)));
 document.getElementById('closePanel').addEventListener('click',()=>{panel.classList.remove('show');document.querySelectorAll('.island,.bigbottle,.center').forEach(e=>e.classList.remove('active'));focus=null;apply()});
