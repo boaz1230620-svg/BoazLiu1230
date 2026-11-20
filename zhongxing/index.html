@@ -498,7 +498,11 @@ function openIsland(k){const d=DATA[k];if(!d)return;document.querySelectorAll('.
 document.querySelectorAll('[data-island]').forEach(e=>e.addEventListener('click',()=>openIsland(e.dataset.island)));
 document.querySelectorAll('[data-open]').forEach(e=>e.addEventListener('click',()=>openIsland(e.dataset.open)));
 document.getElementById('closePanel').addEventListener('click',()=>{panel.classList.remove('show');document.querySelectorAll('.island,.bigbottle,.center').forEach(e=>e.classList.remove('active'));focus=null;apply()});
-document.getElementById('nightBtn').addEventListener('click',()=>{const h=document.documentElement;const n=h.getAttribute('data-theme')==='night'?'':'night';h.setAttribute('data-theme',n);document.getElementById('nightBtn').textContent=n?'切換白天':'切換夜晚'})
+function setTheme(n){document.documentElement.setAttribute('data-theme',n);document.getElementById('nightBtn').textContent=n?'切換白天':'切換夜晚';}
+function autoTheme(){const h=new Date().getHours();return (h>=18||h<6)?'night':'';}
+let lastAuto=autoTheme();setTheme(lastAuto);
+setInterval(()=>{const a=autoTheme();if(a!==lastAuto){lastAuto=a;setTheme(a);}},30000);
+document.getElementById('nightBtn').addEventListener('click',()=>{const h=document.documentElement;const n=h.getAttribute('data-theme')==='night'?'':'night';setTheme(n);})
 document.getElementById('residentsBtn').addEventListener('click',()=>openIsland('residents'));
 document.getElementById('whale').addEventListener('click',openReminder);
 document.getElementById('whaleBubble').addEventListener('click',openReminder);
