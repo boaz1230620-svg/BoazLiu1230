@@ -12,7 +12,7 @@ body{margin:0;font-family:"PingFang TC","Microsoft JhengHei",sans-serif;backgrou
 header{display:flex;align-items:center;gap:12px;padding:12px 18px;background:var(--card);border-bottom:3px solid var(--accent);position:sticky;top:0;z-index:20}
 header .logo{font-size:28px;font-weight:800;color:var(--accent2)}
 header h1{font-size:22px;margin:0}
-header p{margin:2px 0 0;font-size:13px;color:#888}
+header p{margin:2px 0 0;font-size:13px;color:var(--ink)}
 header .sp{flex:1}
 button{cursor:pointer;border:0;border-radius:999px;padding:9px 16px;font-size:15px;background:#fff;border:1px solid #ddd}
 button.primary,a.primary{background:var(--accent);color:#fff;border:1px solid var(--accent);border-radius:999px;padding:9px 16px;display:inline-block;text-decoration:none;font-size:15px}
@@ -22,7 +22,7 @@ button.primary,a.primary{background:var(--accent);color:#fff;border:1px solid va
 main{display:grid;grid-template-columns:340px 1fr;gap:0;min-height:calc(100vh - 65px)}
 .welcome{padding:22px;background:var(--card);border-right:1px solid #eee}
 .welcome h2{font-size:26px;margin:6px 0}
-.welcome p{line-height:1.8;color:var(--ink);opacity:.85;font-size:15px}
+.welcome p{line-height:1.8;color:var(--ink);font-size:15px}
 .welcome .chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
 .welcome .chips button{background:#fff6de;border-color:#e8b84b}
 .note{font-size:13px;color:#999;line-height:1.7;border-top:1px dashed #ddd;padding-top:12px;margin-top:16px}
@@ -96,7 +96,7 @@ main{display:grid;grid-template-columns:340px 1fr;gap:0;min-height:calc(100vh - 
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 nav button{background:rgba(255,255,255,.95);box-shadow:0 2px 8px rgba(0,0,0,.12);color:#234}
 .hint{position:absolute;left:16px;bottom:44px;font-size:13px;color:#555;background:rgba(255,255,255,.85);border-radius:999px;padding:6px 12px;z-index:5}
-footer{text-align:center;color:var(--ink);opacity:.8;padding:18px;font-size:13px;line-height:1.8}
+footer{text-align:center;color:var(--ink);padding:18px;font-size:13px;line-height:1.8}
 .bottles{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0}
 .bottle{width:74px;text-align:center;background:none;border:0;padding:0}
 .bottle .glass{position:relative;width:56px;height:96px;margin:0 auto;background:linear-gradient(90deg,rgba(190,235,220,.85),rgba(120,200,180,.85) 50%,rgba(190,235,220,.85));border:2px solid #7fb8a8;border-radius:14px 14px 20px 20px;overflow:hidden}
@@ -127,7 +127,7 @@ footer{text-align:center;color:var(--ink);opacity:.8;padding:18px;font-size:13px
 .emptypond{color:#999;font-size:13px}
 .prayer{border:1px solid #e5e5e5;border-radius:12px;padding:10px 12px;margin:8px 0;background:#fbfbf7;color:#234}
 .prayer .prayline{color:#666;font-size:14px;margin:4px 0}
-.fine{font-size:13px;color:var(--ink);opacity:.65;line-height:1.7}
+.fine{font-size:13px;color:var(--ink);line-height:1.7}
 .slogan{font-size:15px;line-height:1.9;color:#2a6b5f;background:#f0f7f4;border-left:4px solid var(--accent2);border-radius:8px;padding:10px 14px;margin:4px 0 12px}
 .slogan .ref{display:block;text-align:right;font-size:13px;color:#888;margin-top:4px}
 .shark{position:absolute;z-index:5;background:none;border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:2px;transform-origin:50% 100%;filter:drop-shadow(0 8px 10px rgba(0,0,0,.3))}
@@ -386,12 +386,13 @@ async function loadShared(){
     const fromP=parseCSV(rp).slice(1).map(r=>({id:(r[3]||'').trim(),name:(r[1]||'').trim(),dept:(r[2]||'').trim()})).filter(x=>x.id&&x.name);
     const pendI=loadJSON('zx_pending_islanders_v1'),pendF=loadJSON('zx_pending_fish_v1'),pendP=loadJSON('zx_pending_prayers_v1');
     const idsI=new Set(fromI.map(x=>x.id)),idsF=new Set(fromF.map(x=>x.id)),idsP=new Set(fromP.map(x=>x.id));
-    islanders=fromI.concat(pendI.filter(x=>x.id&&!idsI.has(x.id)));
-    fishes=fromF.concat(pendF.filter(x=>x.id&&!idsF.has(x.id)));
-    prayers=fromP.concat(pendP.filter(x=>x.id&&!idsP.has(x.id)));
-    saveJSON('zx_pending_islanders_v1',pendI.filter(x=>!idsI.has(x.id)));
-    saveJSON('zx_pending_fish_v1',pendF.filter(x=>!idsF.has(x.id)));
-    saveJSON('zx_pending_prayers_v1',pendP.filter(x=>!idsP.has(x.id)));
+    const now=Date.now();const fresh=x=>x.ts&&now-x.ts<10*60*1000;
+    islanders=fromI.concat(pendI.filter(x=>x.id&&!idsI.has(x.id)&&fresh(x)));
+    fishes=fromF.concat(pendF.filter(x=>x.id&&!idsF.has(x.id)&&fresh(x)));
+    prayers=fromP.concat(pendP.filter(x=>x.id&&!idsP.has(x.id)&&fresh(x)));
+    saveJSON('zx_pending_islanders_v1',pendI.filter(x=>!idsI.has(x.id)&&fresh(x)));
+    saveJSON('zx_pending_fish_v1',pendF.filter(x=>!idsF.has(x.id)&&fresh(x)));
+    saveJSON('zx_pending_prayers_v1',pendP.filter(x=>!idsP.has(x.id)&&fresh(x)));
     renderIslanders();renderResidents();if(!pendingFish)renderFishGame();renderPrayerWall();
   }catch(e){}
 }
@@ -478,7 +479,7 @@ function addIslander(){
   const avSel=document.getElementById('newAvatar');const avatar=avSel?avSel.value:AVATARS[0];
   const id='i'+Date.now().toString(36)+Math.floor(Math.random()*1e6).toString(36);
   postForm(FORM.islander.url,{[FORM.islander.name]:name,[FORM.islander.avatar]:avatar,[FORM.islander.id]:id});
-  const it={id:id,name:name,avatar:avatar};
+  const it={id:id,name:name,avatar:avatar,ts:Date.now()};
   islanders.push(it);
   const pend=loadJSON('zx_pending_islanders_v1');pend.push(it);saveJSON('zx_pending_islanders_v1',pend);
   inp.value='';renderIslanders();renderResidents();
