@@ -4,94 +4,114 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>台中大專校園工作整合網站</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;background:#f4f6f8;color:#1c2733;line-height:1.6}
-header{background:#123a5c;color:#fff;padding:28px 18px 20px;text-align:center}
-header h1{margin:0;font-size:26px;letter-spacing:2px}
-header p{margin:6px 0 0;color:#cfe0ee;font-size:14px}
-.note{max-width:1080px;margin:0 auto;padding:10px 18px 0;font-size:13px;color:#5a6b7a;text-align:center}
-.tabs{max-width:1080px;margin:14px auto 0;padding:0 14px;display:flex;gap:8px;flex-wrap:wrap}
-.tabs button{flex:1;min-width:110px;padding:11px 6px;font-size:16px;border:1px solid #c9d6e2;background:#fff;border-radius:10px 10px 0 0;cursor:pointer;color:#33506b}
-.tabs button.active{background:#123a5c;color:#fff;border-color:#123a5c;font-weight:700}
-main{max-width:1080px;margin:0 auto;padding:18px 14px 40px}
+:root{--bg:#f7f5ef;--surface:#fffdf8;--surface-alt:#efece1;--text:#10211a;--dim:#3d5147;--border:#b9b096;--accent:#0d4020;--accent-soft:#cfe6d5;--amber:#b45309;--amber-soft:#fbe3bb;--danger:#b91c1c;--radius:12px}
+@media (prefers-color-scheme:dark){:root{--bg:#101613;--surface:#1a211d;--surface-alt:#232c27;--text:#f4f8f4;--dim:#c3d6c9;--border:#5a6f62;--accent:#4ade80;--accent-soft:#274a33;--amber:#fbbf24;--amber-soft:#57430f;--danger:#f87171}}
+body{margin:0;font-family:"Noto Sans TC",system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;font-size:16px}
+h1,h2,h3{font-family:"Noto Serif TC","Songti TC",serif;font-weight:900}
+header{max-width:1152px;margin:0 auto;padding:16px 16px 0}
+header h1{margin:0;font-size:30px;line-height:36px;letter-spacing:1px}
+header p{margin:6px 0 0;color:var(--dim);font-size:16px}
+.note{max-width:1120px;margin:12px auto 0;padding:8px 12px;font-size:14px;background:var(--accent-soft);border-radius:8px}
+@media(max-width:1152px){.note{margin:12px 16px 0}}
+.tabs{max-width:1152px;margin:16px auto 0;padding:4px;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;background:var(--surface-alt);border-radius:16px}
+@media(max-width:1152px){.tabs{margin-left:16px;margin-right:16px}}
+.tabs button{padding:10px 4px;font-size:14px;border:0;background:none;border-radius:12px;cursor:pointer;color:var(--dim);font-weight:700;font-family:inherit}
+@media(min-width:640px){.tabs button{font-size:16px}}
+.tabs button.active{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgba(16,33,26,.15)}
+main{max-width:1152px;margin:0 auto;padding:16px 16px 40px}
 section.tabpane{display:none}
 section.tabpane.active{display:block}
-.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
-.tile{background:#fff;border:1px solid #dde5ec;border-radius:10px;padding:14px;text-align:center}
-.tile b{display:block;font-size:26px;color:#123a5c}
-.tile span{font-size:13px;color:#5a6b7a}
-.card{background:#fff;border:1px solid #dde5ec;border-radius:10px;padding:16px;margin-bottom:16px}
-.card h2{margin:0 0 10px;font-size:19px;color:#123a5c}
-.card h3{margin:18px 0 8px;font-size:16px;color:#123a5c}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.tile{background:var(--surface-alt);border-radius:12px;padding:10px 12px;text-align:center}
+.tile b{display:block;font-size:26px;color:var(--text);font-weight:900}
+.tile span{font-size:13px;color:var(--dim)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:16px}
+.card h2{margin:0 0 10px;font-size:24px;line-height:32px;color:var(--text)}
+.card h3{margin:18px 0 8px;font-size:18px;color:var(--text)}
 .maptools{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px}
-.maptools .seg{display:inline-flex;background:#eef4f8;border:1px solid #dde5ec;border-radius:9px;padding:3px;gap:2px}
-.maptools .seg button{border:0;background:none;padding:6px 12px;border-radius:7px;font-size:15px;font-weight:700;color:#5a6b7a;cursor:pointer}
-.maptools .seg button.on{background:#fff;color:#123a5c;box-shadow:0 1px 3px rgba(18,58,92,.18)}
-.maptools .zbtn{width:38px;height:38px;border-radius:50%;border:1px solid #dde5ec;background:#fff;font-size:19px;font-weight:700;color:#123a5c;cursor:pointer}
-.maptools .zbtn:hover{background:#eef4f8}
-.maptools .selnote{font-size:13px;color:#5a6b7a}
-.maptools .selnote .dot{display:inline-block;width:11px;height:11px;border-radius:50%;background:#c8871a;vertical-align:-1px;margin-right:4px}
-.mapstage{position:relative;border:1px solid #dde5ec;border-radius:10px;overflow:hidden;background:#dbe9f3;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.maptools .seg{display:inline-flex;background:var(--surface-alt);border-radius:9px;padding:3px;gap:2px}
+.maptools .seg button{border:0;background:none;padding:6px 12px;border-radius:7px;font-size:15px;font-weight:700;color:var(--dim);cursor:pointer;font-family:inherit}
+.maptools .seg button.on{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgba(16,33,26,.18)}
+.maptools .zbtn{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--surface);font-size:18px;font-weight:900;color:var(--text);cursor:pointer;box-shadow:0 1px 3px rgba(16,33,26,.12)}
+.maptools .zbtn:hover{background:var(--surface-alt)}
+.maptools .selnote{font-size:13px;color:var(--dim)}
+.maptools .selnote .dot{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--amber);vertical-align:-1px;margin-right:4px}
+.mapstage{position:relative;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--surface-alt);touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
 .mapstage.dragging{cursor:grabbing}
 .mapstage svg{display:block;width:100%;height:100%}
-.mapstage svg path.dist{stroke:#fff;stroke-width:1.5;cursor:pointer}
-.mapstage svg path.dist.sel{stroke:#1c2733;stroke-width:2.6}
-.mapstage svg path.outline{fill:none;stroke:#123a5c;stroke-width:3;stroke-linejoin:round;pointer-events:none}
+.mapstage svg path.dist{stroke:var(--surface);stroke-width:1.5;cursor:pointer}
+.mapstage svg path.dist.sel{stroke:var(--text);stroke-width:2.6}
+.mapstage svg path.outline{fill:none;stroke:var(--accent);stroke-width:3;stroke-linejoin:round;pointer-events:none}
 .mapstage svg line.fl{stroke:#8a9aa8;stroke-width:1.5;stroke-dasharray:3 2;pointer-events:none}
-.mapstage svg circle.td{fill:#123a5c;stroke:#fff;stroke-width:1.5;pointer-events:none}
+.mapstage svg circle.td{fill:var(--accent);stroke:var(--surface);stroke-width:1.5;pointer-events:none}
 .mapov{position:absolute;inset:0;overflow:hidden}
-.mk2{position:absolute;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;background:#fff;border:2.5px solid #123a5c;padding:2px;cursor:pointer;box-sizing:border-box}
+.mk2{position:absolute;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;background:var(--surface);border:2.5px solid var(--accent);padding:2px;cursor:pointer;box-sizing:border-box}
 .mk2 img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}
-.mk2 .nb{position:absolute;right:-5px;bottom:-5px;width:16px;height:16px;border-radius:50%;background:#123a5c;color:#fff;border:1.5px solid #fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;line-height:1}
+.mk2 .nb{position:absolute;right:-5px;bottom:-5px;width:16px;height:16px;border-radius:50%;background:var(--accent);color:var(--surface);border:1.5px solid var(--surface);font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;line-height:1}
 .mk2:hover{transform:translate(-50%,-50%) scale(1.14)}
-.mk2.sel{border-color:#c8871a;border-width:3px}
-.mk2.sel .nb{background:#c8871a}
+.mk2.sel{border-color:var(--amber);border-width:3px}
+.mk2.sel .nb{background:var(--amber)}
 .mk2.sm{width:20px;height:20px;border-width:2px;padding:1px}
 .mk2.sm .nb{width:13px;height:13px;font-size:9px;right:-4px;bottom:-4px}
 .mk2.xs{width:16px;height:16px;border-width:1.5px;padding:1px}
 .mk2.xs .nb{width:11px;height:11px;font-size:8px;right:-4px;bottom:-4px}
-.clab{position:absolute;background:#fff;border:1px solid #b9c9d6;border-radius:10px;padding:2px 7px;font-size:13px;font-weight:700;color:#123a5c;white-space:nowrap;cursor:pointer;line-height:1.35;box-shadow:0 1px 2px rgba(18,58,92,.12)}
-.crest{position:relative;flex:0 0 40px;width:40px;height:40px;border-radius:50%;background:#fff;border:1px solid #dde5ec}
+.clab{position:absolute;background:var(--surface);opacity:.92;border:1px solid var(--border);border-radius:999px;padding:2px 7px;font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;cursor:pointer;line-height:1.35;box-shadow:0 1px 2px rgba(16,33,26,.12)}
+.dlab{position:absolute;font-weight:900;color:var(--text);white-space:nowrap;pointer-events:none;line-height:1.35;opacity:.85;text-shadow:0 0 3px var(--surface),0 0 6px var(--surface),1px 0 2px var(--surface),-1px 0 2px var(--surface),0 1px 2px var(--surface),0 -1px 2px var(--surface)}
+.crest{position:relative;flex:0 0 40px;width:40px;height:40px;border-radius:50%;background:var(--surface);border:1px solid var(--border)}
 .crest img{width:100%;height:100%;object-fit:contain;border-radius:50%;display:block}
-.crest .nb{position:absolute;right:-4px;bottom:-4px;width:16px;height:16px;border-radius:50%;background:#123a5c;color:#fff;border:1.5px solid #fff;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;line-height:1}
+.crest .nb{position:absolute;right:-4px;bottom:-4px;width:16px;height:16px;border-radius:50%;background:var(--accent);color:var(--surface);border:1.5px solid var(--surface);font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;line-height:1}
 .dhead{display:flex;align-items:center;gap:10px;margin:12px 0 4px}
-.dhead h3{margin:0;font-size:18px;color:#123a5c}
-.mapcap{font-size:13px;color:#5a6b7a;text-align:center;margin-top:6px}
+.dhead h3{margin:0;font-size:18px;color:var(--text)}
+.mapcap{font-size:13px;color:var(--dim);text-align:center;margin-top:6px}
 ul.campuslist{list-style:none;margin:0;padding:0}
-ul.campuslist>li{border:1px solid #dde5ec;border-radius:10px;margin-bottom:8px;background:#fff;overflow:hidden}
-.campuslist .row{width:100%;text-align:left;background:none;border:0;padding:13px 14px;cursor:pointer;display:flex;align-items:center;gap:12px;font-size:16px}
-.campuslist .row .num{flex:0 0 30px;height:30px;border-radius:50%;background:#123a5c;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+ul.campuslist>li{border:1px solid var(--border);border-radius:16px;margin-bottom:8px;background:var(--surface);overflow:hidden}
+ul.campuslist>li.sel{border-color:var(--amber);background:var(--amber-soft)}
+.campuslist .row{width:100%;text-align:left;background:none;border:0;padding:12px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;font-size:16px;font-family:inherit;color:var(--text)}
+.campuslist .row .num{flex:0 0 30px;height:30px;border-radius:50%;background:var(--accent);color:var(--surface);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
 .campuslist .row .nm{font-weight:700}
-.campuslist .row .sub{color:#5a6b7a;font-size:13px}
-.campuslist .row .arrow{margin-left:auto;color:#8a9aa8}
-.detail{display:none;padding:0 16px 16px;border-top:1px dashed #dde5ec}
+.campuslist .row .sub{color:var(--dim);font-size:13px}
+.campuslist .row .arrow{margin-left:auto;color:var(--dim)}
+.detail{display:none;padding:0 16px 16px;border-top:1px dashed var(--border)}
 .detail.open{display:block}
 .detail table{width:100%;border-collapse:collapse;font-size:15px}
-.detail td{padding:6px 4px;border-bottom:1px solid #eef2f5;vertical-align:top}
-.detail td:first-child{width:110px;color:#5a6b7a;white-space:nowrap}
-select{font-size:16px;padding:8px 10px;border:1px solid #c9d6e2;border-radius:8px;background:#fff;margin-right:8px}
+.detail td{padding:6px 4px;border-bottom:1px solid var(--surface-alt);vertical-align:top}
+.detail td:first-child{width:110px;color:var(--dim)}
+select{font-size:14px;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);margin-right:8px;font-family:inherit}
 .controls{margin-bottom:12px}
-table.data{width:100%;border-collapse:collapse;background:#fff;font-size:15px}
-table.data th,table.data td{border:1px solid #dde5ec;padding:7px 8px;text-align:center}
-table.data th{background:#123a5c;color:#fff}
+.controls label{font-size:14px;color:var(--dim)}
+table.data{width:100%;border-collapse:collapse;background:transparent;font-size:14px}
+table.data th,table.data td{padding:8px;border-bottom:1px solid var(--border);text-align:right}
+table.data th{color:var(--dim);font-weight:700}
 table.data td:first-child,table.data th:first-child{text-align:left}
-table.data tr.total td{font-weight:700;background:#f0f5f9}
-table.data tr.city td{font-weight:700;background:#fff8e6}
+table.data td[rowspan]{vertical-align:middle}
+table.data td.wk,table.data th.wk{text-align:center;white-space:nowrap;color:var(--dim);font-size:12px}
+table.data tr.cmp td{color:var(--dim);font-size:13px}
+table.data tr.total td{font-weight:900;background:var(--surface-alt)}
+table.data tr.city td{font-weight:700;background:var(--amber-soft)}
+.delta{font-size:12px;font-weight:700;margin-left:4px;vertical-align:middle}
+.delta.up{color:#047857;color:oklch(50.8% 0.118 165.612)}
+.delta.down{color:#b91c1c;color:oklch(50.5% 0.213 27.518)}
+.delta.flat{color:var(--dim)}
+@media (prefers-color-scheme:dark){.delta.up{color:oklch(76.5% 0.177 163.223)}.delta.down{color:oklch(70.4% 0.191 22.216)}}
 .bar-row{display:grid;grid-template-columns:86px 1fr 150px;gap:10px;align-items:center;margin:7px 0;font-size:14px}
-.bar-track{height:18px;background:#e8eef3;border-radius:9px;position:relative}
+.bar-track{height:18px;background:var(--surface-alt);border-radius:9px;position:relative}
 .bar-fill{height:18px;border-radius:9px;background:#2e7d5b;min-width:4px}
 .bar-fill.close{background:#d9a521}
 .bar-fill.gap{background:#c25b4a}
-.bar-target{position:absolute;top:-3px;bottom:-3px;width:3px;background:#1c2733}
-.anacard{background:#fff;border:1px solid #dde5ec;border-radius:10px;padding:14px 16px;margin-bottom:12px}
-.anacard h3{margin:0 0 4px;font-size:16px;color:#123a5c}
-.anacard .care{font-size:13px;color:#5a6b7a;margin-bottom:8px}
-.legend{font-size:13px;color:#5a6b7a}
+.bar-target{position:absolute;top:-3px;bottom:-3px;width:3px;background:var(--text)}
+.anacard{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:12px}
+.anacard h3{margin:0 0 4px;font-size:18px;color:var(--text)}
+.anacard .care{font-size:13px;color:var(--dim);margin-bottom:8px}
+.legend{font-size:13px;color:var(--dim)}
 .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin:0 3px 0 12px;vertical-align:-1px}
-.month h3{margin:18px 0 8px;color:#123a5c}
-footer{text-align:center;color:#8a9aa8;font-size:13px;padding:20px}
-@media(max-width:640px){.tiles{grid-template-columns:repeat(2,1fr)}header h1{font-size:21px}.bar-row{grid-template-columns:70px 1fr 110px}}
+.month h3{margin:18px 0 8px;color:var(--text)}
+footer{text-align:center;color:var(--dim);font-size:13px;padding:20px}
+@media(max-width:640px){.tiles{grid-template-columns:repeat(2,1fr)}header h1{font-size:24px;line-height:32px}.bar-row{grid-template-columns:70px 1fr 110px}}
 </style>
 </head>
 <body>
@@ -142,6 +162,7 @@ footer{text-align:center;color:#8a9aa8;font-size:13px;padding:20px}
 <div class="controls">
 <label>年度 <select id="work-year"></select></label>
 <label>週次 <select id="work-week"></select></label>
+<label>對照 <select id="work-compare"></select></label>
 </div>
 <div style="overflow-x:auto"><table class="data" id="work-table"></table></div>
 <p class="legend">全市大學合計含未編入任何一組的大區 34；各組數字為點名系統週報抄錄。</p>
@@ -220,6 +241,40 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
   var svg = document.getElementById('mapsvg');
   var ov = document.getElementById('mapov');
   var ns = 'http://www.w3.org/2000/svg';
+  /* district polygons (parsed from the path data) for centroid in-district tests + area (smallest districts placed first) */
+  var polys = DATA.dist.map(function(d){
+    return d.d.split('M').filter(function(x){ return x.trim(); }).map(function(part){
+      return part.replace(/Z.*$/,'').trim().split(/\s+/).map(function(p){
+        var t = p.replace(/^[ML]/,'');
+        var a = t.split(','); return [+a[0], +a[1]];
+      });
+    });
+  });
+  function inPoly(x, y, poly){
+    var inside = false;
+    for(var i = 0, j = poly.length-1; i < poly.length; j = i++){
+      var xi = poly[i][0], yi = poly[i][1], xj = poly[j][0], yj = poly[j][1];
+      if(((yi > y) !== (yj > y)) && (x < (xj-xi)*(y-yi)/(yj-yi)+xi)) inside = !inside;
+    }
+    return inside;
+  }
+  function inDistrict(sx, sy, di){ return polys[di].some(function(r){ return inPoly(sx, sy, r); }); }
+  var distArea = polys.map(function(rings){
+    var tot = 0;
+    rings.forEach(function(poly){
+      var a = 0;
+      for(var i = 0, j = poly.length-1; i < poly.length; j = i++){
+        a += (poly[j][0]+poly[i][0]) * (poly[j][1]-poly[i][1]);
+      }
+      tot += Math.abs(a)/2;
+    });
+    return tot;
+  });
+  function overlapArea(a, b){
+    var ox = Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0]));
+    var oy = Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
+    return ox * oy;
+  }
   /* ---- build SVG: gradients, districts, city outline, leader layer ---- */
   var defs = document.createElementNS(ns, 'defs');
   DATA.dist.forEach(function(d, i){
@@ -262,7 +317,7 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
   svg.appendChild(outline);
   var leaderG = document.createElementNS(ns, 'g');
   svg.appendChild(leaderG);
-  /* ---- HTML overlays: crest markers, campus labels (district names removed 2026-11-21: map shows campuses only) ---- */
+  /* ---- HTML overlays: district names, crest markers, campus labels. District names are dark bold halo text (never SVG <text>), placed by a greedy no-overlap pass so no district name is covered by a campus marker. ---- */
   var mkEls = DATA.campuses.map(function(c){
     var b = document.createElement('button');
     b.type = 'button'; b.className = 'mk2'; b.setAttribute('data-n', c.n);
@@ -277,8 +332,14 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
     el.addEventListener('click', function(){ openCampus(c.n, true); });
     ov.appendChild(el); return el;
   });
+  var dlabEls = DATA.dist.map(function(d){
+    var el = document.createElement('div');
+    el.className = 'dlab'; el.textContent = d.name;
+    ov.appendChild(el); return el;
+  });
   var FAN = {'中國醫':[0,-10], '中科大':[0,10]};  /* only pair that overlaps on phones */
   var PREF = {'中教大':'left','中興':'left','中山醫':'left','勤益':'above','朝陽':'right','亞洲':'right','中科大':'above','臺體大':'left','中國醫':'above','中台':'right','嶺東':'left','逢甲':'above','僑光':'right','東海':'right','靜宜':'right','弘光':'above'};
+  var DCANDS = [[0,0],[0,-13],[0,13],[-22,0],[22,0],[0,-26],[0,26],[-44,0],[44,0],[-22,-13],[22,-13],[-22,13],[22,13],[-44,-26],[44,-26],[-44,26],[44,26],[0,-39],[0,39],[-66,-26],[66,-26],[-66,26],[66,26],[0,-52],[0,52],[-88,0],[88,0],[-66,-52],[66,-52],[-66,52],[66,52],[-88,-52],[88,-52],[-88,52],[88,52],[0,-78],[0,78],[-110,0],[110,0],[-110,-26],[110,-26],[-110,26],[110,26],[-132,0],[132,0],[-132,-52],[132,-52],[-132,52],[132,52],[-44,-78],[44,-78],[-44,78],[44,78],[0,-104],[0,104],[-88,-78],[88,-78],[-88,78],[88,78],[-176,0],[176,0],[-132,-78],[132,-78],[-132,78],[132,78],[0,-130],[0,130]];
   function overlap(a, b, m){ m = m || 2; return !(a[2]+m <= b[0] || b[2]+m <= a[0] || a[3]+m <= b[1] || b[3]+m <= a[1]); }
   function clampView(v){
     var w = Math.min(Math.max(v.w, MINW), W);
@@ -304,7 +365,7 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
     svg.setAttribute('viewBox', view.x.toFixed(1)+' '+view.y.toFixed(1)+' '+view.w.toFixed(1)+' '+view.h.toFixed(1));
     var atFull = view.w >= FULL.w - 1;
     var R = cw >= 768 ? 17 : (atFull ? 8 : 10);
-    var cf = cw >= 768 ? 13 : 12;
+    var df = cw >= 768 ? 15 : (atFull ? 11 : 13), cf = cw >= 768 ? 13 : 12;
     function S(sx, sy){ return [(sx-view.x)*s, (sy-view.y)*s]; }
     function clampRect(r){
       var m = 8, w = r[2]-r[0], h = r[3]-r[1];  /* 8px: no label pill may sit closer than this to the frame, so rounded corners stay fully visible */
@@ -372,6 +433,66 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
         clabels[c.short] = placed;
       });
     }
+    /* district labels: centroid first, then staggered offsets (leader line when far).
+       Smallest districts placed first so the tight central districts get free space
+       before the big outer ones; every placed label avoids crest markers, number
+       badges, campus pills and other district names -- no district name is ever
+       covered by a campus marker. Labels whose centroid is off-view stay hidden
+       instead of being dragged to the frame edge. */
+    var dlabels = {}, dleader = {};
+    var dOrder = DATA.dist.map(function(d, di){ return {d:d, di:di, a:distArea[di]}; });
+    dOrder.sort(function(x, y){ return x.a - y.a; });
+    dOrder.forEach(function(item){
+      var d = item.d, di = item.di;
+      var w = d.name.length*df + 6, h = df + 8;
+      var c = S(d.cx, d.cy);
+      if(c[0] < -10 || c[0] > cw+10 || c[1] < -10 || c[1] > ch+10){ dlabels[d.name] = null; dleader[d.name] = null; return; }
+      var placed = null, ld = null;
+      for(var k = 0; k < DCANDS.length; k++){
+        var dx = DCANDS[k][0], dy = DCANDS[k][1];
+        var x = c[0]+dx, y = c[1]+dy;
+        var r = clampRect([x-w/2, y-h/2, x+w/2, y+h/2]);
+        if(k === 0){
+          var stx = view.x + x/s, sty = view.y + y/s;
+          if(!inDistrict(stx, sty, di)) continue;
+        }
+        if(Object.keys(brects).some(function(key){ return overlap(r, brects[key]); })) continue;
+        if(Object.keys(clabels).some(function(key){ return clabels[key] && overlap(r, clabels[key]); })) continue;
+        if(Object.keys(dlabels).some(function(key){ return dlabels[key] && overlap(r, dlabels[key]); })) continue;
+        placed = r;
+        if(Math.hypot(dx, dy) > 30){
+          var nx = Math.max(r[0], Math.min(c[0], r[2]));
+          var ny = Math.max(r[1], Math.min(c[1], r[3]));
+          ld = [nx, ny, c[0], c[1]];
+        }
+        break;
+      }
+      if(!placed){
+        /* no clean offset: take the least-overlap candidate (never hide a name);
+           marker overlaps weigh far more than pill/label overlaps */
+        var best = null, bestScore = Infinity, bestLd = null;
+        for(var k2 = 0; k2 < DCANDS.length; k2++){
+          var dx2 = DCANDS[k2][0], dy2 = DCANDS[k2][1];
+          var x2 = c[0]+dx2, y2 = c[1]+dy2;
+          var r2 = clampRect([x2-w/2, y2-h/2, x2+w/2, y2+h/2]);
+          var mArea = 0, oArea = 0;
+          Object.keys(brects).forEach(function(key){ mArea += overlapArea(r2, brects[key]); });
+          Object.keys(clabels).forEach(function(key){ if(clabels[key]) oArea += overlapArea(r2, clabels[key]); });
+          Object.keys(dlabels).forEach(function(key){ if(dlabels[key]) oArea += overlapArea(r2, dlabels[key]); });
+          var score = mArea*20 + oArea*2 + Math.hypot(dx2, dy2)*0.2;
+          if(score < bestScore){
+            bestScore = score; best = r2;
+            if(Math.hypot(dx2, dy2) > 30){
+              var nx2 = Math.max(r2[0], Math.min(c[0], r2[2]));
+              var ny2 = Math.max(r2[1], Math.min(c[1], r2[3]));
+              bestLd = [nx2, ny2, c[0], c[1]];
+            } else bestLd = null;
+          }
+        }
+        placed = best; ld = bestLd;
+      }
+      dlabels[d.name] = placed; dleader[d.name] = ld;
+    });
     /* apply to DOM */
     DATA.campuses.forEach(function(c, i){
       var b = mkEls[i], p = badges[c.short];
@@ -389,6 +510,13 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
       el.style.left = r[0]+'px'; el.style.top = r[1]+'px';
       el.style.fontSize = cf+'px';
     });
+    DATA.dist.forEach(function(d, i){
+      var el = dlabEls[i], r = dlabels[d.name];
+      if(!r){ el.style.display = 'none'; return; }
+      el.style.display = '';
+      el.style.left = r[0]+'px'; el.style.top = r[1]+'px';
+      el.style.fontSize = df+'px';
+    });
     /* safety: nudge any label whose real rendered size overflows the frame.
        clampRect works on estimated widths, which can run a few px short on
        phones; measure the real pill and keep it inside the stage.
@@ -396,7 +524,7 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
        rounded corners always show fully. Runs on every layout() call, and
        layout() is re-run after fonts settle / load / resize (see bottom). */
     var sh = stage.clientHeight;
-    [clabEls].forEach(function(els){
+    [clabEls, dlabEls].forEach(function(els){
       els.forEach(function(el){
         if(el.style.display === 'none') return;
         var w = el.offsetWidth, h = el.offsetHeight;
@@ -407,6 +535,23 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
     });
     while(leaderG.firstChild) leaderG.removeChild(leaderG.firstChild);
     var dotR = 3.5 / s;
+    DATA.dist.forEach(function(d){
+      var ld = dleader[d.name];
+      if(!ld) return;
+      var ln = document.createElementNS(ns, 'line');
+      ln.setAttribute('x1', (view.x + ld[0]/s).toFixed(1));
+      ln.setAttribute('y1', (view.y + ld[1]/s).toFixed(1));
+      ln.setAttribute('x2', (view.x + ld[2]/s).toFixed(1));
+      ln.setAttribute('y2', (view.y + ld[3]/s).toFixed(1));
+      ln.setAttribute('class', 'fl');
+      leaderG.appendChild(ln);
+      var dot = document.createElementNS(ns, 'circle');
+      dot.setAttribute('cx', (view.x + ld[2]/s).toFixed(1));
+      dot.setAttribute('cy', (view.y + ld[3]/s).toFixed(1));
+      dot.setAttribute('r', dotR.toFixed(2));
+      dot.setAttribute('class', 'td');
+      leaderG.appendChild(dot);
+    });
     ['中國醫','中科大'].forEach(function(short){
       var c = null;
       DATA.campuses.forEach(function(x){ if(x.short === short) c = x; });
@@ -513,7 +658,8 @@ function openCampus(n, scroll){
   var d = li.querySelector('.detail');
   var wasOpen = d.classList.contains('open');
   document.querySelectorAll('#campuslist .detail').forEach(function(x){ x.classList.remove('open'); });
-  if(!wasOpen){ d.classList.add('open'); }
+  document.querySelectorAll('#campuslist li').forEach(function(x){ x.classList.remove('sel'); });
+  if(!wasOpen){ d.classList.add('open'); li.classList.add('sel'); }
   if(window.__mapSync){ window.__mapSync(wasOpen ? null : n); }
   if(scroll && !wasOpen){ li.scrollIntoView({behavior:'smooth', block:'nearest'}); }
 }
@@ -534,22 +680,61 @@ fillWeekSelect(document.getElementById('foreign-week'));
   var s = document.getElementById(id);
   var o = document.createElement('option'); o.value='2026'; o.textContent='2026'; s.appendChild(o);
 });
-function renderWork(){
-  var w = document.getElementById('work-week').value;
-  var d = DATA.weeks[w];
-  var h = '<tr><th>組別</th><th>照顧區</th><th>主日</th><th>家聚會出訪</th><th>家聚會受訪</th><th>小排</th><th>福音出訪</th><th>生命讀經</th></tr>';
-  var tot = {lord:0,visit:0,host:0,group:0,gospel:0,life:0};
-  DATA.groups.forEach(function(g){
-    var r = d.groups[g.name];
-    h += '<tr><td>'+esc(g.name)+'</td><td>'+esc(g.care)+'</td><td>'+r.lord+'</td><td>'+r.visit+'</td><td>'+r.host+'</td><td>'+r.group+'</td><td>'+r.gospel+'</td><td>'+r.life+'</td></tr>';
-    tot.lord+=r.lord; tot.visit+=r.visit; tot.host+=r.host; tot.group+=r.group; tot.gospel+=r.gospel; tot.life+=r.life;
-  });
-  h += '<tr class="total"><td>13 組合計</td><td></td><td>'+tot.lord+'</td><td>'+tot.visit+'</td><td>'+tot.host+'</td><td>'+tot.group+'</td><td>'+tot.gospel+'</td><td>'+tot.life+'</td></tr>';
-  var c = DATA.city[w];
-  h += '<tr class="city"><td>全市大學合計</td><td>含大區 34</td><td>'+c[0]+'</td><td>'+c[1]+'</td><td>'+c[2]+'</td><td>'+c[3]+'</td><td>'+c[4]+'</td><td>'+c[5]+'</td></tr>';
-  document.getElementById('work-table').innerHTML = h;
+function deltaBadge(a,b){
+  if(a==null||b==null) return '';
+  var d=a-b;
+  if(d>0) return ' <span class="delta up">+'+d+'</span>';
+  if(d<0) return ' <span class="delta down">\u2212'+Math.abs(d)+'</span>';
+  return ' <span class="delta flat">\u00b10</span>';
 }
-document.getElementById('work-week').addEventListener('change', renderWork);
+function fillCompareSelect(){
+  var cur=document.getElementById('work-week').value;
+  var sel=document.getElementById('work-compare');
+  var weeks=Object.keys(DATA.weeks).sort(function(a,b){return +a-+b;});
+  var prev=sel.value;
+  sel.innerHTML='';
+  weeks.forEach(function(w){
+    if(w===cur) return;
+    var o=document.createElement('option'); o.value=w;
+    o.textContent = (+w === +cur-1) ? '\u524d\u4e00\u9031' : weekLabel(w);
+    sel.appendChild(o);
+  });
+  var after=weeks.filter(function(x){return +x>+cur;});
+  var want=(prev && prev!==cur && DATA.weeks[prev]) ? prev : (DATA.weeks[String(+cur-1)] ? String(+cur-1) : (after.length? after[0] : weeks[weeks.length-1]));
+  if(sel.children.length) sel.value=want;
+}
+function renderWork(){
+  var w=document.getElementById('work-week').value;
+  var cw=document.getElementById('work-compare').value;
+  var d=DATA.weeks[w], c=DATA.weeks[cw];
+  var h='<tr><th>\u7d44\u5225</th><th>\u7167\u9867\u5340</th><th class="wk">\u9031</th><th>\u4e3b\u65e5</th><th>\u5bb6\u805a\u6703\u51fa\u8a2a</th><th>\u5bb6\u805a\u6703\u53d7\u8a2a</th><th>\u5c0f\u6392</th><th>\u798f\u97f3\u51fa\u8a2a</th><th>\u751f\u547d\u8b80\u7d93</th></tr>';
+  var tot={lord:0,visit:0,host:0,group:0,gospel:0,life:0};
+  var ctot={lord:0,visit:0,host:0,group:0,gospel:0,life:0};
+  DATA.groups.forEach(function(g){
+    var r=d.groups[g.name], p=c?c.groups[g.name]:null;
+    h+='<tr><td rowspan="2">'+esc(g.name)+'</td><td rowspan="2">'+esc(g.care)+'</td><td class="wk">\u7b2c'+w+'\u9031</td>';
+    ITEMS6.forEach(function(it){ var k=it[0]; h+='<td>'+r[k]+deltaBadge(r[k], p?p[k]:null)+'</td>'; });
+    h+='</tr><tr class="cmp"><td class="wk">\u7b2c'+cw+'\u9031</td>';
+    ITEMS6.forEach(function(it){ var k=it[0]; h+='<td>'+(p?p[k]:'\u2014')+'</td>'; });
+    h+='</tr>';
+    ITEMS6.forEach(function(it){ var k=it[0]; tot[k]+=r[k]; if(p) ctot[k]+=p[k]; });
+  });
+  h+='<tr class="total"><td rowspan="2">13 \u7d44\u5408\u8a08</td><td rowspan="2"></td><td class="wk">\u7b2c'+w+'\u9031</td>';
+  ITEMS6.forEach(function(it){ var k=it[0]; h+='<td>'+tot[k]+deltaBadge(tot[k], c?ctot[k]:null)+'</td>'; });
+  h+='</tr><tr class="cmp total"><td class="wk">\u7b2c'+cw+'\u9031</td>';
+  ITEMS6.forEach(function(it){ var k=it[0]; h+='<td>'+(c?ctot[k]:'\u2014')+'</td>'; });
+  h+='</tr>';
+  var ci=DATA.city[w], cc=c?DATA.city[cw]:null;
+  h+='<tr class="city"><td rowspan="2">\u5168\u5e02\u5927\u5b78\u5408\u8a08</td><td rowspan="2">\u542b\u5927\u5340 34</td><td class="wk">\u7b2c'+w+'\u9031</td>';
+  ITEMS6.forEach(function(it,ix){ h+='<td>'+ci[ix]+deltaBadge(ci[ix], cc?cc[ix]:null)+'</td>'; });
+  h+='</tr><tr class="cmp city"><td class="wk">\u7b2c'+cw+'\u9031</td>';
+  ITEMS6.forEach(function(it,ix){ h+='<td>'+(cc?cc[ix]:'\u2014')+'</td>'; });
+  h+='</tr>';
+  document.getElementById('work-table').innerHTML=h;
+}
+document.getElementById('work-week').addEventListener('change', function(){ fillCompareSelect(); renderWork(); });
+document.getElementById('work-compare').addEventListener('change', renderWork);
+fillCompareSelect();
 renderWork();
 
 /* analysis: weekly average W36-46 vs own target */
