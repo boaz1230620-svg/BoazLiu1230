@@ -214,7 +214,7 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
   function px(lng){ return ((lng*KX-X0)/XSPAN)*W; }
   function py(lat){ return ((YTOP-mercY(lat))/(YTOP-YBOT))*H; }
   var FULL = {x:0, y:0, w:1000, h:560};
-  var CAMPUS = {x:93.4, y:237.3, w:230.7, h:277.0};
+  var CAMPUS = {x:50, y:150, w:320, h:384};  /* widened west+east: 梧棲區/龍井區 centroids (x 88/81) and 石岡區 (x 338) were OUTSIDE the old view (93.4-324.1), so their pills could only be clamped to the frame edge. New view keeps every district centroid in-frame with >=9px pill clearance at 390px width. */
   var MINW = 55;
   var view = {x:CAMPUS.x, y:CAMPUS.y, w:CAMPUS.w, h:CAMPUS.h};
   var selectedId = null, selectedDistrict = null;
@@ -330,7 +330,7 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
     var df = cw >= 768 ? 15 : 13, cf = cw >= 768 ? 13 : 12;
     function S(sx, sy){ return [(sx-view.x)*s, (sy-view.y)*s]; }
     function clampRect(r){
-      var m = 2, w = r[2]-r[0], h = r[3]-r[1];
+      var m = 8, w = r[2]-r[0], h = r[3]-r[1];  /* 8px: no label pill may sit closer than this to the frame, so rounded corners stay fully visible */
       var x = Math.min(Math.max(r[0], m), Math.max(m, cw-w-m));
       var y = Math.min(Math.max(r[1], m), Math.max(m, ch-h-m));
       return [x, y, x+w, y+h];
@@ -419,6 +419,14 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
           var nx = Math.max(r[0], Math.min(c[0], r[2]));
           var ny = Math.max(r[1], Math.min(c[1], r[3]));
           ld = [nx, ny, c[0], c[1]];
+        } else {
+          /* pill clamped away from its centroid (e.g. near the frame): anchor it */
+          var pcx = (r[0]+r[2])/2, pcy = (r[1]+r[3])/2;
+          if(Math.hypot(pcx-c[0], pcy-c[1]) > 30){
+            var nx2 = Math.max(r[0], Math.min(c[0], r[2]));
+            var ny2 = Math.max(r[1], Math.min(c[1], r[3]));
+            ld = [nx2, ny2, c[0], c[1]];
+          }
         }
         break;
       }
@@ -451,14 +459,17 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
     });
     /* safety: nudge any label whose real rendered size overflows the frame.
        clampRect works on estimated widths, which can run a few px short on
-       phones; measure the real pill and keep it inside the stage. */
+       phones; measure the real pill and keep it inside the stage.
+       8px margin on every side: a pill can never touch the frame, so its
+       rounded corners always show fully. Runs on every layout() call, and
+       layout() is re-run after fonts settle / load / resize (see bottom). */
     var sh = stage.clientHeight;
     [clabEls, dlabEls].forEach(function(els){
       els.forEach(function(el){
         if(el.style.display === 'none') return;
         var w = el.offsetWidth, h = el.offsetHeight;
-        var x = Math.min(Math.max(parseFloat(el.style.left), 4), Math.max(4, cw-w-4));
-        var y = Math.min(Math.max(parseFloat(el.style.top), 4), Math.max(4, sh-h-4));
+        var x = Math.min(Math.max(parseFloat(el.style.left), 8), Math.max(8, cw-w-8));
+        var y = Math.min(Math.max(parseFloat(el.style.top), 8), Math.max(8, sh-h-8));
         el.style.left = x+'px'; el.style.top = y+'px';
       });
     });
@@ -555,6 +566,10 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
   });
   layout();
   window.addEventListener('load', layout);
+  /* re-layout once fonts and late layout shifts have settled, so the nudge pass
+     above measures final rendered sizes (not early estimates) */
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ layout(); }); }
+  setTimeout(layout, 800);
 })();
 
 var calLabel = ['第一學期開學','寒假開始','第二學期開學','暑假開始'];
