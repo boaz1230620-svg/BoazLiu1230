@@ -38,11 +38,9 @@ section.tabpane.active{display:block}
 .mapstage svg path.dist{stroke:#fff;stroke-width:1.5;cursor:pointer}
 .mapstage svg path.dist.sel{stroke:#1c2733;stroke-width:2.6}
 .mapstage svg path.outline{fill:none;stroke:#123a5c;stroke-width:3;stroke-linejoin:round;pointer-events:none}
-.mapstage svg line.ld{stroke:#64748b;stroke-width:1;pointer-events:none}
 .mapstage svg line.fl{stroke:#8a9aa8;stroke-width:1.5;stroke-dasharray:3 2;pointer-events:none}
 .mapstage svg circle.td{fill:#123a5c;stroke:#fff;stroke-width:1.5;pointer-events:none}
 .mapov{position:absolute;inset:0;overflow:hidden}
-.dlab{position:absolute;background:#fff;border:1px solid #c9d6e2;border-radius:11px;padding:2px 7px;font-size:15px;font-weight:900;color:#123a5c;white-space:nowrap;pointer-events:none;line-height:1.35;box-shadow:0 1px 2px rgba(18,58,92,.12)}
 .mk2{position:absolute;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;background:#fff;border:2.5px solid #123a5c;padding:2px;cursor:pointer;box-sizing:border-box}
 .mk2 img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}
 .mk2 .nb{position:absolute;right:-5px;bottom:-5px;width:16px;height:16px;border-radius:50%;background:#123a5c;color:#fff;border:1.5px solid #fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;line-height:1}
@@ -222,21 +220,6 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
   var svg = document.getElementById('mapsvg');
   var ov = document.getElementById('mapov');
   var ns = 'http://www.w3.org/2000/svg';
-  /* district polygons (parsed from the path data) for point-in-polygon tests */
-  var polys = DATA.dist.map(function(d){
-    return d.d.split('M').filter(function(x){ return x.trim(); }).map(function(part){
-      return part.replace(/Z.*$/,'').trim().split(/\s+/).map(function(p){ p = p.replace(/^[ML]/,''); var a = p.split(','); return [+a[0], +a[1]]; });
-    });
-  });
-  function inPoly(x, y, poly){
-    var inside = false;
-    for(var i = 0, j = poly.length-1; i < poly.length; j = i++){
-      var xi = poly[i][0], yi = poly[i][1], xj = poly[j][0], yj = poly[j][1];
-      if(((yi > y) !== (yj > y)) && (x < (xj-xi)*(y-yi)/(yj-yi)+xi)) inside = !inside;
-    }
-    return inside;
-  }
-  function inDistrict(sx, sy, di){ return polys[di].some(function(r){ return inPoly(sx, sy, r); }); }
   /* ---- build SVG: gradients, districts, city outline, leader layer ---- */
   var defs = document.createElementNS(ns, 'defs');
   DATA.dist.forEach(function(d, i){
@@ -279,12 +262,7 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
   svg.appendChild(outline);
   var leaderG = document.createElementNS(ns, 'g');
   svg.appendChild(leaderG);
-  /* ---- HTML overlays: district labels, crest markers, campus labels ---- */
-  var dlabEls = DATA.dist.map(function(d){
-    var el = document.createElement('div');
-    el.className = 'dlab'; el.textContent = d.name;
-    ov.appendChild(el); return el;
-  });
+  /* ---- HTML overlays: crest markers, campus labels (district names removed 2026-11-21: map shows campuses only) ---- */
   var mkEls = DATA.campuses.map(function(c){
     var b = document.createElement('button');
     b.type = 'button'; b.className = 'mk2'; b.setAttribute('data-n', c.n);
@@ -301,7 +279,6 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
   });
   var FAN = {'中國醫':[0,-10], '中科大':[0,10]};  /* only pair that overlaps on phones */
   var PREF = {'中教大':'left','中興':'left','中山醫':'left','勤益':'above','朝陽':'right','亞洲':'right','中科大':'above','臺體大':'left','中國醫':'above','中台':'right','嶺東':'left','逢甲':'above','僑光':'right','東海':'right','靜宜':'right','弘光':'above'};
-  var DCANDS = [[0,0],[0,-26],[0,26],[-44,0],[44,0],[-44,-26],[44,-26],[-44,26],[44,26],[0,-52],[0,52],[-88,0],[88,0],[-88,-52],[88,-52],[-88,52],[88,52],[0,-78],[0,78],[-132,0],[132,0],[-132,-52],[132,-52],[-132,52],[132,52],[0,-104],[0,104],[-44,-52],[44,-52],[-44,52],[44,52],[-88,-26],[88,-26],[-88,26],[88,26]];
   function overlap(a, b, m){ m = m || 2; return !(a[2]+m <= b[0] || b[2]+m <= a[0] || a[3]+m <= b[1] || b[3]+m <= a[1]); }
   function clampView(v){
     var w = Math.min(Math.max(v.w, MINW), W);
@@ -327,7 +304,7 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
     svg.setAttribute('viewBox', view.x.toFixed(1)+' '+view.y.toFixed(1)+' '+view.w.toFixed(1)+' '+view.h.toFixed(1));
     var atFull = view.w >= FULL.w - 1;
     var R = cw >= 768 ? 17 : (atFull ? 8 : 10);
-    var df = cw >= 768 ? 15 : 13, cf = cw >= 768 ? 13 : 12;
+    var cf = cw >= 768 ? 13 : 12;
     function S(sx, sy){ return [(sx-view.x)*s, (sy-view.y)*s]; }
     function clampRect(r){
       var m = 8, w = r[2]-r[0], h = r[3]-r[1];  /* 8px: no label pill may sit closer than this to the frame, so rounded corners stay fully visible */
@@ -395,43 +372,6 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
         clabels[c.short] = placed;
       });
     }
-    /* district labels: centroid first, then offsets (with a leader line when far) */
-    var dlabels = {}, dleader = {};
-    DATA.dist.forEach(function(d, di){
-      var w = d.name.length*df + 18, h = df + 12;
-      var c = S(d.cx, d.cy);
-      var placed = null, ld = null;
-      for(var k = 0; k < DCANDS.length; k++){
-        var dx = DCANDS[k][0], dy = DCANDS[k][1];
-        var x = c[0]+dx, y = c[1]+dy;
-        if(x < 0 || y < 0 || x > cw || y > ch) continue;
-        var r = clampRect([x-w/2, y-h/2, x+w/2, y+h/2]);
-        if(Math.hypot(dx, dy) > 150) continue;
-        if(k === 0){
-          var stx = view.x + x/s, sty = view.y + y/s;
-          if(!inDistrict(stx, sty, di)) continue;
-        }
-        if(Object.keys(brects).some(function(key){ return overlap(r, brects[key]); })) continue;
-        if(Object.keys(clabels).some(function(key){ return clabels[key] && overlap(r, clabels[key]); })) continue;
-        if(Object.keys(dlabels).some(function(key){ return dlabels[key] && overlap(r, dlabels[key]); })) continue;
-        placed = r;
-        if(Math.hypot(dx, dy) > 30){
-          var nx = Math.max(r[0], Math.min(c[0], r[2]));
-          var ny = Math.max(r[1], Math.min(c[1], r[3]));
-          ld = [nx, ny, c[0], c[1]];
-        } else {
-          /* pill clamped away from its centroid (e.g. near the frame): anchor it */
-          var pcx = (r[0]+r[2])/2, pcy = (r[1]+r[3])/2;
-          if(Math.hypot(pcx-c[0], pcy-c[1]) > 30){
-            var nx2 = Math.max(r[0], Math.min(c[0], r[2]));
-            var ny2 = Math.max(r[1], Math.min(c[1], r[3]));
-            ld = [nx2, ny2, c[0], c[1]];
-          }
-        }
-        break;
-      }
-      dlabels[d.name] = placed; dleader[d.name] = ld;
-    });
     /* apply to DOM */
     DATA.campuses.forEach(function(c, i){
       var b = mkEls[i], p = badges[c.short];
@@ -449,14 +389,6 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
       el.style.left = r[0]+'px'; el.style.top = r[1]+'px';
       el.style.fontSize = cf+'px';
     });
-    DATA.dist.forEach(function(d, i){
-      var el = dlabEls[i], r = dlabels[d.name];
-      if(!r){ el.style.display = 'none'; return; }
-      el.style.display = '';
-      el.style.left = r[0]+'px';
-      el.style.top = r[1]+'px';
-      el.style.fontSize = df+'px';
-    });
     /* safety: nudge any label whose real rendered size overflows the frame.
        clampRect works on estimated widths, which can run a few px short on
        phones; measure the real pill and keep it inside the stage.
@@ -464,7 +396,7 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
        rounded corners always show fully. Runs on every layout() call, and
        layout() is re-run after fonts settle / load / resize (see bottom). */
     var sh = stage.clientHeight;
-    [clabEls, dlabEls].forEach(function(els){
+    [clabEls].forEach(function(els){
       els.forEach(function(el){
         if(el.style.display === 'none') return;
         var w = el.offsetWidth, h = el.offsetHeight;
@@ -475,23 +407,6 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
     });
     while(leaderG.firstChild) leaderG.removeChild(leaderG.firstChild);
     var dotR = 3.5 / s;
-    DATA.dist.forEach(function(d){
-      var ld = dleader[d.name];
-      if(!ld) return;
-      var ln = document.createElementNS(ns, 'line');
-      ln.setAttribute('x1', (view.x + ld[0]/s).toFixed(1));
-      ln.setAttribute('y1', (view.y + ld[1]/s).toFixed(1));
-      ln.setAttribute('x2', (view.x + ld[2]/s).toFixed(1));
-      ln.setAttribute('y2', (view.y + ld[3]/s).toFixed(1));
-      ln.setAttribute('class', 'ld');
-      leaderG.appendChild(ln);
-      var dot = document.createElementNS(ns, 'circle');
-      dot.setAttribute('cx', (view.x + ld[2]/s).toFixed(1));
-      dot.setAttribute('cy', (view.y + ld[3]/s).toFixed(1));
-      dot.setAttribute('r', dotR.toFixed(2));
-      dot.setAttribute('class', 'td');
-      leaderG.appendChild(dot);
-    });
     ['中國醫','中科大'].forEach(function(short){
       var c = null;
       DATA.campuses.forEach(function(x){ if(x.short === short) c = x; });
