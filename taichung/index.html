@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>台中大專校園工作整合網站</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;background:#f4f6f8;color:#1c2733;line-height:1.6}
+header{background:#123a5c;color:#fff;padding:28px 18px 20px;text-align:center}
+header h1{margin:0;font-size:26px;letter-spacing:2px}
+header p{margin:6px 0 0;color:#cfe0ee;font-size:14px}
+.note{max-width:1080px;margin:0 auto;padding:10px 18px 0;font-size:13px;color:#5a6b7a;text-align:center}
+.tabs{max-width:1080px;margin:14px auto 0;padding:0 14px;display:flex;gap:8px;flex-wrap:wrap}
+.tabs button{flex:1;min-width:110px;padding:11px 6px;font-size:16px;border:1px solid #c9d6e2;background:#fff;border-radius:10px 10px 0 0;cursor:pointer;color:#33506b}
+.tabs button.active{background:#123a5c;color:#fff;border-color:#123a5c;font-weight:700}
+main{max-width:1080px;margin:0 auto;padding:18px 14px 40px}
+section.tabpane{display:none}
+section.tabpane.active{display:block}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.tile{background:#fff;border:1px solid #dde5ec;border-radius:10px;padding:14px;text-align:center}
+.tile b{display:block;font-size:26px;color:#123a5c}
+.tile span{font-size:13px;color:#5a6b7a}
+.card{background:#fff;border:1px solid #dde5ec;border-radius:10px;padding:16px;margin-bottom:16px}
+.card h2{margin:0 0 10px;font-size:19px;color:#123a5c}
+.card h3{margin:18px 0 8px;font-size:16px;color:#123a5c}
+.mapwrap{background:#eef4f8;border:1px solid #dde5ec;border-radius:10px;padding:8px;overflow-x:auto}
+.mapwrap svg{display:block;min-width:640px;width:100%;height:auto}
+.mk{cursor:pointer}
+.mk circle{fill:#123a5c;stroke:#fff;stroke-width:2}
+.mk text{fill:#fff;font-size:12px;font-weight:700;text-anchor:middle}
+.mk:hover circle{fill:#c8871a}
+.dlabel{fill:#7a8a99;font-size:13px;text-anchor:middle}
+.mapcap{font-size:13px;color:#5a6b7a;text-align:center;margin-top:6px}
+ul.campuslist{list-style:none;margin:0;padding:0}
+ul.campuslist>li{border:1px solid #dde5ec;border-radius:10px;margin-bottom:8px;background:#fff;overflow:hidden}
+.campuslist .row{width:100%;text-align:left;background:none;border:0;padding:13px 14px;cursor:pointer;display:flex;align-items:center;gap:12px;font-size:16px}
+.campuslist .row .num{flex:0 0 30px;height:30px;border-radius:50%;background:#123a5c;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+.campuslist .row .nm{font-weight:700}
+.campuslist .row .sub{color:#5a6b7a;font-size:13px}
+.campuslist .row .arrow{margin-left:auto;color:#8a9aa8}
+.detail{display:none;padding:0 16px 16px;border-top:1px dashed #dde5ec}
+.detail.open{display:block}
+.detail table{width:100%;border-collapse:collapse;font-size:15px}
+.detail td{padding:6px 4px;border-bottom:1px solid #eef2f5;vertical-align:top}
+.detail td:first-child{width:110px;color:#5a6b7a;white-space:nowrap}
+select{font-size:16px;padding:8px 10px;border:1px solid #c9d6e2;border-radius:8px;background:#fff;margin-right:8px}
+.controls{margin-bottom:12px}
+table.data{width:100%;border-collapse:collapse;background:#fff;font-size:15px}
+table.data th,table.data td{border:1px solid #dde5ec;padding:7px 8px;text-align:center}
+table.data th{background:#123a5c;color:#fff}
+table.data td:first-child,table.data th:first-child{text-align:left}
+table.data tr.total td{font-weight:700;background:#f0f5f9}
+table.data tr.city td{font-weight:700;background:#fff8e6}
+.bar-row{display:grid;grid-template-columns:86px 1fr 150px;gap:10px;align-items:center;margin:7px 0;font-size:14px}
+.bar-track{height:18px;background:#e8eef3;border-radius:9px;position:relative}
+.bar-fill{height:18px;border-radius:9px;background:#2e7d5b;min-width:4px}
+.bar-fill.close{background:#d9a521}
+.bar-fill.gap{background:#c25b4a}
+.bar-target{position:absolute;top:-3px;bottom:-3px;width:3px;background:#1c2733}
+.anacard{background:#fff;border:1px solid #dde5ec;border-radius:10px;padding:14px 16px;margin-bottom:12px}
+.anacard h3{margin:0 0 4px;font-size:16px;color:#123a5c}
+.anacard .care{font-size:13px;color:#5a6b7a;margin-bottom:8px}
+.legend{font-size:13px;color:#5a6b7a}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin:0 3px 0 12px;vertical-align:-1px}
+.month h3{margin:18px 0 8px;color:#123a5c}
+footer{text-align:center;color:#8a9aa8;font-size:13px;padding:20px}
+@media(max-width:640px){.tiles{grid-template-columns:repeat(2,1fr)}header h1{font-size:21px}.bar-row{grid-template-columns:70px 1fr 110px}}
+</style>
+</head>
+<body>
+<header>
+<h1>台中大專校園工作整合網站</h1>
+<p>地圖總覽・校園工作・外語生工作・行事曆</p>
+</header>
+<p class="note">此頁為瀏覽版（唯讀）。資料更新請至整合網站編輯。</p>
+<nav class="tabs" id="tabs">
+<button data-tab="map" class="active">地圖總覽</button>
+<button data-tab="work">校園工作</button>
+<button data-tab="foreign">外語生工作</button>
+<button data-tab="calendar">行事曆</button>
+</nav>
+<main>
+<section class="tabpane active" id="pane-map">
+<div class="tiles">
+<div class="tile"><b id="t-enroll"></b><span>全校學生人數</span></div>
+<div class="tile"><b id="t-foreign"></b><span>外語生人數</span></div>
+<div class="tile"><b>16</b><span>校園</span></div>
+<div class="tile"><b>13</b><span>校園工作組</span></div>
+</div>
+<div class="card">
+<h2>台中市校園位置示意圖</h2>
+<div class="mapwrap"><svg id="map" viewBox="0 0 780 540" role="img" aria-label="台中市校園位置示意圖"></svg></div>
+<p class="mapcap">點校園編號，可在下方列表查看該校資料。</p>
+</div>
+<div class="card">
+<h2>校園列表</h2>
+<ul class="campuslist" id="campuslist"></ul>
+</div>
+</section>
+
+<section class="tabpane" id="pane-work">
+<div class="card">
+<h2>每週數據</h2>
+<div class="controls">
+<label>年度 <select id="work-year"></select></label>
+<label>週次 <select id="work-week"></select></label>
+</div>
+<div style="overflow-x:auto"><table class="data" id="work-table"></table></div>
+<p class="legend">全市大學合計含未編入任何一組的大區 34；各組數字為點名系統週報抄錄。</p>
+</div>
+<div class="card">
+<h2>各組分析：每週平均與自己 2026 年目標比較</h2>
+<p class="legend">橫條為第 36–46 週每週平均，黑線為該組自己的 2026 年目標（使用者提供）；家聚會目標為出訪＋受訪合計。<i style="background:#2e7d5b"></i>已達目標<i style="background:#d9a521"></i>接近（80% 以上）<i style="background:#c25b4a"></i>尚有差距。生命讀經無目標，僅列實際數。</p>
+<div id="analysis"></div>
+</div>
+<div class="card">
+<h2>月走勢（9–11 月）</h2>
+<p class="legend">9 月：第 36–39 週；10 月：第 40–43 週；11 月：第 44–46 週（3 週）。數字為各月合計人次。</p>
+<div style="overflow-x:auto"><table class="data" id="trend-table"></table></div>
+</div>
+</section>
+
+<section class="tabpane" id="pane-foreign">
+<div class="card">
+<h2>外語生工作</h2>
+<div class="controls">
+<label>年度 <select id="foreign-year"></select></label>
+<label>週次 <select id="foreign-week"></select></label>
+</div>
+<div style="overflow-x:auto"><table class="data" id="foreign-table"></table></div>
+<p class="legend">外語生週數據尚未查核，各組、各項皆為待查。</p>
+</div>
+</section>
+
+<section class="tabpane" id="pane-calendar">
+<div class="card">
+<h2>2027 大專組上半年行事曆</h2>
+<div id="calendar"></div>
+</div>
+</section>
+</main>
+<footer>台中大專校園工作整合網站・瀏覽版</footer>
+<script>
+var DATA = {"campuses": [{"n": 1, "name": "國立臺中教育大學", "short": "中教大", "district": "西區", "type": "國立大學", "hall": "1", "servant": "陳民敏姊妹", "enroll": 5178, "foreign": 93, "addr": "台中市西區民生路140號", "cal": ["9/7", "1/11", "2/22", ""]}, {"n": 2, "name": "國立中興大學", "short": "中興", "district": "南區", "type": "國立大學", "hall": "2/3/22", "servant": "劉仁和弟兄、連泓旗姊妹", "enroll": 15899, "foreign": 475, "addr": "台中市南區國光路250號", "cal": ["9/7", "12/28", "2/22", "6/14"]}, {"n": 3, "name": "中山醫學大學", "short": "中山醫", "district": "南區", "type": "私立大學", "hall": "4", "servant": "蔡雨捷姊妹", "enroll": 7103, "foreign": 8, "addr": "台中市南區建國北路一段110號", "cal": ["9/7", "", "", ""]}, {"n": 4, "name": "國立勤益科技大學", "short": "勤益", "district": "太平區", "type": "科技大學", "hall": "11", "servant": "林宇謙弟兄", "enroll": 12667, "foreign": 596, "addr": "台中市太平區中山路二段57號", "cal": ["9/7", "1/11", "", ""]}, {"n": 5, "name": "朝陽科技大學", "short": "朝陽", "district": "霧峰區", "type": "科技大學", "hall": "17", "servant": "吳獻恩弟兄", "enroll": 13083, "foreign": 1142, "addr": "台中市霧峰區吉峰東路168號", "cal": ["9/14", "1/18", "2/22", "6/28"]}, {"n": 6, "name": "亞洲大學", "short": "亞洲", "district": "霧峰區", "type": "私立大學", "hall": "17", "servant": "吳獻恩弟兄", "enroll": 10729, "foreign": 388, "addr": "台中市霧峰區柳豐路500號", "cal": ["9/7", "1/10", "2/22", "6/27"]}, {"n": 7, "name": "國立臺中科技大學", "short": "中科大", "district": "北區", "type": "科技大學", "hall": "6", "servant": "鄒奕新姊妹", "enroll": 15657, "foreign": 44, "addr": "台中市北區三民路三段129號", "cal": ["9/7", "", "2/22", ""]}, {"n": 8, "name": "國立臺灣體育運動大學", "short": "臺體大", "district": "東區", "type": "國立大學", "hall": "14", "servant": "鄒奕新姊妹", "enroll": 3048, "foreign": 23, "addr": "台中市東區力行路271號", "cal": ["9/7", "", "2/22", ""]}, {"n": 9, "name": "中國醫藥大學", "short": "中國醫", "district": "北區", "type": "私立大學", "hall": "5/13", "servant": "李耀主弟兄、秦琪瑄姊妹", "enroll": 7514, "foreign": 314, "addr": "台中市北區學士路91號", "cal": ["9/7", "1/11", "2/22", ""]}, {"n": 10, "name": "中臺科技大學", "short": "中台", "district": "北屯區", "type": "科技大學", "hall": "7/15", "servant": "鍾靈姊妹", "enroll": 6019, "foreign": 83, "addr": "台中市北屯區廍子路666號", "cal": ["9/15", "1/18", "2/22", ""]}, {"n": 11, "name": "嶺東科技大學", "short": "嶺東", "district": "南屯區", "type": "科技大學", "hall": "12", "servant": "朱宇新弟兄", "enroll": 8096, "foreign": 256, "addr": "台中市南屯區嶺東路1號", "cal": ["9/7", "", "2/22", ""]}, {"n": 12, "name": "逢甲大學", "short": "逢甲", "district": "西屯區", "type": "私立大學", "hall": "8/16", "servant": "陳佑豪弟兄", "enroll": 21420, "foreign": 467, "addr": "台中市西屯區文華路100號", "cal": ["9/8", "12/30", "2/22", "6/16"]}, {"n": 13, "name": "僑光科技大學", "short": "僑光", "district": "西屯區", "type": "科技大學", "hall": "19", "servant": "陳佑豪弟兄", "enroll": 7332, "foreign": 229, "addr": "台中市西屯區僑光路100號", "cal": ["9/14", "1/18", "2/22", "6/28"]}, {"n": 14, "name": "東海大學", "short": "東海", "district": "西屯區", "type": "私立大學", "hall": "9/10", "servant": "黃文杰弟兄", "enroll": 15638, "foreign": 632, "addr": "台中市西屯區臺灣大道四段1727號", "cal": ["9/14", "1/18", "2/22", "6/28"]}, {"n": 15, "name": "靜宜大學", "short": "靜宜", "district": "沙鹿區", "type": "私立大學", "hall": "20", "servant": "陳永政弟兄", "enroll": 10573, "foreign": 936, "addr": "台中市沙鹿區臺灣大道七段200號", "cal": ["9/14", "1/18", "2/22", "6/28"]}, {"n": 16, "name": "弘光科技大學", "short": "弘光", "district": "沙鹿區", "type": "科技大學", "hall": "21", "servant": "陳永政弟兄", "enroll": 11552, "foreign": 443, "addr": "台中市沙鹿區臺灣大道六段1018號", "cal": ["9/14", "1/17", "2/22", "6/27"]}], "groups": [{"name": "中興", "care": "2,3,11,23,39", "members": "中興"}, {"name": "中教大", "care": "1,33", "members": "中教大"}, {"name": "中山醫", "care": "4,27", "members": "中山醫"}, {"name": "朝陽亞洲", "care": "17", "members": "朝陽、亞洲"}, {"name": "勤益", "care": "24,40", "members": "勤益"}, {"name": "中台", "care": "7,15,28,29", "members": "中台"}, {"name": "中國醫", "care": "5,13,35", "members": "中國醫"}, {"name": "中科台體", "care": "30,6,14", "members": "中科、台體"}, {"name": "逢甲僑光", "care": "8,16,19,25,41", "members": "逢甲、僑光"}, {"name": "嶺東", "care": "12", "members": "嶺東"}, {"name": "東海", "care": "9,10,26,37", "members": "東海"}, {"name": "靜宜弘光", "care": "20,21,22,36", "members": "靜宜、弘光"}, {"name": "北二", "care": "18,31,32,38", "members": ""}], "weeks": {"36": {"start": "2026-08-31", "end": "2026-09-06", "groups": {"中興": {"lord": 36, "visit": 4, "host": 6, "home": 10, "group": 13, "gospel": 7, "life": 7}, "中教大": {"lord": 7, "visit": 1, "host": 8, "home": 9, "group": 7, "gospel": 5, "life": 1}, "中山醫": {"lord": 19, "visit": 8, "host": 13, "home": 21, "group": 12, "gospel": 14, "life": 4}, "朝陽亞洲": {"lord": 38, "visit": 3, "host": 34, "home": 37, "group": 19, "gospel": 14, "life": 3}, "勤益": {"lord": 21, "visit": 2, "host": 28, "home": 30, "group": 13, "gospel": 8, "life": 4}, "中台": {"lord": 8, "visit": 0, "host": 9, "home": 9, "group": 3, "gospel": 0, "life": 2}, "中國醫": {"lord": 23, "visit": 13, "host": 19, "home": 32, "group": 22, "gospel": 13, "life": 13}, "中科台體": {"lord": 27, "visit": 15, "host": 26, "home": 41, "group": 23, "gospel": 12, "life": 13}, "逢甲僑光": {"lord": 19, "visit": 4, "host": 25, "home": 29, "group": 20, "gospel": 6, "life": 8}, "嶺東": {"lord": 0, "visit": 0, "host": 2, "home": 2, "group": 0, "gospel": 0, "life": 0}, "東海": {"lord": 11, "visit": 3, "host": 18, "home": 21, "group": 8, "gospel": 6, "life": 0}, "靜宜弘光": {"lord": 14, "visit": 2, "host": 14, "home": 16, "group": 8, "gospel": 3, "life": 1}, "北二": {"lord": 5, "visit": 0, "host": 2, "home": 2, "group": 3, "gospel": 0, "life": 0}}}, "37": {"start": "2026-09-07", "end": "2026-09-13", "groups": {"中興": {"lord": 32, "visit": 9, "host": 9, "home": 18, "group": 22, "gospel": 13, "life": 7}, "中教大": {"lord": 11, "visit": 3, "host": 12, "home": 15, "group": 10, "gospel": 3, "life": 1}, "中山醫": {"lord": 19, "visit": 9, "host": 23, "home": 32, "group": 29, "gospel": 11, "life": 11}, "朝陽亞洲": {"lord": 44, "visit": 5, "host": 48, "home": 53, "group": 38, "gospel": 20, "life": 0}, "勤益": {"lord": 22, "visit": 10, "host": 37, "home": 47, "group": 33, "gospel": 8, "life": 10}, "中台": {"lord": 9, "visit": 1, "host": 10, "home": 11, "group": 6, "gospel": 2, "life": 1}, "中國醫": {"lord": 27, "visit": 14, "host": 24, "home": 38, "group": 27, "gospel": 16, "life": 14}, "中科台體": {"lord": 21, "visit": 14, "host": 38, "home": 52, "group": 28, "gospel": 10, "life": 9}, "逢甲僑光": {"lord": 24, "visit": 8, "host": 24, "home": 32, "group": 24, "gospel": 9, "life": 1}, "嶺東": {"lord": 0, "visit": 0, "host": 3, "home": 3, "group": 5, "gospel": 0, "life": 0}, "東海": {"lord": 13, "visit": 10, "host": 9, "home": 19, "group": 5, "gospel": 10, "life": 2}, "靜宜弘光": {"lord": 12, "visit": 5, "host": 10, "home": 15, "group": 7, "gospel": 7, "life": 4}, "北二": {"lord": 3, "visit": 0, "host": 0, "home": 0, "group": 0, "gospel": 0, "life": 0}}}, "38": {"start": "2026-09-14", "end": "2026-09-20", "groups": {"中興": {"lord": 32, "visit": 6, "host": 16, "home": 22, "group": 30, "gospel": 16, "life": 6}, "中教大": {"lord": 10, "visit": 1, "host": 10, "home": 11, "group": 10, "gospel": 3, "life": 1}, "中山醫": {"lord": 17, "visit": 5, "host": 11, "home": 16, "group": 6, "gospel": 8, "life": 3}, "朝陽亞洲": {"lord": 54, "visit": 0, "host": 43, "home": 43, "group": 28, "gospel": 19, "life": 2}, "勤益": {"lord": 22, "visit": 9, "host": 36, "home": 45, "group": 30, "gospel": 9, "life": 6}, "中台": {"lord": 10, "visit": 1, "host": 15, "home": 16, "group": 9, "gospel": 2, "life": 5}, "中國醫": {"lord": 28, "visit": 10, "host": 16, "home": 26, "group": 22, "gospel": 11, "life": 9}, "中科台體": {"lord": 34, "visit": 10, "host": 88, "home": 98, "group": 42, "gospel": 16, "life": 11}, "逢甲僑光": {"lord": 27, "visit": 4, "host": 34, "home": 38, "group": 29, "gospel": 8, "life": 9}, "嶺東": {"lord": 1, "visit": 0, "host": 4, "home": 4, "group": 5, "gospel": 0, "life": 0}, "東海": {"lord": 15, "visit": 7, "host": 8, "home": 15, "group": 10, "gospel": 9, "life": 4}, "靜宜弘光": {"lord": 12, "visit": 5, "host": 13, "home": 18, "group": 9, "gospel": 7, "life": 2}, "北二": {"lord": 4, "visit": 0, "host": 1, "home": 1, "group": 2, "gospel": 0, "life": 0}}}, "39": {"start": "2026-09-21", "end": "2026-09-27", "groups": {"中興": {"lord": 23, "visit": 3, "host": 9, "home": 12, "group": 11, "gospel": 6, "life": 4}, "中教大": {"lord": 13, "visit": 4, "host": 13, "home": 17, "group": 17, "gospel": 5, "life": 3}, "中山醫": {"lord": 19, "visit": 6, "host": 13, "home": 19, "group": 9, "gospel": 4, "life": 1}, "朝陽亞洲": {"lord": 36, "visit": 48, "host": 6, "home": 54, "group": 44, "gospel": 18, "life": 5}, "勤益": {"lord": 21, "visit": 5, "host": 33, "home": 38, "group": 25, "gospel": 8, "life": 9}, "中台": {"lord": 10, "visit": 0, "host": 11, "home": 11, "group": 9, "gospel": 3, "life": 2}, "中國醫": {"lord": 22, "visit": 10, "host": 19, "home": 29, "group": 23, "gospel": 9, "life": 9}, "中科台體": {"lord": 20, "visit": 5, "host": 62, "home": 67, "group": 16, "gospel": 12, "life": 6}, "逢甲僑光": {"lord": 26, "visit": 5, "host": 29, "home": 34, "group": 24, "gospel": 5, "life": 8}, "嶺東": {"lord": 0, "visit": 0, "host": 4, "home": 4, "group": 4, "gospel": 0, "life": 0}, "東海": {"lord": 20, "visit": 13, "host": 11, "home": 24, "group": 14, "gospel": 11, "life": 2}, "靜宜弘光": {"lord": 11, "visit": 3, "host": 16, "home": 19, "group": 9, "gospel": 7, "life": 2}, "北二": {"lord": 5, "visit": 0, "host": 1, "home": 1, "group": 3, "gospel": 0, "life": 0}}}, "40": {"start": "2026-09-28", "end": "2026-10-04", "groups": {"中興": {"lord": 39, "visit": 6, "host": 20, "home": 26, "group": 24, "gospel": 3, "life": 8}, "中教大": {"lord": 14, "visit": 4, "host": 19, "home": 23, "group": 22, "gospel": 5, "life": 5}, "中山醫": {"lord": 18, "visit": 7, "host": 30, "home": 37, "group": 31, "gospel": 9, "life": 9}, "朝陽亞洲": {"lord": 45, "visit": 13, "host": 31, "home": 44, "group": 41, "gospel": 19, "life": 7}, "勤益": {"lord": 21, "visit": 5, "host": 31, "home": 36, "group": 29, "gospel": 5, "life": 6}, "中台": {"lord": 11, "visit": 1, "host": 10, "home": 11, "group": 8, "gospel": 0, "life": 2}, "中國醫": {"lord": 29, "visit": 14, "host": 23, "home": 37, "group": 31, "gospel": 16, "life": 14}, "中科台體": {"lord": 24, "visit": 10, "host": 66, "home": 76, "group": 37, "gospel": 14, "life": 12}, "逢甲僑光": {"lord": 22, "visit": 4, "host": 35, "home": 39, "group": 25, "gospel": 5, "life": 8}, "嶺東": {"lord": 1, "visit": 0, "host": 4, "home": 4, "group": 2, "gospel": 0, "life": 0}, "東海": {"lord": 16, "visit": 10, "host": 16, "home": 26, "group": 12, "gospel": 8, "life": 2}, "靜宜弘光": {"lord": 11, "visit": 3, "host": 11, "home": 14, "group": 11, "gospel": 4, "life": 5}, "北二": {"lord": 5, "visit": 0, "host": 0, "home": 0, "group": 1, "gospel": 0, "life": 0}}}, "41": {"start": "2026-10-05", "end": "2026-10-11", "groups": {"中興": {"lord": 35, "visit": 8, "host": 36, "home": 44, "group": 23, "gospel": 5, "life": 5}, "中教大": {"lord": 10, "visit": 0, "host": 15, "home": 15, "group": 15, "gospel": 2, "life": 3}, "中山醫": {"lord": 14, "visit": 8, "host": 25, "home": 33, "group": 28, "gospel": 10, "life": 10}, "朝陽亞洲": {"lord": 37, "visit": 20, "host": 35, "home": 55, "group": 47, "gospel": 13, "life": 2}, "勤益": {"lord": 30, "visit": 9, "host": 30, "home": 39, "group": 29, "gospel": 6, "life": 9}, "中台": {"lord": 10, "visit": 1, "host": 12, "home": 13, "group": 7, "gospel": 0, "life": 1}, "中國醫": {"lord": 30, "visit": 20, "host": 27, "home": 47, "group": 38, "gospel": 17, "life": 13}, "中科台體": {"lord": 23, "visit": 11, "host": 74, "home": 85, "group": 25, "gospel": 13, "life": 11}, "逢甲僑光": {"lord": 22, "visit": 7, "host": 34, "home": 41, "group": 27, "gospel": 5, "life": 8}, "嶺東": {"lord": 0, "visit": 0, "host": 4, "home": 4, "group": 4, "gospel": 0, "life": 0}, "東海": {"lord": 15, "visit": 9, "host": 11, "home": 20, "group": 15, "gospel": 6, "life": 2}, "靜宜弘光": {"lord": 11, "visit": 2, "host": 18, "home": 20, "group": 8, "gospel": 1, "life": 6}, "北二": {"lord": 4, "visit": 0, "host": 0, "home": 0, "group": 1, "gospel": 0, "life": 0}}}, "42": {"start": "2026-10-12", "end": "2026-10-18", "groups": {"中興": {"lord": 41, "visit": 5, "host": 38, "home": 43, "group": 24, "gospel": 10, "life": 6}, "中教大": {"lord": 9, "visit": 1, "host": 16, "home": 17, "group": 17, "gospel": 3, "life": 3}, "中山醫": {"lord": 19, "visit": 7, "host": 30, "home": 37, "group": 31, "gospel": 6, "life": 7}, "朝陽亞洲": {"lord": 46, "visit": 7, "host": 52, "home": 59, "group": 51, "gospel": 17, "life": 9}, "勤益": {"lord": 23, "visit": 8, "host": 38, "home": 46, "group": 35, "gospel": 7, "life": 7}, "中台": {"lord": 9, "visit": 1, "host": 8, "home": 9, "group": 8, "gospel": 2, "life": 3}, "中國醫": {"lord": 27, "visit": 14, "host": 27, "home": 41, "group": 34, "gospel": 16, "life": 19}, "中科台體": {"lord": 25, "visit": 12, "host": 25, "home": 37, "group": 31, "gospel": 12, "life": 12}, "逢甲僑光": {"lord": 25, "visit": 6, "host": 41, "home": 47, "group": 29, "gospel": 5, "life": 8}, "嶺東": {"lord": 1, "visit": 0, "host": 5, "home": 5, "group": 4, "gospel": 0, "life": 0}, "東海": {"lord": 15, "visit": 6, "host": 17, "home": 23, "group": 15, "gospel": 7, "life": 2}, "靜宜弘光": {"lord": 12, "visit": 3, "host": 17, "home": 20, "group": 12, "gospel": 3, "life": 7}, "北二": {"lord": 5, "visit": 0, "host": 0, "home": 0, "group": 1, "gospel": 1, "life": 0}}}, "43": {"start": "2026-10-19", "end": "2026-10-25", "groups": {"中興": {"lord": 27, "visit": 3, "host": 31, "home": 34, "group": 23, "gospel": 2, "life": 8}, "中教大": {"lord": 8, "visit": 4, "host": 23, "home": 27, "group": 27, "gospel": 3, "life": 5}, "中山醫": {"lord": 16, "visit": 10, "host": 29, "home": 39, "group": 24, "gospel": 8, "life": 12}, "朝陽亞洲": {"lord": 35, "visit": 17, "host": 21, "home": 38, "group": 39, "gospel": 12, "life": 5}, "勤益": {"lord": 21, "visit": 6, "host": 45, "home": 51, "group": 38, "gospel": 10, "life": 8}, "中台": {"lord": 8, "visit": 1, "host": 10, "home": 11, "group": 7, "gospel": 2, "life": 4}, "中國醫": {"lord": 30, "visit": 13, "host": 30, "home": 43, "group": 35, "gospel": 14, "life": 16}, "中科台體": {"lord": 28, "visit": 9, "host": 60, "home": 69, "group": 59, "gospel": 16, "life": 15}, "逢甲僑光": {"lord": 29, "visit": 6, "host": 41, "home": 47, "group": 21, "gospel": 3, "life": 7}, "嶺東": {"lord": 0, "visit": 0, "host": 4, "home": 4, "group": 3, "gospel": 0, "life": 0}, "東海": {"lord": 17, "visit": 5, "host": 21, "home": 26, "group": 17, "gospel": 6, "life": 1}, "靜宜弘光": {"lord": 13, "visit": 5, "host": 15, "home": 20, "group": 12, "gospel": 4, "life": 7}, "北二": {"lord": 5, "visit": 0, "host": 0, "home": 0, "group": 2, "gospel": 0, "life": 0}}}, "44": {"start": "2026-10-26", "end": "2026-11-01", "groups": {"中興": {"lord": 36, "visit": 10, "host": 40, "home": 50, "group": 27, "gospel": 5, "life": 17}, "中教大": {"lord": 9, "visit": 4, "host": 23, "home": 27, "group": 6, "gospel": 1, "life": 4}, "中山醫": {"lord": 16, "visit": 3, "host": 25, "home": 28, "group": 15, "gospel": 5, "life": 9}, "朝陽亞洲": {"lord": 39, "visit": 14, "host": 37, "home": 51, "group": 30, "gospel": 11, "life": 3}, "勤益": {"lord": 19, "visit": 7, "host": 50, "home": 57, "group": 44, "gospel": 9, "life": 7}, "中台": {"lord": 10, "visit": 1, "host": 10, "home": 11, "group": 6, "gospel": 0, "life": 4}, "中國醫": {"lord": 22, "visit": 12, "host": 37, "home": 49, "group": 28, "gospel": 14, "life": 16}, "中科台體": {"lord": 23, "visit": 6, "host": 69, "home": 75, "group": 58, "gospel": 10, "life": 10}, "逢甲僑光": {"lord": 25, "visit": 3, "host": 38, "home": 41, "group": 31, "gospel": 4, "life": 8}, "嶺東": {"lord": 0, "visit": 0, "host": 3, "home": 3, "group": 2, "gospel": 0, "life": 0}, "東海": {"lord": 20, "visit": 9, "host": 17, "home": 26, "group": 14, "gospel": 11, "life": 2}, "靜宜弘光": {"lord": 11, "visit": 2, "host": 16, "home": 18, "group": 8, "gospel": 2, "life": 6}, "北二": {"lord": 4, "visit": 0, "host": 0, "home": 0, "group": 0, "gospel": 1, "life": 0}}}, "45": {"start": "2026-11-02", "end": "2026-11-08", "groups": {"中興": {"lord": 29, "visit": 8, "host": 31, "home": 39, "group": 19, "gospel": 4, "life": 11}, "中教大": {"lord": 10, "visit": 4, "host": 19, "home": 23, "group": 24, "gospel": 4, "life": 4}, "中山醫": {"lord": 20, "visit": 11, "host": 18, "home": 29, "group": 23, "gospel": 8, "life": 7}, "朝陽亞洲": {"lord": 41, "visit": 17, "host": 45, "home": 62, "group": 49, "gospel": 8, "life": 17}, "勤益": {"lord": 23, "visit": 8, "host": 47, "home": 55, "group": 44, "gospel": 9, "life": 8}, "中台": {"lord": 8, "visit": 1, "host": 12, "home": 13, "group": 7, "gospel": 0, "life": 3}, "中國醫": {"lord": 29, "visit": 15, "host": 38, "home": 53, "group": 35, "gospel": 17, "life": 17}, "中科台體": {"lord": 24, "visit": 10, "host": 60, "home": 70, "group": 20, "gospel": 10, "life": 9}, "逢甲僑光": {"lord": 23, "visit": 4, "host": 33, "home": 37, "group": 27, "gospel": 2, "life": 8}, "嶺東": {"lord": 0, "visit": 0, "host": 2, "home": 2, "group": 0, "gospel": 0, "life": 0}, "東海": {"lord": 20, "visit": 9, "host": 17, "home": 26, "group": 9, "gospel": 9, "life": 1}, "靜宜弘光": {"lord": 14, "visit": 3, "host": 15, "home": 18, "group": 10, "gospel": 1, "life": 4}, "北二": {"lord": 6, "visit": 0, "host": 0, "home": 0, "group": 0, "gospel": 0, "life": 0}}}, "46": {"start": "2026-11-09", "end": "2026-11-15", "groups": {"中興": {"lord": 34, "visit": 4, "host": 27, "home": 31, "group": 33, "gospel": 4, "life": 3}, "中教大": {"lord": 7, "visit": 4, "host": 22, "home": 26, "group": 22, "gospel": 4, "life": 4}, "中山醫": {"lord": 22, "visit": 9, "host": 24, "home": 33, "group": 28, "gospel": 6, "life": 9}, "朝陽亞洲": {"lord": 36, "visit": 8, "host": 43, "home": 51, "group": 41, "gospel": 17, "life": 11}, "勤益": {"lord": 26, "visit": 8, "host": 47, "home": 55, "group": 46, "gospel": 9, "life": 7}, "中台": {"lord": 9, "visit": 0, "host": 13, "home": 13, "group": 4, "gospel": 1, "life": 2}, "中國醫": {"lord": 29, "visit": 14, "host": 45, "home": 59, "group": 41, "gospel": 15, "life": 16}, "中科台體": {"lord": 27, "visit": 12, "host": 63, "home": 75, "group": 60, "gospel": 25, "life": 12}, "逢甲僑光": {"lord": 24, "visit": 3, "host": 33, "home": 36, "group": 27, "gospel": 2, "life": 10}, "嶺東": {"lord": 1, "visit": 0, "host": 2, "home": 2, "group": 4, "gospel": 0, "life": 0}, "東海": {"lord": 16, "visit": 10, "host": 25, "home": 35, "group": 24, "gospel": 9, "life": 1}, "靜宜弘光": {"lord": 13, "visit": 2, "host": 16, "home": 18, "group": 10, "gospel": 3, "life": 6}, "北二": {"lord": 4, "visit": 0, "host": 0, "home": 0, "group": 3, "gospel": 0, "life": 0}}}}, "targets": {"中興": {"lord": 45, "home": 83, "group": 69, "gospel": 23}, "中教大": {"lord": 14, "home": 25, "group": 21, "gospel": 7}, "中山醫": {"lord": 24, "home": 35, "group": 29, "gospel": 10}, "朝陽亞洲": {"lord": 38, "home": 29, "group": 24, "gospel": 8}, "勤益": {"lord": 25, "home": 22, "group": 18, "gospel": 6}, "中台": {"lord": 8, "home": 17, "group": 15, "gospel": 6}, "中國醫": {"lord": 30, "home": 36, "group": 30, "gospel": 10}, "中科台體": {"lord": 24, "home": 32, "group": 27, "gospel": 9}, "逢甲僑光": {"lord": 30, "home": 60, "group": 50, "gospel": 17}, "嶺東": {"lord": 6, "home": 7, "group": 6, "gospel": 2}, "東海": {"lord": 24, "home": 40, "group": 33, "gospel": 11}, "靜宜弘光": {"lord": 14, "home": 31, "group": 26, "gospel": 9}, "北二": {"lord": 3, "home": 4, "group": 4, "gospel": 2}}, "city": {"36": [228, 55, 204, 151, 88, 56], "37": [237, 88, 247, 234, 109, 60], "38": [266, 58, 295, 232, 108, 58], "39": [226, 102, 227, 208, 88, 51], "40": [256, 77, 296, 274, 88, 78], "41": [241, 95, 321, 267, 78, 70], "42": [257, 70, 314, 292, 89, 83], "43": [238, 79, 331, 308, 80, 88], "44": [235, 71, 366, 270, 73, 86], "45": [248, 90, 337, 268, 72, 89], "46": [249, 74, 362, 344, 95, 81]}, "events": [{"m": 1, "date": "1/13-16", "week": "三-六", "item": "大專寒假錄影訓練", "place": "復興大樓五樓"}, {"m": 1, "date": "1/13-22", "week": "三-五", "item": "大專寮國開展", "place": "寮國"}, {"m": 2, "date": "2/14-2/18", "week": "日-四", "item": "大專春季成全", "place": "復興大樓五樓"}, {"m": 2, "date": "2/20-21", "week": "六-日", "item": "國際華語特會", "place": "台灣"}, {"m": 2, "date": "2/28", "week": "日", "item": "讓愛飛揚", "place": "各校"}, {"m": 3, "date": "2/22-3/12", "week": "一-五", "item": "大學期初福音節期", "place": "各校園"}, {"m": 3, "date": "3/12-14", "week": "五-日", "item": "大專第一次回家週", "place": "空白"}, {"m": 3, "date": "3/20", "week": "六", "item": "第一次晨興加強班", "place": "復興大樓五樓"}, {"m": 3, "date": "3/27", "week": "六", "item": "全台外語生相調特會", "place": "中部相調中心"}, {"m": 4, "date": "4/2-5", "week": "五-一", "item": "大專第二次回家週", "place": "空白"}, {"m": 4, "date": "4/10", "week": "六", "item": "第二次晨興加強班", "place": "復興大樓五樓"}, {"m": 4, "date": "4/23", "week": "五", "item": "全台大學服事事奉聚會", "place": "待訂"}, {"m": 4, "date": "4/26-5/7", "week": "一-五", "item": "大學期中福音節期", "place": "各校園"}, {"m": 4, "date": "4/30-5/2", "week": "五-日", "item": "全台大專教職員暨校園服事者相調", "place": ""}, {"m": 5, "date": "5/8", "week": "六", "item": "台中期中特會暨呼召聚會", "place": "台北市召會三會所"}, {"m": 5, "date": "5/14-16", "week": "五-日", "item": "大專第三次回家週", "place": "空白"}, {"m": 5, "date": "5/22", "week": "六", "item": "第三次晨興加強班", "place": "復興大樓五樓"}, {"m": 6, "date": "6/13-15", "week": "日-二", "item": "暑假大專期末特會第一梯次", "place": "待訂"}, {"m": 6, "date": "6/27-29", "week": "日-二", "item": "暑假大專期末特會第二梯次", "place": "待訂"}, {"m": 6, "date": "6/29-7/13", "week": "二-二", "item": "半年度訓練", "place": "美國安那翰"}, {"m": 7, "date": "7/12-16", "week": "一-五", "item": "大專暑期訓練", "place": "復興大樓五樓"}, {"m": 7, "date": "7/26-8/1", "week": "一-日", "item": "亞洲大專訓練", "place": "台灣"}], "totalEnroll": 171508, "totalForeign": 6129, "markers": [{"n": 1, "short": "中教大", "x": 450.8, "y": 250.1}, {"n": 2, "short": "中興", "x": 459.9, "y": 300.2}, {"n": 3, "short": "中山醫", "x": 376.3, "y": 301.2}, {"n": 4, "short": "勤益", "x": 672.0, "y": 243.8}, {"n": 5, "short": "朝陽", "x": 610.1, "y": 423.1}, {"n": 6, "short": "亞洲", "x": 506.3, "y": 479.3}, {"n": 7, "short": "中科大", "x": 495.1, "y": 234.5}, {"n": 8, "short": "臺體大", "x": 489.5, "y": 268.3}, {"n": 9, "short": "中國醫", "x": 484.4, "y": 218.5}, {"n": 10, "short": "中台", "x": 684.4, "y": 174.3}, {"n": 11, "short": "嶺東", "x": 219.8, "y": 260.9}, {"n": 12, "short": "逢甲", "x": 360.0, "y": 166.4}, {"n": 13, "short": "僑光", "x": 347.3, "y": 142.1}, {"n": 14, "short": "東海", "x": 200.9, "y": 157.7}, {"n": 15, "short": "靜宜", "x": 106.4, "y": 55.7}, {"n": 16, "short": "弘光", "x": 121.5, "y": 75.9}], "labels": [{"name": "西區", "x": 450.8, "y": 224.1}, {"name": "南區", "x": 418.1, "y": 274.7}, {"name": "太平區", "x": 672.0, "y": 217.8}, {"name": "霧峰區", "x": 558.2, "y": 425.2}, {"name": "北區", "x": 489.8, "y": 200.5}, {"name": "東區", "x": 489.5, "y": 242.3}, {"name": "北屯區", "x": 684.4, "y": 148.3}, {"name": "南屯區", "x": 219.8, "y": 234.9}, {"name": "西屯區", "x": 302.7, "y": 129.4}, {"name": "沙鹿區", "x": 114.0, "y": 39.8}]};
+var fmt = function(n){ return n.toLocaleString('en-US'); };
+var esc = function(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); };
+
+/* tabs */
+document.getElementById('tabs').addEventListener('click', function(e){
+  var b = e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#tabs button').forEach(function(x){ x.classList.toggle('active', x===b); });
+  document.querySelectorAll('section.tabpane').forEach(function(x){ x.classList.toggle('active', x.id==='pane-'+b.dataset.tab); });
+});
+
+/* ---- map tab ---- */
+document.getElementById('t-enroll').textContent = fmt(DATA.totalEnroll);
+document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
+(function(){
+  var svg = document.getElementById('map');
+  var ns = 'http://www.w3.org/2000/svg';
+  var bg = document.createElementNS(ns,'rect');
+  bg.setAttribute('x',0); bg.setAttribute('y',0); bg.setAttribute('width',780); bg.setAttribute('height',540);
+  bg.setAttribute('fill','#dcebf5'); bg.setAttribute('rx',12); svg.appendChild(bg);
+  DATA.labels.forEach(function(l){
+    var t = document.createElementNS(ns,'text');
+    t.setAttribute('x',l.x); t.setAttribute('y',l.y); t.setAttribute('class','dlabel');
+    t.textContent = l.name; svg.appendChild(t);
+  });
+  DATA.markers.forEach(function(m){
+    var g = document.createElementNS(ns,'g');
+    g.setAttribute('class','mk'); g.setAttribute('data-n', m.n);
+    var c = document.createElementNS(ns,'circle');
+    c.setAttribute('cx',m.x); c.setAttribute('cy',m.y); c.setAttribute('r',15); g.appendChild(c);
+    var t = document.createElementNS(ns,'text');
+    t.setAttribute('x',m.x); t.setAttribute('y',m.y+4); t.textContent = m.n; g.appendChild(t);
+    var t2 = document.createElementNS(ns,'text');
+    t2.setAttribute('x',m.x); t2.setAttribute('y',m.y+30); t2.setAttribute('class','dlabel');
+    t2.setAttribute('fill','#33506b'); t2.textContent = m.short; g.appendChild(t2);
+    g.addEventListener('click', function(){ openCampus(m.n, true); });
+    svg.appendChild(g);
+  });
+})();
+
+var calLabel = ['第一學期開學','寒假開始','第二學期開學','暑假開始'];
+function campusDetail(c){
+  var rows = [
+    ['地址', c.addr], ['行政區', c.district], ['學校類型', c.type],
+    ['所屬會所', c.hall], ['服事者', c.servant],
+    ['全校學生人數', fmt(c.enroll)], ['外語生人數', fmt(c.foreign)]
+  ];
+  c.cal.forEach(function(v,i){ rows.push([calLabel[i], v ? v : '待查']); });
+  var h = '<table>';
+  rows.forEach(function(r){ h += '<tr><td>'+r[0]+'</td><td>'+esc(r[1])+'</td></tr>'; });
+  return h + '</table>';
+}
+(function(){
+  var ul = document.getElementById('campuslist');
+  DATA.campuses.forEach(function(c){
+    var li = document.createElement('li'); li.id = 'campus-'+c.n;
+    li.innerHTML = '<button class="row" type="button"><span class="num">'+c.n+'</span><span><span class="nm">'+esc(c.name)+'</span><br><span class="sub">'+esc(c.district)+'・'+esc(c.type)+'・會所：'+esc(c.hall)+'</span></span><span class="arrow">▾</span></button><div class="detail">'+campusDetail(c)+'</div>';
+    li.querySelector('.row').addEventListener('click', function(){ openCampus(c.n, false); });
+    ul.appendChild(li);
+  });
+})();
+function openCampus(n, scroll){
+  document.querySelectorAll('#campuslist .detail').forEach(function(d){ d.classList.remove('open'); });
+  var li = document.getElementById('campus-'+n);
+  var d = li.querySelector('.detail');
+  var wasOpen = d.classList.contains('open');
+  if(!wasOpen){ d.classList.add('open'); }
+  if(scroll){ li.scrollIntoView({behavior:'smooth', block:'nearest'}); }
+}
+
+/* ---- campus work tab ---- */
+var ITEMS = [['lord','主日'],['home','家聚會'],['group','小排'],['gospel','福音出訪'],['life','生命讀經']];
+var ITEMS6 = [['lord','主日'],['visit','家聚會出訪'],['host','家聚會受訪'],['group','小排'],['gospel','福音出訪'],['life','生命讀經']];
+function weekLabel(w){ var d = DATA.weeks[w]; return '第'+w+'週（'+d.start.slice(5)+'–'+d.end.slice(5)+'）'; }
+function fillWeekSelect(sel){
+  Object.keys(DATA.weeks).forEach(function(w){
+    var o = document.createElement('option'); o.value = w; o.textContent = weekLabel(w); sel.appendChild(o);
+  });
+  sel.value = '46';
+}
+fillWeekSelect(document.getElementById('work-week'));
+fillWeekSelect(document.getElementById('foreign-week'));
+['work-year','foreign-year'].forEach(function(id){
+  var s = document.getElementById(id);
+  var o = document.createElement('option'); o.value='2026'; o.textContent='2026'; s.appendChild(o);
+});
+function renderWork(){
+  var w = document.getElementById('work-week').value;
+  var d = DATA.weeks[w];
+  var h = '<tr><th>組別</th><th>照顧區</th><th>主日</th><th>家聚會出訪</th><th>家聚會受訪</th><th>小排</th><th>福音出訪</th><th>生命讀經</th></tr>';
+  var tot = {lord:0,visit:0,host:0,group:0,gospel:0,life:0};
+  DATA.groups.forEach(function(g){
+    var r = d.groups[g.name];
+    h += '<tr><td>'+esc(g.name)+'</td><td>'+esc(g.care)+'</td><td>'+r.lord+'</td><td>'+r.visit+'</td><td>'+r.host+'</td><td>'+r.group+'</td><td>'+r.gospel+'</td><td>'+r.life+'</td></tr>';
+    tot.lord+=r.lord; tot.visit+=r.visit; tot.host+=r.host; tot.group+=r.group; tot.gospel+=r.gospel; tot.life+=r.life;
+  });
+  h += '<tr class="total"><td>13 組合計</td><td></td><td>'+tot.lord+'</td><td>'+tot.visit+'</td><td>'+tot.host+'</td><td>'+tot.group+'</td><td>'+tot.gospel+'</td><td>'+tot.life+'</td></tr>';
+  var c = DATA.city[w];
+  h += '<tr class="city"><td>全市大學合計</td><td>含大區 34</td><td>'+c[0]+'</td><td>'+c[1]+'</td><td>'+c[2]+'</td><td>'+c[3]+'</td><td>'+c[4]+'</td><td>'+c[5]+'</td></tr>';
+  document.getElementById('work-table').innerHTML = h;
+}
+document.getElementById('work-week').addEventListener('change', renderWork);
+renderWork();
+
+/* analysis: weekly average W36-46 vs own target */
+(function(){
+  var weeks = Object.keys(DATA.weeks);
+  var host = document.getElementById('analysis');
+  DATA.groups.forEach(function(g){
+    var card = document.createElement('div'); card.className='anacard';
+    var h = '<h3>'+esc(g.name)+'</h3><div class="care">照顧區：'+esc(g.care)+(g.members?'・'+esc(g.members):'')+'</div>';
+    var defs = [
+      ['主日','lord', function(r){return r.lord;}],
+      ['家聚會（出訪＋受訪）','home', function(r){return r.home;}],
+      ['小排','group', function(r){return r.group;}],
+      ['福音出訪','gospel', function(r){return r.gospel;}]
+    ];
+    defs.forEach(function(def){
+      var label = def[0], key = def[1], get = def[2];
+      var total = weeks.reduce(function(s,w){ return s + get(DATA.weeks[w].groups[g.name]); }, 0);
+      var avg = total / weeks.length;
+      var target = DATA.targets[g.name][key];
+      var pct = Math.round(avg / target * 100);
+      var cls = pct >= 100 ? '' : (pct >= 80 ? 'close' : 'gap');
+      var scale = Math.max(avg, target) * 1.05;
+      h += '<div class="bar-row"><span>'+label+'</span><div class="bar-track"><div class="bar-fill '+cls+'" style="width:'+(avg/scale*100).toFixed(1)+'%"></div><div class="bar-target" style="left:'+(target/scale*100).toFixed(1)+'%"></div></div><span>平均 '+avg.toFixed(1)+'／目標 '+target+'（'+pct+'%）</span></div>';
+    });
+    var lifeTotal = weeks.reduce(function(s,w){ return s + DATA.weeks[w].groups[g.name].life; }, 0);
+    h += '<div class="bar-row"><span>生命讀經</span><div>11 週合計 '+lifeTotal+' 人次，平均 '+(lifeTotal/weeks.length).toFixed(1)+'／週（無目標）</div><span></span></div>';
+    card.innerHTML = h;
+    host.appendChild(card);
+  });
+})();
+
+/* monthly trend */
+(function(){
+  var months = [['9 月',[36,37,38,39]],['10 月',[40,41,42,43]],['11 月',[44,45,46]]];
+  var h = '<tr><th>組別</th>';
+  months.forEach(function(m){ ITEMS.forEach(function(it){ h += '<th>'+m[0]+' '+it[1]+'</th>'; }); });
+  h += '</tr>';
+  DATA.groups.forEach(function(g){
+    h += '<tr><td>'+esc(g.name)+'</td>';
+    months.forEach(function(m){
+      ITEMS.forEach(function(it){
+        var key = it[0];
+        var v = m[1].reduce(function(s,w){
+          var r = DATA.weeks[String(w)].groups[g.name];
+          return s + (key==='home' ? r.home : r[key]);
+        }, 0);
+        h += '<td>'+v+'</td>';
+      });
+    });
+    h += '</tr>';
+  });
+  document.getElementById('trend-table').innerHTML = h;
+})();
+
+/* ---- foreign tab ---- */
+function renderForeign(){
+  var h = '<tr><th>組別</th><th>照顧區</th><th>主日</th><th>小排</th><th>家聚會出訪</th><th>家聚會受訪</th></tr>';
+  DATA.groups.forEach(function(g){
+    h += '<tr><td>'+esc(g.name)+'</td><td>'+esc(g.care)+'</td><td>待查</td><td>待查</td><td>待查</td><td>待查</td></tr>';
+  });
+  document.getElementById('foreign-table').innerHTML = h;
+}
+document.getElementById('foreign-week').addEventListener('change', renderForeign);
+renderForeign();
+
+/* ---- calendar tab ---- */
+(function(){
+  var host = document.getElementById('calendar');
+  var months = [1,2,3,4,5,6,7];
+  var names = {1:'1 月',2:'2 月',3:'3 月',4:'4 月',5:'5 月',6:'6 月',7:'7 月'};
+  months.forEach(function(m){
+    var evs = DATA.events.filter(function(e){ return e.m===m; });
+    if(!evs.length) return;
+    var div = document.createElement('div'); div.className='month';
+    var h = '<h3>'+names[m]+'</h3><div style="overflow-x:auto"><table class="data"><tr><th>日</th><th>週</th><th>項目</th><th>地點</th></tr>';
+    evs.forEach(function(e){ h += '<tr><td>'+esc(e.date)+'</td><td>'+esc(e.week)+'</td><td style="text-align:left">'+esc(e.item)+'</td><td>'+esc(e.place)+'</td></tr>'; });
+    div.innerHTML = h + '</table></div>';
+    host.appendChild(div);
+  });
+})();
+</script>
+</body>
+</html>
