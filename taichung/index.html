@@ -108,6 +108,9 @@ table.data tr.city td{font-weight:700;background:var(--amber-soft)}
 .delta.down{color:#b91c1c;color:oklch(50.5% 0.213 27.518)}
 .delta.flat{color:var(--dim)}
 #work-table{font-size:17px}
+#work-table td.hi-up{background:#d6f0de;box-shadow:inset 0 0 0 2px #2f8a55;border-radius:6px}
+#work-table td.hi-down{background:#fbdcd6;box-shadow:inset 0 0 0 2px #c0392b;border-radius:6px}
+.legend i.sw{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin:0 4px 0 10px}
 #work-table th{font-size:15px}
 #work-table tr.cmp td{font-size:15px}
 #work-table td.wk,#work-table th.wk{font-size:14px}
@@ -183,7 +186,7 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:20px}
 <label>對照 <select id="work-compare"></select></label>
 </div>
 <div style="overflow-x:auto"><table class="data" id="work-table"></table></div>
-<p class="legend">全市大學合計含未編入任何一組的大區 34；各組數字為點名系統週報抄錄。</p>
+<p class="legend">全市大學合計含未編入任何一組的大區 34；各組數字為點名系統週報抄錄。<br>與對照週差異達 5 人以上的格子標色：<i class="sw" style="background:#d6f0de;box-shadow:inset 0 0 0 2px #2f8a55"></i>增加 5 人以上<i class="sw" style="background:#fbdcd6;box-shadow:inset 0 0 0 2px #c0392b"></i>減少 5 人以上</p>
 </div>
 <div class="card">
 <h2>各組分析：每週平均與自己 2026 年目標比較</h2>
@@ -734,7 +737,7 @@ function renderWork(){
   DATA.groups.forEach(function(g){
     var r=d.groups[g.name], p=c?c.groups[g.name]:null;
     h+='<tr><td rowspan="2">'+esc(g.name)+'</td><td rowspan="2">'+esc(g.care)+'</td><td class="wk">\u7b2c'+w+'\u9031</td>';
-    ITEMS6.forEach(function(it){ var k=it[0]; h+='<td>'+r[k]+deltaBadge(r[k], p?p[k]:null)+'</td>'; });
+    ITEMS6.forEach(function(it){ var k=it[0]; var dd=p?r[k]-p[k]:0; h+='<td'+(dd>=5?' class="hi-up"':(dd<=-5?' class="hi-down"':''))+'>'+r[k]+deltaBadge(r[k], p?p[k]:null)+'</td>'; });
     h+='</tr><tr class="cmp"><td class="wk">\u7b2c'+cw+'\u9031</td>';
     ITEMS6.forEach(function(it){ var k=it[0]; h+='<td>'+(p?p[k]:'\u2014')+'</td>'; });
     h+='</tr>';
