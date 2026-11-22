@@ -61,7 +61,8 @@ section.tabpane.active{display:block}
 .mk2.xs{width:16px;height:16px;border-width:1.5px;padding:1px}
 .mk2.xs .nb{width:11px;height:11px;font-size:8px;right:-4px;bottom:-4px}
 .clab{position:absolute;background:var(--surface);opacity:.92;border:1px solid var(--border);border-radius:999px;padding:2px 7px;font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;cursor:pointer;line-height:1.35;box-shadow:0 1px 2px rgba(16,33,26,.12)}
-.dlab{position:absolute;font-weight:900;color:var(--text);white-space:nowrap;pointer-events:none;line-height:1.35;opacity:.85;text-shadow:0 0 3px var(--surface),0 0 6px var(--surface),1px 0 2px var(--surface),-1px 0 2px var(--surface),0 1px 2px var(--surface),0 -1px 2px var(--surface)}
+.dlab{position:absolute;font-weight:500;color:var(--dim);white-space:nowrap;pointer-events:none;line-height:1.35;opacity:.55;text-shadow:0 0 2px var(--surface),0 0 4px var(--surface),1px 0 1px var(--surface),-1px 0 1px var(--surface),0 1px 1px var(--surface),0 -1px 1px var(--surface)}
+.dlab.sel{opacity:.9}
 .crest{position:relative;flex:0 0 40px;width:40px;height:40px;border-radius:50%;background:var(--surface);border:1px solid var(--border)}
 .crest img{width:100%;height:100%;object-fit:contain;border-radius:50%;display:block}
 .crest .nb{position:absolute;right:-4px;bottom:-4px;width:16px;height:16px;border-radius:50%;background:var(--accent);color:var(--surface);border:1.5px solid var(--surface);font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;line-height:1}
@@ -317,7 +318,7 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
   svg.appendChild(outline);
   var leaderG = document.createElementNS(ns, 'g');
   svg.appendChild(leaderG);
-  /* ---- HTML overlays: district names, crest markers, campus labels. District names are dark bold halo text (never SVG <text>), placed by a greedy no-overlap pass so no district name is covered by a campus marker. ---- */
+  /* ---- HTML overlays: district names, crest markers, campus labels. District names are small, light (dim grey-green, weight 500, opacity .55; .9 for the selected district) halo text (never SVG <text>), placed by a greedy no-overlap pass so no district name is covered by a campus marker. Campus name labels stay larger, darker and bolder. ---- */
   var mkEls = DATA.campuses.map(function(c){
     var b = document.createElement('button');
     b.type = 'button'; b.className = 'mk2'; b.setAttribute('data-n', c.n);
@@ -365,7 +366,7 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
     svg.setAttribute('viewBox', view.x.toFixed(1)+' '+view.y.toFixed(1)+' '+view.w.toFixed(1)+' '+view.h.toFixed(1));
     var atFull = view.w >= FULL.w - 1;
     var R = cw >= 768 ? 17 : (atFull ? 8 : 10);
-    var df = cw >= 768 ? 15 : (atFull ? 11 : 13), cf = cw >= 768 ? 13 : 12;
+    var df = cw >= 768 ? 11 : (atFull ? 8 : 10), cf = cw >= 768 ? 13 : 12;  /* district labels ~3/4 of before, lighter than campus labels (cf unchanged) */
     function S(sx, sy){ return [(sx-view.x)*s, (sy-view.y)*s]; }
     function clampRect(r){
       var m = 8, w = r[2]-r[0], h = r[3]-r[1];  /* 8px: no label pill may sit closer than this to the frame, so rounded corners stay fully visible */
@@ -516,6 +517,7 @@ document.getElementById('t-foreign').textContent = fmt(DATA.totalForeign);
       el.style.display = '';
       el.style.left = r[0]+'px'; el.style.top = r[1]+'px';
       el.style.fontSize = df+'px';
+      el.classList.toggle('sel', d.name === selectedDistrict);
     });
     /* safety: nudge any label whose real rendered size overflows the frame.
        clampRect works on estimated widths, which can run a few px short on
