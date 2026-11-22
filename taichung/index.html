@@ -88,7 +88,7 @@ select{font-size:14px;padding:8px 12px;border:1px solid var(--border);border-rad
 table.data{width:100%;border-collapse:collapse;background:transparent;font-size:14px}
 table.data th,table.data td{padding:8px;border-bottom:1px solid var(--border);text-align:right}
 table.data th{color:var(--dim);font-weight:700}
-table.data td:first-child,table.data th:first-child{text-align:left}
+table.data td:first-child,table.data th:first-child{text-align:left;white-space:nowrap}
 table.data td[rowspan]{vertical-align:middle}
 table.data.conf,table.data.cal{table-layout:fixed}
 table.data.conf{min-width:860px}
@@ -177,8 +177,8 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:20px}
 <div id="analysis"></div>
 </div>
 <div class="card">
-<h2>月走勢（9–11 月）</h2>
-<p class="legend">9 月：第 36–39 週；10 月：第 40–43 週；11 月：第 44–46 週（3 週）。數字為各月合計人次。</p>
+<h2>月平均（9–11 月）</h2>
+<p class="legend">9 月：第 36–39 週；10 月：第 40–43 週；11 月：第 44–46 週（3 週）。數字為各月每週平均人數（該月合計 ÷ 該月週數，取到小數一位）。</p>
 <div style="overflow-x:auto"><table class="data" id="trend-table"></table></div>
 </div>
 </section>
@@ -776,18 +776,19 @@ renderWork();
 (function(){
   var months = [['9 月',[36,37,38,39]],['10 月',[40,41,42,43]],['11 月',[44,45,46]]];
   var h = '<tr><th>組別</th>';
-  months.forEach(function(m){ ITEMS.forEach(function(it){ h += '<th>'+m[0]+' '+it[1]+'</th>'; }); });
+  months.forEach(function(m){ ITEMS.forEach(function(it){ h += '<th>'+m[0]+' '+it[1]+'<br><small>平均</small></th>'; }); });
   h += '</tr>';
   DATA.groups.forEach(function(g){
     h += '<tr><td>'+esc(g.name)+'</td>';
     months.forEach(function(m){
       ITEMS.forEach(function(it){
         var key = it[0];
-        var v = m[1].reduce(function(s,w){
+        var ws = m[1].filter(function(w){ return DATA.weeks[String(w)]; });
+        var v = ws.reduce(function(s,w){
           var r = DATA.weeks[String(w)].groups[g.name];
           return s + (key==='home' ? r.home : r[key]);
         }, 0);
-        h += '<td>'+v+'</td>';
+        h += '<td>'+(ws.length ? (v/ws.length).toFixed(1) : '待查')+'</td>';
       });
     });
     h += '</tr>';
