@@ -93,6 +93,12 @@ table.data td:first-child,table.data th:first-child{text-align:left;white-space:
 .verse p{margin:0 auto;max-width:44em;font-family:"Noto Serif TC",serif;font-size:22px;font-weight:600;line-height:1.8;text-wrap:balance;color:var(--text);letter-spacing:.02em}
 .verse cite{display:block;margin-top:10px;text-align:center;font-style:normal;font-size:16px;font-weight:700;color:var(--amber)}
 @media(max-width:640px){.verse{padding:18px 16px 14px}.verse p{font-size:18px}.verse cite{font-size:14.5px}}
+.fr-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.fr-head h2{margin:0}
+.fr-btn{display:inline-block;padding:10px 20px;border-radius:999px;background:var(--amber);color:#fff;font-weight:700;font-size:16px;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.fr-btn:hover{filter:brightness(1.08)}
+.fr-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.fr-how{margin:12px 0 8px;padding:10px 14px;background:var(--amber-soft);border-radius:10px;font-size:14px;line-height:1.7}
 .fr-tiles{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:12px;margin:6px 0 14px}
 .fr-tile{background:var(--surface-alt);border-radius:12px;padding:16px;text-align:center}
 .fr-tile.main{background:var(--accent);color:#fff}
@@ -248,7 +254,9 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:20px}
 </section>
 <section class="tabpane" id="pane-fruit">
 <div class="card">
-<h2>結常存的果子</h2>
+<div class="fr-head"><h2>結常存的果子</h2>
+<a class="fr-btn" href="https://docs.google.com/spreadsheets/d/1eSltN839oddpjOtU3s5Fw-sl6BgL-nM_9VU__B1LQv8/edit#gid=1900940027" target="_blank" rel="noopener">＋ 回報果子</a></div>
+<p class="fr-how">有新得救的，請按「回報果子」，在「2026年得救名單」分頁最下面新增一列，依欄位填寫：序號、姓名、身分（弟兄／姊妹）、受浸日期（月/日）、學校、科系、年級、同班同學、已過熟門牧養對象、牧養人。<b>學校一定要填</b>，才會算進各校人數。需要有該試算表的編輯權限。</p>
 <p class="legend" id="fruit-src"></p>
 <div class="fr-tiles" id="fruit-tiles"></div>
 <p class="fr-sub" id="fruit-sub"></p>
