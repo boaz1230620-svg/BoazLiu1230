@@ -21,7 +21,7 @@ svg{display:block;width:100%;min-width:640px;height:auto;font-family:"Noto Sans 
 .pulse{animation:pulse 1.4s ease-in-out 2}
 @keyframes pulse{50%{transform:scale(1.5)}}
 .marker{transition:transform 1s ease}
-.controls{display:flex;gap:8px;align-items:center;margin:14px 0 8px;flex-wrap:wrap}
+.controls{display:flex;gap:8px;align-items:center;margin:0 0 10px;flex-wrap:wrap;position:sticky;top:0;z-index:5;background:var(--paper);padding:8px 0}
 button{font:inherit;font-size:.95rem;border:1px solid #cdb68e;background:var(--card);color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer}
 button.primary{background:var(--red);border-color:var(--red);color:#fff}
 button:disabled{opacity:.4;cursor:default}
@@ -51,6 +51,12 @@ h3.zoom{font-family:"Noto Serif TC",serif;font-size:1rem;margin:14px 0 6px;color
   <p class="sub">由左到右：雅各往拉班家（? 歲）→ 見法老（130 歲）。經文用恢復本。</p>
   <p class="legend"><b>聖經明言：</b>雅各 130 歲見法老（創47:9）、147 歲去世（創47:28）；約瑟 17 歲（創37:2）、30 歲侍立在法老面前（創41:46）。<br><mark>螢光「可能是…歲」</mark> ＝ 聖經沒有明言，由經文推算的年歲範圍。</p>
 
+  <div class="controls">
+    <button id="prev" aria-label="上一步">◀</button>
+    <button id="play" class="primary">▶ 播放</button>
+    <button id="next" aria-label="下一步">▶</button>
+    <div class="dots" id="dots"></div>
+  </div>
   <div class="stage">
   <svg viewBox="0 0 920 400" id="chart" aria-label="雅各一生的年日">
     <!-- axis -->
@@ -237,14 +243,8 @@ h3.zoom{font-family:"Noto Serif TC",serif;font-size:1rem;margin:14px 0 6px;color
   </svg>
   </div>
 
-  <div class="controls">
-    <button id="prev" aria-label="上一步">◀</button>
-    <button id="play" class="primary">▶ 播放</button>
-    <button id="next" aria-label="下一步">▶</button>
-    <div class="dots" id="dots"></div>
-  </div>
 
-  <div class="card" id="card"></div>
+  <div class="card" id="card" style="margin-top:14px"></div>
 
   <details>
     <summary>全部相關經文（恢復本）</summary>
