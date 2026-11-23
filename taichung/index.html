@@ -272,11 +272,18 @@ var fmt = function(n){ return n.toLocaleString('en-US'); };
 var esc = function(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); };
 
 /* tabs */
+function showTab(t){
+  var b=document.querySelector('#tabs button[data-tab="'+t+'"]'); if(!b) return false;
+  document.querySelectorAll('#tabs button').forEach(function(x){ x.classList.toggle('active', x===b); });
+  document.querySelectorAll('section.tabpane').forEach(function(x){ x.classList.toggle('active', x.id==='pane-'+t); });
+  return true;
+}
 document.getElementById('tabs').addEventListener('click', function(e){
   var b = e.target.closest('button'); if(!b) return;
-  document.querySelectorAll('#tabs button').forEach(function(x){ x.classList.toggle('active', x===b); });
-  document.querySelectorAll('section.tabpane').forEach(function(x){ x.classList.toggle('active', x.id==='pane-'+b.dataset.tab); });
+  showTab(b.dataset.tab);
+  try{ history.replaceState(null,'','#'+b.dataset.tab); }catch(_){}
 });
+window.addEventListener('hashchange', function(){ showTab(location.hash.slice(1)); });
 
 /* ---- map tab ---- */
 document.getElementById('t-enroll').textContent = fmt(DATA.totalEnroll);
@@ -935,6 +942,8 @@ renderForeign();
   t+=row('全部合計',F.h1,F.h2,'city');
   document.getElementById('fruit-table').innerHTML=t;
 })();
+/* open the tab named in the URL (#fruit etc.) after everything, incl. the map, has drawn */
+window.addEventListener('load', function(){ if(location.hash) setTimeout(function(){ showTab(location.hash.slice(1)); }, 50); });
 </script>
 </body>
 </html>
