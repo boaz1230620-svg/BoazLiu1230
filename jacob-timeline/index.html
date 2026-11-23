@@ -37,6 +37,7 @@ button:disabled{opacity:.4;cursor:default}
 .eq{font-family:"Noto Serif TC",serif;font-size:1.25rem;font-weight:700;text-align:center;padding:8px;background:#f8e9e2;border-radius:10px;margin:8px 0}
 details{margin-top:18px;background:var(--card);border:1px solid #e2d2b3;border-radius:14px;padding:10px 16px}
 summary{cursor:pointer;font-weight:700}
+.def{background:#f3ead6;border-radius:10px;padding:10px 12px;margin:8px 0;font-size:.92rem}.def b{color:#b3262d;display:block;margin-bottom:4px}
 .note{color:var(--muted);font-size:.8rem;margin-top:14px}
 </style>
 </head>
@@ -149,11 +150,11 @@ summary{cursor:pointer;font-weight:700}
     <!-- ===== step 10: calculation ===== -->
     <path class="draw" data-s="10" pathLength="1" d="M530 300 L530 310 L871 310 L871 300" fill="none" stroke="#24508f" stroke-width="2"/>
     <g class="el" data-s="10">
-      <text x="700" y="332" text-anchor="middle" font-size="18" fill="#24508f" font-weight="700">39 − 17 = 22</text>
+      <text x="700" y="332" text-anchor="middle" font-size="16" fill="#24508f" font-weight="700">後半22年 = 39−17 = 13+7+2</text>
     </g>
     <path class="draw" data-s="10" pathLength="1" d="M50 352 L50 362 L530 362 L530 352" fill="none" stroke="#b3262d" stroke-width="2"/>
     <g class="el" data-s="10">
-      <text x="290" y="386" text-anchor="middle" font-size="18" fill="#b3262d" font-weight="700">17 + 14 = 31</text>
+      <text x="290" y="386" text-anchor="middle" font-size="16" fill="#b3262d" font-weight="700">前半31年 = 14 + 17</text>
       <text x="700" y="380" text-anchor="middle" font-size="19" fill="#b3262d" font-weight="700">130 − 22 − 31 = 77</text>
     </g>
 
@@ -206,17 +207,17 @@ const V={
 };
 const X={77:50,84:158,91:267,97:360,108:530,121:732,128:840,130:871};
 const S=[
- {t:"雅各去拉班家",x:77,a:"雅各 ? 歲",p:"雅各離開父家，往哈蘭去投靠舅舅拉班。這時他幾歲？聖經沒有直接說，要從後面的年日推算。",v:["創28:10"]},
+ {t:"雅各去拉班家",x:77,a:"雅各 ? 歲",p:"雅各離開父家，往哈蘭去投靠舅舅拉班。這時他幾歲？聖經沒有直接說，要從後面的年日推算。（他到拉班家先住了一個月，才談定為拉結服事七年，創29:14–18；這一個月在推算裏可以略去。）",v:["創28:10"]},
  {t:"為拉結服事七年",x:84,a:"第 1–7 年",p:"雅各為拉結服事七年，卻先被給了利亞。",v:["創29:18","創29:20"]},
  {t:"再服事七年",x:91,a:"第 8–14 年",p:"為拉結再服事七年；為兩個女兒一共服事十四年。",v:["創29:27","創31:41"]},
- {t:"生約瑟後，請求回鄉",x:91,a:"約瑟出生",p:"滿了十四年，拉結生了約瑟，雅各就請拉班打發他回本鄉。",v:["創30:25"]},
- {t:"為羊群再服事六年",x:97,a:"約瑟出生 → 6 歲",p:"拉班留他，雅各又為羊群服事六年，在拉班家共二十年。",v:["創31:41"]},
+ {t:"生約瑟後，請求回鄉",x:91,a:"約瑟出生",p:"拉結生了約瑟，雅各就請拉班打發他回本鄉。把這事放在十四年滿的時候，是對照創31:41推出來的（十四年之後接著是為羊群的六年）。",v:["創30:25"]},
+ {t:"為羊群再服事六年",x:97,a:"約瑟出生 → 6 歲",p:"拉班留他，雅各又為羊群服事六年，在拉班家共二十年。之後雅各回迦南，到約瑟被賣還有 11 年。",v:["創31:41"]},
  {t:"☆ 約瑟被賣到埃及",x:108,a:"約瑟 17 歲",p:"從約瑟出生到被賣，是 17 年。",v:["創37:2","創37:28"]},
  {t:"☆ 約瑟在法老前侍立",x:121,a:"約瑟 30 歲",p:"約瑟三十歲站在法老面前，被立治理埃及全地。",v:["創41:46"]},
  {t:"七個豐年",x:128,a:"約瑟 30 → 37 歲",p:"埃及地七個豐年。",v:["創41:53"]},
- {t:"兩個荒年",x:130,a:"約瑟 37 → 39 歲",p:"七個豐年完了，荒年臨到；約瑟向弟兄表明自己時，饑荒已經二年。",v:["創41:54","創45:6"]},
+ {t:"兩個荒年",x:130,a:"約瑟 37 → 39 歲",p:"七個豐年完了，荒年臨到；約瑟向弟兄表明自己時，饑荒已經二年，雅各隨即下埃及。所以雅各見法老是在第二個荒年。",v:["創41:54","創45:6"]},
  {t:"雅各見法老",x:130,a:"雅各 130 歲・約瑟 39 歲",p:"雅各下埃及見法老，自述在世的年日是一百三十歲。約瑟此時 30 + 7 + 2 = 39 歲。",v:["創47:9"]},
- {t:"往回推算",x:77,a:"雅各去拉班家 = 77 歲",p:"約瑟被賣到雅各見法老：39 − 17 = 22 年。雅各到拉班家到約瑟被賣：17 + 14 = 31 年。",eq:"130 − 22 − 31 = 77",v:[]},
+ {t:"往回推算",x:77,a:"雅各去拉班家 = 77 歲",p:"以約瑟被賣（雅各108歲）為分界，把雅各從到拉班家到見法老的年日分成前後兩段：",defs:[["前半 31 年：從到拉班家到失去約瑟（77 → 108）","31 = 14 + 17<br>14 年：為拉班兩個女兒服事，到約瑟出生（創29:20, 27；30:25）<br>17 年：約瑟出生到被賣，就是約瑟的歲數（創37:2）；其中 6 年仍在拉班家為羊群服事（創31:41），11 年在迦南"],["後半 22 年：失去約瑟到見法老（108 → 130）","22 = 39 − 17 = 13 + 7 + 2<br>13 年：約瑟 17 → 30 歲，在埃及為奴、下監，到侍立在法老面前（創37:2；41:46）<br>7 年：七個豐年（創41:53）<br>2 年：兩個荒年，雅各下埃及（創45:6）"]],eq:"130 − 22 − 31 = 77<br><span style=\"font-size:.9em\">（77 + 31 + 22 = 130，創47:9）</span>",v:[]},
  {t:"雅各的年歲總覽",x:130,a:"77 → 130 歲",p:"77 歲到拉班家，84 歲娶妻，91 歲生約瑟，97 歲離開拉班，108 歲失去約瑟，130 歲見法老。之後在埃及再住 17 年，147 歲去世。",v:["創47:28"]}
 ];
 let s=0,timer=null,shown=-1;
@@ -231,7 +232,7 @@ function go(i){
   marker.style.transform=`translateX(${X[st.x]}px)`;
   if(s>=10){document.getElementById('age77').textContent='77';}else{document.getElementById('age77').textContent='?';}
   const c=document.getElementById('card');
-  c.innerHTML=`<div class="age">${st.a}</div><h2>${st.t}</h2><p>${st.p}</p>${st.eq?`<div class="eq">${st.eq}</div>`:''}${st.v.map(vHTML).join('')}`;
+  c.innerHTML=`<div class="age">${st.a}</div><h2>${st.t}</h2><p>${st.p}</p>${(st.defs||[]).map(d=>`<div class="def"><b>${d[0]}</b><div>${d[1]}</div></div>`).join('')}${st.eq?`<div class="eq">${st.eq}</div>`:''}${st.v.map(vHTML).join('')}`;
   [...dots.children].forEach((d,j)=>d.classList.toggle('on',j<=s));
   document.getElementById('prev').disabled=s===0;
   document.getElementById('next').disabled=s===S.length-1;
