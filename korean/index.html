@@ -84,6 +84,19 @@ details.ans div{margin-top:6px;color:#2d5a1b;background:#F2F9EE;border-radius:8p
 .pw .ko{font-size:15px}.pw .ko::before{content:""}.pw em{font-style:normal;color:#666;margin-left:4px}
 .pn{margin-top:8px;background:#F2F9EE;color:#2d5a1b;border-radius:8px;padding:6px 10px;font-size:14px}
 .pwrite{position:absolute;top:12px;right:14px;font-size:13px;color:#86641A;text-decoration:none}
+.tab.topic{border-color:#6AA84F;color:#3d7a22}.tab.topic.on{background:#6AA84F;color:#fff}
+.tpgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.tpcard{background:#fff;border:1px solid #eee;border-top:6px solid var(--c);border-radius:16px;padding:16px;cursor:pointer;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .2s,box-shadow .2s}
+.tpcard:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.13)}
+.tpn{font-size:13px;color:var(--c);font-weight:700}.tpi{font-size:46px;margin:6px 0}.tpk{font-size:22px;color:#1d3b8a}.tpz{font-size:17px;font-weight:700;margin:2px 0 8px}.tpd{font-size:13px;color:#777;line-height:1.7}
+.tphead{display:flex;gap:16px;align-items:center;margin:10px 0 14px}.tpbig{font-size:60px}.tpno{color:#86641A;font-size:14px}
+.mapwrap{background:radial-gradient(circle at center,#FFF8E6 0,#fff 70%);border:1px solid #eee;border-radius:18px;margin:16px 0;padding:10px}
+.maphint{text-align:center;color:#999;font-size:13px}
+.tppanel{background:#fff;border:1px solid #eee;border-top:6px solid var(--c);border-radius:16px;padding:18px}
+.pcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.pcard{border:2px solid var(--c);border-radius:14px;padding:12px;text-align:center;background:#fffdf8}
+.pcard .pe{font-size:44px;line-height:1.2}.pcard .ko{font-size:22px}.pcard .ko::before{content:""}.pzh{font-weight:700;margin:2px 0}.pcard .pp{font-size:13px;margin-bottom:4px}
+.psent{border-left:4px solid var(--c);background:#fffdf8;border-radius:8px;padding:8px 12px;margin:8px 0;line-height:1.6}
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:8px;display:none;font-size:14px}
 footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 @media(max-width:600px){h1{font-size:32px}.tbl td,.tbl th{font-size:14px;padding:8px}.ko{font-size:17px}.time{font-size:11px}.pr{white-space:normal}}
@@ -96,14 +109,15 @@ footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 </main>
 <div id="toast"></div>
 <footer>「實際發音」欄的［ ］表示照音變規則實際唸出的韓文；空白表示照拼寫唸。羅馬拼音依實際發音標示（含緊音化，如 학교 → hak-kkyo），與官方拼寫法可能不同。<br>朗讀使用裝置內建的韓語語音（ko-KR），若沒有聲音，請在手機或電腦的語言設定中安裝韓語語音。</footer>
-<script src="lessons-1.js?v=202611161610"></script>
-<script src="lessons-2.js?v=202611161610"></script>
-<script src="lessons-3.js?v=202611161610"></script>
-<script src="lessons-4.js?v=202611161610"></script>
-<script src="church.js?v=202611161610"></script>
-<script src="church-prayer.js?v=202611161610"></script>
-<script src="hangul-strokes.js?v=202611161610"></script>
-<script src="cards.js?v=202611161610"></script>
+<script src="lessons-1.js?v=202611252100"></script>
+<script src="lessons-2.js?v=202611252100"></script>
+<script src="lessons-3.js?v=202611252100"></script>
+<script src="lessons-4.js?v=202611252100"></script>
+<script src="church.js?v=202611252100"></script>
+<script src="topics.js?v=202611252100"></script>
+<script src="church-prayer.js?v=202611252100"></script>
+<script src="hangul-strokes.js?v=202611252100"></script>
+<script src="cards.js?v=202611252100"></script>
 <script>
 const LESSONS=window.LESSONS||[];
 const PER=15,TOTAL=60;
@@ -150,7 +164,7 @@ function home(lv){
   h+=`</div>`;
   app.innerHTML=h;window.scrollTo(0,0);
 }
-function tabs(cur){return `<div class="tabs">${LEVELS.map((l,i)=>`<button class="tab${i===cur?' on':''}" onclick="go('#lv${i}')">${l[0]}</button>`).join('')}<button class="tab church${cur==='ch'?' on':''}" onclick="go('#church')">⛪ 召會生活</button></div>`;}
+function tabs(cur){return `<div class="tabs">${LEVELS.map((l,i)=>`<button class="tab${i===cur?' on':''}" onclick="go('#lv${i}')">${l[0]}</button>`).join('')}<button class="tab church${cur==='ch'?' on':''}" onclick="go('#church')">⛪ 召會生活</button><button class="tab topic${cur==='tp'?' on':''}" onclick="go('#topics')">🧩 專題</button></div>`;}
 function churchView(){
   const C=window.CHURCH||[];const total=C.reduce((a,g)=>a+g.items.length,0);
   const nT=C.filter(g=>g.sec!=='pray').reduce((a,g)=>a+g.items.length,0),nP=total-nT;
@@ -173,6 +187,61 @@ function churchView(){
   h+=`<p class="hint">用語以台灣召會常用的韓語說法為參考，實際用法請向韓國聖徒確認。</p>`;
   app.innerHTML=h;window.scrollTo(0,0);
 }
+const TPC=['#E07A5F','#3D85C6','#6AA84F','#B4689C','#E69138','#45818E'];
+let tpState={i:0,sel:0};
+function topicsHome(){
+  const T=window.TOPICS||[];
+  let h=tabs('tp')+`<h2>韓語專題</h2><p style="color:#666">以一個核心主題為中心，往外延伸 6 個分支、每支 4 張圖卡單字與例句，像心智圖一樣把相關的字詞句子串在一起記。點中間分支看詳細圖卡，點任何韓文都能聽發音。</p>`;
+  h+=`<div class="tools"><button class="tool" onclick="go('#cwtp')"><span>🗂️</span><div>專題單字卡<small>${deckSize('tp','w')} 張</small></div></button><button class="tool" onclick="go('#cstp')"><span>💬</span><div>專題句子卡<small>${deckSize('tp','s')} 張</small></div></button><button class="tool" onclick="go('#wrtp')"><span>✍️</span><div>手寫練習<small>筆順示範・描紅書寫</small></div></button></div>`;
+  h+=`<div class="tpgrid">${T.map((t,i)=>`<div class="tpcard" onclick="go('#tp${i+1}')" style="--c:${TPC[i%6]}"><div class="tpn">專題 ${i+1}</div><div class="tpi">${t.icon}</div><div class="tpk">${esc(t.ko)}</div><div class="tpz">${esc(t.zh)}</div><div class="tpd">${t.b.map(b=>b.icon+' '+esc(b.zh)).join('　')}</div></div>`).join('')}</div>`;
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function topicView(n){
+  const T=window.TOPICS||[],t=T[n-1];if(!t)return topicsHome();
+  if(tpState.i!==n){tpState={i:n,sel:0};}
+  let h=tabs('tp')+`<p><a class="back" href="#topics">← 專題列表</a></p>`;
+  h+=`<div class="tphead"><span class="tpbig">${t.icon}</span><div><div class="tpno">專題 ${n} / ${T.length}</div><h2 style="margin:4px 0;border:0;padding:0">${ko(t.ko)}　${esc(t.zh)}</h2><span class="rom">${esc(t.rom)}</span>　<span style="color:#888">${esc(t.desc)}</span></div></div>`;
+  h+=`<div class="box"><b>核心句型</b>${t.pat.map(r=>`<div style="margin-top:6px">${ko(r[0])}<span class="sub">${esc(r[2])}　｜　${esc(r[1])}</span></div>`).join('')}</div>`;
+  h+=`<div class="mapwrap"><div id="tpmap"></div><div class="maphint">點分支看圖卡與例句；點任何韓文聽發音</div></div><div id="tppanel"></div>`;
+  h+=`<div class="fbtns"><a class="btn" href="#cwtp-${n}" style="text-decoration:none">🗂️ 本專題單字卡</a><a class="btn" href="#cstp-${n}" style="text-decoration:none">💬 本專題句子卡</a></div>`;
+  h+=`<div class="nav"><button class="btn" ${n==1?'disabled':''} onclick="go('#tp${n-1}')">← 上一個專題</button><button class="btn" ${n==T.length?'disabled':''} onclick="go('#tp${n+1}')">下一個專題 →</button></div>`;
+  app.innerHTML=h;drawMap();drawPanel();window.scrollTo(0,0);
+}
+function tpSel(k){tpState.sel=k;drawMap();drawPanel();if(window.innerWidth<700)document.getElementById('tppanel').scrollIntoView({behavior:'smooth'});}
+function estW(s,f){let w=0;for(const ch of s)w+=/[ㄱ-힣一-鿿]/.test(ch)?f:f*0.55;return w;}
+function drawMap(){
+  const t=TOPICS[tpState.i-1],el=document.getElementById('tpmap');if(!el)return;
+  const compact=(el.clientWidth||900)<700,sel=tpState.sel;
+  const R1=compact?150:185,F='font-family="Apple SD Gothic Neo,Malgun Gothic,Noto Sans KR,sans-serif"';
+  let lines='',nodes='',leaves='';
+  t.b.forEach((b,k)=>{
+    const a=(-90+60*k)*Math.PI/180,bx=R1*Math.cos(a),by=R1*Math.sin(a),c=TPC[k],on=k===sel;
+    lines+=`<line x1="0" y1="0" x2="${bx}" y2="${by}" stroke="${c}" stroke-width="${on?6:4}" opacity="${on?1:.55}"/>`;
+    if(!compact){
+      b.w.forEach((w,j)=>{
+        const la=a+(-22.5+15*j)*Math.PI/180,R=j%2?395:305,lx=R*Math.cos(la),ly=R*Math.sin(la);
+        const bw=Math.max(estW(w[1],17)+34,estW(w[2],12)+16,84),op=on?1:.5;
+        lines+=`<path d="M${bx},${by} Q${(bx+lx)/2+ (lx-bx)*.05},${(by+ly)/2} ${lx},${ly}" stroke="${c}" stroke-width="2" fill="none" opacity="${on?.9:.3}"/>`;
+        leaves+=`<g class="say" data-say="${esc(w[1])}" style="cursor:pointer" opacity="${op}"><rect x="${lx-bw/2}" y="${ly-25}" width="${bw}" height="50" rx="14" fill="#fff" stroke="${c}" stroke-width="${on?2.5:1.5}"/><text x="${lx}" y="${ly-5}" text-anchor="middle" font-size="17" fill="#1d3b8a" ${F}>${w[0]} ${esc(w[1])}</text><text x="${lx}" y="${ly+15}" text-anchor="middle" font-size="12" fill="#666">${esc(w[2])}</text></g>`;
+      });
+    }
+    const r=compact?44:50;
+    nodes+=`<g onclick="tpSel(${k})" style="cursor:pointer"><circle cx="${bx}" cy="${by}" r="${r+(on?4:0)}" fill="${on?c:'#fff'}" stroke="${c}" stroke-width="3"/><text x="${bx}" y="${by-14}" text-anchor="middle" font-size="${compact?20:22}">${b.icon}</text><text x="${bx}" y="${by+8}" text-anchor="middle" font-size="${estW(b.ko,15)>r*1.8?12:15}" font-weight="700" fill="${on?'#fff':c}" ${F}>${esc(b.ko)}</text><text x="${bx}" y="${by+26}" text-anchor="middle" font-size="11" fill="${on?'#fff':'#666'}">${esc(b.zh)}</text></g>`;
+  });
+  const cr=compact?62:72;
+  const center=`<g class="say" data-say="${esc(t.ko)}" style="cursor:pointer"><circle r="${cr}" fill="#86641A"/><circle r="${cr-6}" fill="none" stroke="#E8B84B" stroke-width="2"/><text y="-22" text-anchor="middle" font-size="${compact?28:32}">${t.icon}</text><text y="12" text-anchor="middle" font-size="${estW(t.ko,22)>cr*1.7?16:22}" font-weight="700" fill="#fff" ${F}>${esc(t.ko)}</text><text y="34" text-anchor="middle" font-size="13" fill="#FBE7B0">${esc(t.zh)}</text></g>`;
+  const vb=compact?'-215 -215 430 430':'-500 -470 1000 940';
+  el.innerHTML=`<svg viewBox="${vb}" width="100%" style="display:block;max-width:${compact?460:1000}px;margin:0 auto">${lines}${leaves}${nodes}${center}</svg>`;
+}
+function drawPanel(){
+  const t=TOPICS[tpState.i-1],b=t.b[tpState.sel],c=TPC[tpState.sel],el=document.getElementById('tppanel');if(!el)return;
+  el.innerHTML=`<div class="tppanel" style="--c:${c}"><h3 style="margin-top:0;color:${c}">${b.icon} ${ko(b.ko)}　${esc(b.zh)}</h3>
+  <div class="pcards">${b.w.map(w=>`<div class="pcard"><div class="pe">${w[0]}</div>${ko(w[1])}<div class="pzh">${esc(w[2])}</div><div class="pp">${w[3]?`<span class="pr">${esc(w[3])}</span> `:''}<span class="rom">${esc(w[4])}</span></div><a class="pwrite" style="position:static" href="#wrtp/${encodeURIComponent(w[1])}">✍️ 寫寫看</a></div>`).join('')}</div>
+  <h3 style="color:${c}">延伸例句</h3>${b.s.map(r=>`<div class="psent">${ko(r[0])}<span class="sub">${esc(r[2])}</span><div>${esc(r[1])}</div></div>`).join('')}
+  <div class="fbtns">${t.b.map((x,k)=>`<button class="chip${k===tpState.sel?' on':''}" onclick="tpSel(${k})">${x.icon} ${esc(x.zh)}</button>`).join('')}</div></div>`;
+}
+let tpRT;window.addEventListener('resize',()=>{clearTimeout(tpRT);tpRT=setTimeout(()=>{if(/^#tp\d/.test(location.hash))drawMap();},200);});
+app.addEventListener('click',e=>{const v=e.target.closest('.say');if(v)speak(v.dataset.say);});
 function planBox(){
   return `<h2>學習計畫總覽</h2><div class="plan">${LEVELS.map((l,i)=>`<div><b>${l[0]}</b>（第 ${i*PER+1}–${i*PER+PER} 堂）<br>${esc(l[1].split('：')[1])}<br><span style="color:#86641A">→ ${l[2]}</span></div>`).join('')}</div>
   <div class="box" style="margin-bottom:24px"><b>每堂 45 分鐘的流程：</b>暖身複習 5 分 → 發音／文法重點 12 分 → 詞彙 10 分 → 例句 6 分 → 對話 7 分 → 練習與作業 5 分。<br><b>建議進度：</b>每週 2 堂，約 30 週完成；每 15 堂結束後做一次總複習。</div>`;
@@ -205,8 +274,10 @@ function go(h){location.hash=h;}
 function route(){const h=location.hash;let m;
   if((m=h.match(/^#L(\d+)$/)))lesson(+m[1]);
   else if(h==='#church')churchView();
-  else if((m=h.match(/^#c([ws])(\d|ch)(?:-(\d+))?$/))){cardsView(m[2]==='ch'?'ch':+m[2],m[1],m[3]?+m[3]:0);window.scrollTo(0,0);}
-  else if((m=h.match(/^#wr(\d|ch)(?:\/(.+))?$/))){writerView(m[1]==='ch'?'ch':+m[1],m[2]?decodeURIComponent(m[2]):'');window.scrollTo(0,0);}else if((m=h.match(/^#lv(\d)$/)))home(+m[1]);else home(0);}
+  else if(h==='#topics')topicsHome();
+  else if((m=h.match(/^#tp(\d+)$/)))topicView(+m[1]);
+  else if((m=h.match(/^#c([ws])(\d|ch|tp)(?:-(\d+))?$/))){cardsView(/^\d$/.test(m[2])?+m[2]:m[2],m[1],m[3]?+m[3]:0);window.scrollTo(0,0);}
+  else if((m=h.match(/^#wr(\d|ch|tp)(?:\/(.+))?$/))){writerView(/^\d$/.test(m[1])?+m[1]:m[1],m[2]?decodeURIComponent(m[2]):'');window.scrollTo(0,0);}else if((m=h.match(/^#lv(\d)$/)))home(+m[1]);else home(0);}
 window.addEventListener('hashchange',route);route();
 </script>
 </body></html>

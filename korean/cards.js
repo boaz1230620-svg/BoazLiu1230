@@ -5,11 +5,16 @@ function loadKnown(){try{return new Set(JSON.parse(localStorage.getItem(KEY)||'[
 function saveKnown(s){try{localStorage.setItem(KEY,JSON.stringify([...s]));}catch(e){}}
 let known=loadKnown();
 
-const lvName=lv=>lv==='ch'?'召會生活':LEVELS[lv][0];
-const lvHref=lv=>lv==='ch'?'#church':'#lv'+lv;
-const unitName=(lv,n)=>lv==='ch'?(window.CHURCH[n-1]||{}).t:`第 ${n} 堂`;
+const lvName=lv=>lv==='ch'?'召會生活':lv==='tp'?'專題':LEVELS[lv][0];
+const lvHref=lv=>lv==='ch'?'#church':lv==='tp'?'#topics':'#lv'+lv;
+const unitName=(lv,n)=>lv==='ch'?(window.CHURCH[n-1]||{}).t:lv==='tp'?((window.TOPICS[n-1]||{}).zh||''):`第 ${n} 堂`;
 function deck(lv,kind){
   const out=[],seen=new Set();
+  if(lv==='tp'){(window.TOPICS||[]).forEach((t,ti)=>{
+      const add=(ko,zh,pr,rom)=>{if(seen.has(ko))return;seen.add(ko);out.push({ko,zh,pr,rom,n:ti+1});};
+      if(kind==='s'){t.pat.forEach(r=>add(r[0],r[1],'',r[2]));t.b.forEach(b=>b.s.forEach(r=>add(r[0],r[1],'',r[2])));}
+      else t.b.forEach(b=>b.w.forEach(w=>add(w[1],w[0]+' '+w[2],w[3],w[4])));
+    });return out;}
   if(lv==='ch'){(window.CHURCH||[]).forEach((g,gi)=>g.items.forEach(it=>{
       if(kind==='s'){if(!seen.has(it.ko)){seen.add(it.ko);out.push({ko:it.ko,zh:it.zh,pr:it.pr,rom:it.rom,n:gi+1});}}
       else it.w.forEach(w=>{if(seen.has(w[0]))return;seen.add(w[0]);out.push({ko:w[0],zh:w[1],pr:'',rom:'',n:gi+1});});
@@ -38,8 +43,9 @@ function current(){
 }
 function build(){
   const lvN=lvName(st.lv),kName=st.kind==='w'?'單字卡':(st.lv==='ch'?'句子卡（整句）':'句子卡');
-  const opts=[`<option value="0">${st.lv==='ch'?'全部分類':'全部 '+PER+' 堂'}</option>`];
-  if(st.lv==='ch')CHURCH.forEach((g,i)=>opts.push(`<option value="${i+1}" ${i+1===st.lessonNo?'selected':''}>${g.t}</option>`));
+  const opts=[`<option value="0">${st.lv==='ch'?'全部分類':st.lv==='tp'?'全部專題':'全部 '+PER+' 堂'}</option>`];
+  if(st.lv==='tp')TOPICS.forEach((t,i)=>opts.push(`<option value="${i+1}" ${i+1===st.lessonNo?'selected':''}>${t.icon} ${t.zh}</option>`));
+  else if(st.lv==='ch')CHURCH.forEach((g,i)=>opts.push(`<option value="${i+1}" ${i+1===st.lessonNo?'selected':''}>${g.t}</option>`));
   else for(let i=st.lv*PER+1;i<=st.lv*PER+PER;i++)opts.push(`<option value="${i}" ${i===st.lessonNo?'selected':''}>第 ${i} 堂</option>`);
   app.innerHTML=`<p><a class="back" href="${lvHref(st.lv)}">← 回${lvN}</a></p>
   <h2>${lvN}　${kName}</h2>
@@ -131,8 +137,8 @@ window.writerView=function(lv,text){
     </div>
     <div>
       ${lv===0?`<h3 style="margin-top:0">韓文字母（40 個）</h3><div class="chips">${HANGUL.LETTERS.map(j=>`<button class="chip" data-w="${j}">${j}</button>`).join('')}</div>`:''}
-      ${lv==='ch'?`<h3 style="margin-top:0">召會生活整句（${deck('ch','s').length} 句）</h3><div class="chips" style="max-height:200px">${deck('ch','s').map(w=>`<button class="chip" data-w="${esc(w.ko)}" title="${esc(w.zh)}">${esc(w.ko)}</button>`).join('')}</div>`:''}
-      <h3 ${lv===0||lv==='ch'?'':'style="margin-top:0"'}>${lv==='ch'?'重點單字':'本級單字'}（${words.length} 個）</h3>
+      ${lv==='ch'||lv==='tp'?`<h3 style="margin-top:0">${lv==='tp'?'專題句子':'召會生活整句'}（${deck(lv,'s').length} 句）</h3><div class="chips" style="max-height:200px">${deck(lv,'s').map(w=>`<button class="chip" data-w="${esc(w.ko)}" title="${esc(w.zh)}">${esc(w.ko)}</button>`).join('')}</div>`:''}
+      <h3 ${lv===0||lv==='ch'||lv==='tp'?'':'style="margin-top:0"'}>${lv==='ch'?'重點單字':lv==='tp'?'專題單字':'本級單字'}（${words.length} 個）</h3>
       <input id="wq" placeholder="搜尋韓文或中文…" class="wq">
       <div class="chips" id="wlist">${words.map(w=>`<button class="chip" data-w="${esc(w.ko)}" title="${esc(w.zh)}">${esc(w.ko)}</button>`).join('')}</div>
       <h3>自己輸入</h3>
