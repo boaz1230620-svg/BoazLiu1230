@@ -148,7 +148,7 @@ window.TOPICS=[
 {icon:"⛪",ko:"믿음과 교회 생활",zh:"信仰與召會生活",rom:"mi-deum-gwa gyo-hoe saeng-hwal",desc:"三一神、主的話、聚會、操練、聖徒與福音",
  pat:[["같이 기도할까요?","一起禱告好嗎？","ga-chi gi-do-hal-kka-yo?"],["주일 집회에 같이 가요.","一起去主日聚會吧。","ju-il ji-poe-e ga-chi ga-yo"],["주님, 감사합니다.","主，感謝你。","ju-nim, gam-sa-ham-ni-da"]],
  b:[
- {icon:"✨",ko:"하나님",zh:"神",w:[["✨","하나님","神","","ha-na-nim"],["👑","주님","主","","ju-nim"],["✝️","예수님","耶穌","","ye-su-nim"],["🕊️","성령","聖靈","[성녕]","seong-nyeong"]],
+ {icon:"✨",ko:"하나님",zh:"神",w:[["✨","하나님","神","","ha-na-nim"],["👑","주님","主","","ju-nim"],["💗","예수님","耶穌","","ye-su-nim"],["🕊️","성령","聖靈","[성녕]","seong-nyeong"]],
   s:[["하나님은 사랑이십니다.","神就是愛。","ha-na-ni-meun sa-rang-i-sim-ni-da"],["예수님을 믿어요.","我信耶穌。","ye-su-ni-meul mi-deo-yo"]]},
  {icon:"📖",ko:"말씀",zh:"主的話",w:[["📖","성경","聖經","","seong-gyeong"],["📜","말씀","話語","","mal-sseum"],["🔖","구절","經節","","gu-jeol"],["🍞","생명의 떡","生命的餅","[생명에 떡]","saeng-myeong-e tteok"]],
   s:[["매일 아침 말씀을 읽어요.","每天早上讀主的話。","mae-il a-chim mal-sseu-meul il-geo-yo"],["이 구절이 참 좋아요.","這節經文真好。","i gu-jeo-ri cham jo-a-yo"]]},
