@@ -145,7 +145,7 @@ window.TOPICS=[
  {icon:"💌",ko:"마음 표현",zh:"表達心意",w:[["🙏","고맙다","謝謝","[고맙따]","go-map-tta"],["🙇","미안하다","抱歉","[미아나다]","mi-a-na-da"],["💗","사랑하다","愛","","sa-rang-ha-da"],["📣","응원하다","支持、加油","[응워나다]","eung-wo-na-da"]],
   s:[["항상 고마워요.","一直很感謝你。","hang-sang go-ma-wo-yo"],["응원할게요!","我會支持你！","eung-wo-nal-kke-yo"]]}
  ]},
-{icon:"⛪",ko:"믿음과 교회 생활",zh:"信仰與召會生活",rom:"mi-deum-gwa gyo-hoe saeng-hwal",desc:"三一神、主的話、聚會、操練、聖徒與福音",
+{icon:"⛪",img:"en-christo.svg",ko:"믿음과 교회 생활",zh:"信仰與召會生活",rom:"mi-deum-gwa gyo-hoe saeng-hwal",desc:"三一神、主的話、聚會、操練、聖徒與福音",
  pat:[["같이 기도할까요?","一起禱告好嗎？","ga-chi gi-do-hal-kka-yo?"],["주일 집회에 같이 가요.","一起去主日聚會吧。","ju-il ji-poe-e ga-chi ga-yo"],["주님, 감사합니다.","主，感謝你。","ju-nim, gam-sa-ham-ni-da"]],
  b:[
  {icon:"✨",ko:"하나님",zh:"神",w:[["✨","하나님","神","","ha-na-nim"],["👑","주님","主","","ju-nim"],["💗","예수님","耶穌","","ye-su-nim"],["🕊️","성령","聖靈","[성녕]","seong-nyeong"]],

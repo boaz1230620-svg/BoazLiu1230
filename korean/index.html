@@ -114,7 +114,7 @@ footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 <script src="lessons-3.js?v=202611252100"></script>
 <script src="lessons-4.js?v=202611252100"></script>
 <script src="church.js?v=202611252100"></script>
-<script src="topics.js?v=202611252127"></script>
+<script src="topics.js?v=202611260900"></script>
 <script src="church-prayer.js?v=202611252100"></script>
 <script src="hangul-strokes.js?v=202611252100"></script>
 <script src="cards.js?v=202611252100"></script>
@@ -193,14 +193,14 @@ function topicsHome(){
   const T=window.TOPICS||[];
   let h=tabs('tp')+`<h2>韓語專題</h2><p style="color:#666">以一個核心主題為中心，往外延伸 6 個分支、每支 4 張圖卡單字與例句，像心智圖一樣把相關的字詞句子串在一起記。點中間分支看詳細圖卡，點任何韓文都能聽發音。</p>`;
   h+=`<div class="tools"><button class="tool" onclick="go('#cwtp')"><span>🗂️</span><div>專題單字卡<small>${deckSize('tp','w')} 張</small></div></button><button class="tool" onclick="go('#cstp')"><span>💬</span><div>專題句子卡<small>${deckSize('tp','s')} 張</small></div></button><button class="tool" onclick="go('#wrtp')"><span>✍️</span><div>手寫練習<small>筆順示範・描紅書寫</small></div></button></div>`;
-  h+=`<div class="tpgrid">${T.map((t,i)=>`<div class="tpcard" onclick="go('#tp${i+1}')" style="--c:${TPC[i%6]}"><div class="tpn">專題 ${i+1}</div><div class="tpi">${t.icon}</div><div class="tpk">${esc(t.ko)}</div><div class="tpz">${esc(t.zh)}</div><div class="tpd">${t.b.map(b=>b.icon+' '+esc(b.zh)).join('　')}</div></div>`).join('')}</div>`;
+  h+=`<div class="tpgrid">${T.map((t,i)=>`<div class="tpcard" onclick="go('#tp${i+1}')" style="--c:${TPC[i%6]}"><div class="tpn">專題 ${i+1}</div><div class="tpi">${t.img?`<img src="${t.img}" alt="${esc(t.zh)}" style="width:76px;height:76px;display:block;margin:0 auto">`:t.icon}</div><div class="tpk">${esc(t.ko)}</div><div class="tpz">${esc(t.zh)}</div><div class="tpd">${t.b.map(b=>b.icon+' '+esc(b.zh)).join('　')}</div></div>`).join('')}</div>`;
   app.innerHTML=h;window.scrollTo(0,0);
 }
 function topicView(n){
   const T=window.TOPICS||[],t=T[n-1];if(!t)return topicsHome();
   if(tpState.i!==n){tpState={i:n,sel:0};}
   let h=tabs('tp')+`<p><a class="back" href="#topics">← 專題列表</a></p>`;
-  h+=`<div class="tphead"><span class="tpbig">${t.icon}</span><div><div class="tpno">專題 ${n} / ${T.length}</div><h2 style="margin:4px 0;border:0;padding:0">${ko(t.ko)}　${esc(t.zh)}</h2><span class="rom">${esc(t.rom)}</span>　<span style="color:#888">${esc(t.desc)}</span></div></div>`;
+  h+=`<div class="tphead"><span class="tpbig">${t.img?`<img src="${t.img}" alt="${esc(t.zh)}" style="width:88px;height:88px;display:block">`:t.icon}</span><div><div class="tpno">專題 ${n} / ${T.length}</div><h2 style="margin:4px 0;border:0;padding:0">${ko(t.ko)}　${esc(t.zh)}</h2><span class="rom">${esc(t.rom)}</span>　<span style="color:#888">${esc(t.desc)}</span></div></div>`;
   h+=`<div class="box"><b>核心句型</b>${t.pat.map(r=>`<div style="margin-top:6px">${ko(r[0])}<span class="sub">${esc(r[2])}　｜　${esc(r[1])}</span></div>`).join('')}</div>`;
   h+=`<div class="mapwrap"><div id="tpmap"></div><div class="maphint">點分支看圖卡與例句；點任何韓文聽發音</div></div><div id="tppanel"></div>`;
   h+=`<div class="fbtns"><a class="btn" href="#cwtp-${n}" style="text-decoration:none">🗂️ 本專題單字卡</a><a class="btn" href="#cstp-${n}" style="text-decoration:none">💬 本專題句子卡</a></div>`;
@@ -229,7 +229,7 @@ function drawMap(){
     nodes+=`<g onclick="tpSel(${k})" style="cursor:pointer"><circle cx="${bx}" cy="${by}" r="${r+(on?4:0)}" fill="${on?c:'#fff'}" stroke="${c}" stroke-width="3"/><text x="${bx}" y="${by-14}" text-anchor="middle" font-size="${compact?20:22}">${b.icon}</text><text x="${bx}" y="${by+8}" text-anchor="middle" font-size="${estW(b.ko,15)>r*1.8?12:15}" font-weight="700" fill="${on?'#fff':c}" ${F}>${esc(b.ko)}</text><text x="${bx}" y="${by+26}" text-anchor="middle" font-size="11" fill="${on?'#fff':'#666'}">${esc(b.zh)}</text></g>`;
   });
   const cr=compact?62:72;
-  const center=`<g class="say" data-say="${esc(t.ko)}" style="cursor:pointer"><circle r="${cr}" fill="#86641A"/><circle r="${cr-6}" fill="none" stroke="#E8B84B" stroke-width="2"/><text y="-22" text-anchor="middle" font-size="${compact?28:32}">${t.icon}</text><text y="12" text-anchor="middle" font-size="${estW(t.ko,22)>cr*1.7?16:22}" font-weight="700" fill="#fff" ${F}>${esc(t.ko)}</text><text y="34" text-anchor="middle" font-size="13" fill="#FBE7B0">${esc(t.zh)}</text></g>`;
+  const center=`<g class="say" data-say="${esc(t.ko)}" style="cursor:pointer"><circle r="${cr}" fill="#86641A"/><circle r="${cr-6}" fill="none" stroke="#E8B84B" stroke-width="2"/>${t.img?`<circle cy="-28" r="${compact?20:23}" fill="#fff"/><image href="${t.img}" x="${compact?-20:-23}" y="${compact?-48:-51}" width="${compact?40:46}" height="${compact?40:46}"/>`:`<text y="-22" text-anchor="middle" font-size="${compact?28:32}">${t.icon}</text>`}<text y="12" text-anchor="middle" font-size="${estW(t.ko,22)>cr*1.7?16:22}" font-weight="700" fill="#fff" ${F}>${esc(t.ko)}</text><text y="34" text-anchor="middle" font-size="13" fill="#FBE7B0">${esc(t.zh)}</text></g>`;
   const vb=compact?'-215 -215 430 430':'-500 -470 1000 940';
   el.innerHTML=`<svg viewBox="${vb}" width="100%" style="display:block;max-width:${compact?460:1000}px;margin:0 auto">${lines}${leaves}${nodes}${center}</svg>`;
 }
