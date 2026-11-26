@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<defs><clipPath id="c"><circle cx="100" cy="100" r="86"/></clipPath></defs>
+<circle cx="100" cy="100" r="96" fill="#fff" stroke="#111" stroke-width="6"/>
+<circle cx="100" cy="100" r="86" fill="none" stroke="#111" stroke-width="3"/>
+<g clip-path="url(#c)" fill="none" stroke="#111">
+<path d="M73,0V73H0M127,0V73H200M73,200V127H0M127,200V127H200" stroke-width="3.5"/>
+<path d="M28,28L172,172M172,28L28,172" stroke-width="11"/>
+</g>
+<g font-family="Georgia,'Times New Roman',serif" font-weight="700" fill="#111" text-anchor="middle" stroke="#fff" stroke-width="5" paint-order="stroke" stroke-linejoin="round">
+<text x="100" y="56" font-size="34" textLength="56" lengthAdjust="spacingAndGlyphs">ΕΝ</text>
+<text x="100" y="92" font-size="27">Ρ</text>
+<text x="100" y="132" font-size="25">Ι</text>
+<text x="100" y="174" font-size="36">Σ</text>
+<text x="44" y="116" font-size="46">Τ</text>
+<text x="157" y="114" font-size="40">Ω</text>
+</g>
+</svg>
