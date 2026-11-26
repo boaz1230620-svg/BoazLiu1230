@@ -874,6 +874,19 @@ renderWork();
     });
     h += '</tr>';
   });
+  var CI={lord:0,group:3,gospel:4,life:5};
+  [['13 組合計','total',function(w,key){ return DATA.groups.reduce(function(s,g){ var r=DATA.weeks[String(w)].groups[g.name]; return s+(r?r[key]:0); },0); }],
+   ['全市大學合計（含大區 34）','city',function(w,key){ var c=DATA.city[String(w)]; return key==='home'?c[1]+c[2]:c[CI[key]]; }]].forEach(function(row){
+    h += '<tr class="'+row[1]+'"><td>'+row[0]+'</td>';
+    months.forEach(function(m){
+      ITEMS.forEach(function(it){
+        var ws = m[1].filter(function(w){ return DATA.weeks[String(w)] && (row[1]!=='city' || DATA.city[String(w)]); });
+        var v = ws.reduce(function(s,w){ return s + row[2](w,it[0]); }, 0);
+        h += '<td>'+(ws.length ? (v/ws.length).toFixed(1) : '待查')+'</td>';
+      });
+    });
+    h += '</tr>';
+  });
   document.getElementById('trend-table').innerHTML = h;
 })();
 
