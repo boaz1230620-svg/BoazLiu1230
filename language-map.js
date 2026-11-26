@@ -37,7 +37,7 @@
     ".lm-zoom{position:absolute;right:8px;top:8px;display:flex;flex-direction:column;gap:4px}" +
     ".lm-zoom button{width:32px;height:32px;border-radius:8px;border:1px solid #c9dbe6;background:#fff;color:#245A75;font-size:18px;cursor:pointer;line-height:1;font-family:inherit}" +
     ".lm-verse{position:absolute;left:8px;bottom:8px;white-space:nowrap;font-family:'Noto Serif TC','Songti TC','PMingLiU',serif;font-size:11px;line-height:1.5;color:#245A75;background:rgba(255,255,255,.75);padding:4px 8px;border-radius:6px;border-left:3px solid #E8B84B;pointer-events:none}" +
-    ".lm-verse .ref{display:block;text-align:right;font-size:10px;color:#86641A}" +
+    ".lm-verse .ref{font-size:10px;color:#86641A}" +
     "@media(max-width:700px){.lm-verse{position:static;white-space:normal;max-width:none;border-radius:0;border-left:0;border-top:2px solid #E8B84B;font-size:12px;background:#fff;padding:5px 10px}}" +
     ".lm-legend{position:absolute;right:10px;bottom:8px;font-size:12px;color:#555;background:rgba(255,255,255,.85);padding:4px 8px;border-radius:6px}" +
     ".lm-legend i{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:-1px;margin:0 4px 0 8px}" +
@@ -100,7 +100,7 @@
   lg.innerHTML = '<i style="background:#9CC7DE"></i>網站有課程的語言<i style="background:#E6E0CF"></i>其他';
   wrap.appendChild(lg);
   var vs = el("div", { "class": "lm-verse" });
-  vs.innerHTML = "「這國度的福音要傳遍天下，<br>　對萬民作見證，<br>　然後末期纔來到。」<span class=\"ref\">（馬太福音 24:14）</span>";
+  vs.innerHTML = "「這國度的福音要傳遍天下，對萬民作見證，然後末期纔來到。」<span class=\"ref\">（馬太福音 24:14）</span>";
   wrap.appendChild(vs);
   root.appendChild(wrap);
 
