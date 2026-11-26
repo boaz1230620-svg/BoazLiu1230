@@ -43,11 +43,28 @@ details.ans div{margin-top:6px;color:#2d5a1b;background:#F2F9EE;border-radius:8p
 .plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:10px 0 24px}
 .plan div{background:#fff;border:1px solid #eee;border-radius:12px;padding:14px;line-height:1.7;font-size:15px}
 .plan b{color:#86641A;font-size:17px}
+.chip{border:1px solid #E8B84B;background:#fff;color:#86641A;border-radius:999px;padding:6px 14px;cursor:pointer;font-family:inherit;font-size:15px}
+.chip.on{background:#1d3b8a;border-color:#1d3b8a;color:#fff}
+.tab.topic{border-color:#6AA84F;color:#3d7a22}.tab.topic.on{background:#6AA84F;color:#fff}
+.tpgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.tpcard{background:#fff;border:1px solid #eee;border-top:6px solid var(--c);border-radius:16px;padding:16px;cursor:pointer;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .2s,box-shadow .2s}
+.tpcard:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.13)}
+.tpn{font-size:13px;color:var(--c);font-weight:700}.tpi{font-size:46px;margin:6px 0}.tpk{font-size:22px;color:#1d3b8a;font-family:Tahoma,"Leelawadee UI","Sukhumvit Set",Thonburi,sans-serif}.tpz{font-size:17px;font-weight:700;margin:2px 0 8px}.tpd{font-size:13px;color:#777;line-height:1.7}
+.tphead{display:flex;gap:16px;align-items:center;margin:10px 0 14px}.tpbig{font-size:60px}.tpno{color:#86641A;font-size:14px}
+.mapwrap{background:radial-gradient(circle at center,#FFF8E6 0,#fff 70%);border:1px solid #eee;border-radius:18px;margin:16px 0;padding:10px}
+.maphint{text-align:center;color:#999;font-size:13px}
+.tppanel{background:#fff;border:1px solid #eee;border-top:6px solid var(--c);border-radius:16px;padding:18px}
+.pcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.pcard{border:2px solid var(--c);border-radius:14px;padding:12px;text-align:center;background:#fffdf8}
+.pcard .pe{font-size:44px;line-height:1.2}.pcard .th::before{content:""}.pzh{font-weight:700;margin:2px 0}.pcard .rom{font-size:13px}
+.psent{border-left:4px solid var(--c);background:#fffdf8;border-radius:8px;padding:8px 12px;margin:8px 0;line-height:1.6}
+.fbtns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.tip{background:#FFF6DE;border-left:4px solid #E8B84B;border-radius:8px;padding:10px 14px;margin-top:14px;font-size:15px;line-height:1.8}
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:8px;display:none;font-size:14px}
 footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 @media(max-width:600px){h1{font-size:32px}.tbl td,.tbl th{font-size:14px;padding:8px}.th{font-size:19px}.time{font-size:11px}.tone{white-space:normal}}
 </style></head><body>
-<header><h1>泰語學習</h1><p class="lead">入門、初級、中級、進階各 15 堂，共 60 堂，每堂 45 分鐘。每個詞與句子都附羅馬拼音與五個聲調，藍色泰文點一下就能聽發音，並附寮語對照，方便泰寮互通。</p></header>
+<header><h1>泰語學習</h1><p class="lead">入門、初級、中級、進階各 15 堂，共 60 堂，每堂 45 分鐘。每個詞與句子都附羅馬拼音與五個聲調，藍色泰文點一下就能聽發音，並附寮語對照，方便泰寮互通。另有 10 個「💬 會話專題」，用心智圖與情境會話練日常與召會生活泰語。</p></header>
 <main>
 <p style="margin:0 0 16px"><a class="back" href="../">← 回首頁</a></p>
 <div class="speed">朗讀速度：<button data-r="0.6">慢</button><button data-r="0.8" class="on">中</button><button data-r="1">正常</button></div>
@@ -59,6 +76,7 @@ footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 <script src="lessons-2.js"></script>
 <script src="lessons-3.js"></script>
 <script src="lessons-4.js"></script>
+<script src="topics.js?v=202611260800"></script>
 <script>
 const LESSONS=window.LESSONS||[];
 const PER=15,TOTAL=60;
@@ -89,12 +107,12 @@ function speak(text){
   speechSynthesis.speak(u);
 }
 document.querySelectorAll('.speed button').forEach(b=>b.onclick=()=>{rate=+b.dataset.r;document.querySelectorAll('.speed button').forEach(x=>x.classList.toggle('on',x===b));});
-app.addEventListener('click',e=>{const v=e.target.closest('.th');if(v)speak(v.dataset.say||v.textContent);});
+app.addEventListener('click',e=>{const v=e.target.closest('.th');if(v){speak(v.dataset.say||v.textContent);return;}const g=e.target.closest('.say');if(g)speak(g.dataset.say);});
 const th=(t,say)=>`<span class="th" data-say="${esc(say||t)}">${esc(t)}</span>`;
 
 function home(lv){
   lv=lv||0;
-  let h=`<div class="tabs">${LEVELS.map((l,i)=>`<button class="tab${i==lv?' on':''}" onclick="go('#lv${i}')">${l[0]}</button>`).join('')}</div>`;
+  let h=tabs(lv);
   if(lv==0)h+=planBox();
   h+=`<h2>${LEVELS[lv][0]}</h2><p style="color:#666">${LEVELS[lv][1]}（目標：${LEVELS[lv][2]}）</p>`;
   if(lv==0)h+=scriptTables();
@@ -104,6 +122,76 @@ function home(lv){
   h+=`</div>`;
   app.innerHTML=h;window.scrollTo(0,0);
 }
+function tabs(cur){return `<div class="tabs">${LEVELS.map((l,i)=>`<button class="tab${i===cur?' on':''}" onclick="go('#lv${i}')">${l[0]}</button>`).join('')}<button class="tab topic${cur==='tp'?' on':''}" onclick="go('#topics')">💬 會話專題</button></div>`;}
+// ── 會話專題（心智圖＋情境會話）──
+const TPC=['#E07A5F','#3D85C6','#6AA84F','#B4689C','#E69138','#45818E'];
+let tpState={i:0,sel:0};
+const TF='font-family="Tahoma,Leelawadee UI,Sukhumvit Set,Thonburi,PingFang TC,Microsoft JhengHei,sans-serif"';
+function topicsHome(){
+  const T=window.TOPICS||[];
+  let h=tabs('tp')+`<h2>泰語會話專題</h2><p style="color:#666">十個生活情境，每個專題以一個核心為中心，延伸 6 個分支、每支 4 張圖卡單字與例句，最後用一段情境會話把字詞串起來。第 10 專題「召會生活」整理主恢復常用的泰語用詞。點任何藍色泰文都能聽發音。</p>`;
+  h+=`<div class="tpgrid">${T.map((t,i)=>`<div class="tpcard" onclick="go('#tp${i+1}')" style="--c:${TPC[i%6]}"><div class="tpn">專題 ${i+1}</div><div class="tpi">${t.icon}</div><div class="tpk">${esc(t.th)}</div><div class="tpz">${esc(t.zh)}</div><div class="tpd">${t.b.map(b=>b.icon+' '+esc(b.zh)).join('　')}</div></div>`).join('')}</div>`;
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function topicView(n){
+  const T=window.TOPICS||[],t=T[n-1];if(!t)return topicsHome();
+  if(tpState.i!==n)tpState={i:n,sel:0};
+  let h=tabs('tp')+`<p><a class="back" href="#topics">← 專題列表</a></p>`;
+  h+=`<div class="tphead"><span class="tpbig">${t.icon}</span><div><div class="tpno">專題 ${n} / ${T.length}</div><h2 style="margin:4px 0;border:0;padding:0">${th(t.th)}　${esc(t.zh)}</h2><span class="rom">${esc(t.rom)}</span>　<span style="color:#888">${esc(t.desc)}</span></div></div>`;
+  h+=`<div class="box"><b>核心句型</b>${t.pat.map(r=>`<div style="margin-top:6px">${th(r[0])}<span class="sub">${esc(r[2])}　｜　${esc(r[1])}</span></div>`).join('')}</div>`;
+  h+=`<div class="mapwrap"><div id="tpmap"></div><div class="maphint">點分支看圖卡與例句；點任何泰文聽發音</div></div><div id="tppanel"></div>`;
+  h+=`<h3>💬 情境會話</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>泰文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${t.d.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${th(r[1])}<span class="sub">${esc(r[3]||'')}</span></td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色；熟練後把圖卡裡的單字換進去，練出自己的版本。</p>`;
+  if(t.tip)h+=`<div class="tip"><b>💡 會話小提醒：</b>${esc(t.tip)}</div>`;
+  if(t.glos)h+=`<h3>📘 主恢復用語對照（中・泰・英）</h3><div class="wrap"><table class="tbl"><thead><tr><th>中文</th><th>泰文／羅馬拼音</th><th>English</th></tr></thead><tbody>${t.glos.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${th(r[1])}<span class="sub">${esc(r[2])}</span></td><td class="rom">${esc(r[3])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">整理自《中老英泰屬靈用語對照表》；聖經名稱與經文用語參考泰文恢復本（gbrtbooks.com）。</p>`;
+  h+=`<div class="nav"><button class="btn" ${n==1?'disabled':''} onclick="go('#tp${n-1}')">← 上一個專題</button><button class="btn" ${n==T.length?'disabled':''} onclick="go('#tp${n+1}')">下一個專題 →</button></div>`;
+  app.innerHTML=h;drawMap();drawPanel();window.scrollTo(0,0);
+}
+function tpSel(k){tpState.sel=k;drawMap();drawPanel();if(window.innerWidth<700)document.getElementById('tppanel').scrollIntoView({behavior:'smooth'});}
+const mctx=document.createElement('canvas').getContext('2d');
+function mw(s,fs,bold){mctx.font=(bold?'700 ':'')+fs+'px Tahoma,"Leelawadee UI","Sukhumvit Set",Thonburi,Loma,"PingFang TC","Microsoft JhengHei",sans-serif';return mctx.measureText(s).width;}
+const mfit=(s,max,f,bold)=>{let x=f;while(x>10&&mw(s,x,bold)>max)x--;return x;};
+function drawMap(){
+  const t=TOPICS[tpState.i-1],el=document.getElementById('tpmap');if(!el)return;
+  const compact=(el.clientWidth||900)<700,sel=tpState.sel,R1=compact?150:185,r=compact?44:50,cr=compact?62:72;
+  const L=[];
+  t.b.forEach((b,k)=>{const a=(-90+60*k)*Math.PI/180;
+    if(!compact)b.w.forEach((w,j)=>{
+      const la=a+(-22.5+15*j)*Math.PI/180,R=j%2?395:305;
+      const fs=mfit(w[1],160,18),bw=Math.max(mw(w[1],fs)+fs*1.4,mw(w[2],12))+26;
+      L.push({k,wd:w,fs,bw,bh:52,ux:Math.cos(la),uy:Math.sin(la),R,bx:R1*Math.cos(a),by:R1*Math.sin(a)});});});
+  // 依實際字寬把重疊的圖卡往外推
+  const fixed=[{x:0,y:0,w:cr*2,h:cr*2}].concat(t.b.map((b,k)=>{const a=(-90+60*k)*Math.PI/180;return{x:R1*Math.cos(a),y:R1*Math.sin(a),w:r*2+8,h:r*2+8};}));
+  const ov=(a,b)=>Math.abs(a.x-b.x)<(a.w+b.w)/2+6&&Math.abs(a.y-b.y)<(a.h+b.h)/2+4;
+  for(let it=0;it<80;it++){let moved=false;
+    L.forEach(o=>{o.x=o.R*o.ux;o.y=o.R*o.uy;o.w=o.bw;o.h=o.bh;});
+    L.forEach((o,i)=>{
+      for(const f of fixed)if(ov(o,f)){o.R+=6;moved=true;}
+      for(let j=0;j<L.length;j++){if(j===i)continue;const q=L[j];if(ov(o,q)&&o.R>=q.R&&(o.R>q.R||i>j)){o.R+=6;moved=true;}}
+    });if(!moved)break;}
+  let x0=-cr,x1=cr,y0=-cr,y1=cr;
+  fixed.forEach(f=>{x0=Math.min(x0,f.x-f.w/2);x1=Math.max(x1,f.x+f.w/2);y0=Math.min(y0,f.y-f.h/2);y1=Math.max(y1,f.y+f.h/2);});
+  L.forEach(o=>{x0=Math.min(x0,o.x-o.w/2);x1=Math.max(x1,o.x+o.w/2);y0=Math.min(y0,o.y-o.h/2);y1=Math.max(y1,o.y+o.h/2);});
+  let lines='',nodes='',leaves='';
+  L.forEach(o=>{const c=TPC[o.k],on=o.k===sel,lx=o.x,ly=o.y,w=o.wd;
+    lines+=`<path d="M${o.bx},${o.by} Q${(o.bx+lx)/2+(lx-o.bx)*.05},${(o.by+ly)/2} ${lx},${ly}" stroke="${c}" stroke-width="2" fill="none" opacity="${on?.9:.3}"/>`;
+    leaves+=`<g class="say" data-say="${esc(w[1])}" style="cursor:pointer" opacity="${on?1:.5}"><rect x="${lx-o.bw/2}" y="${ly-26}" width="${o.bw}" height="52" rx="14" fill="#fff" stroke="${c}" stroke-width="${on?2.5:1.5}"/><text x="${lx}" y="${ly-4}" text-anchor="middle" font-size="${o.fs}" fill="#1d3b8a" ${TF}>${w[0]} ${esc(w[1])}</text><text x="${lx}" y="${ly+16}" text-anchor="middle" font-size="12" fill="#666">${esc(w[2])}</text></g>`;});
+  t.b.forEach((b,k)=>{
+    const a=(-90+60*k)*Math.PI/180,bx=R1*Math.cos(a),by=R1*Math.sin(a),c=TPC[k],on=k===sel;
+    lines+=`<line x1="0" y1="0" x2="${bx}" y2="${by}" stroke="${c}" stroke-width="${on?6:4}" opacity="${on?1:.55}"/>`;
+    nodes+=`<g onclick="tpSel(${k})" style="cursor:pointer"><circle cx="${bx}" cy="${by}" r="${r+(on?4:0)}" fill="${on?c:'#fff'}" stroke="${c}" stroke-width="3"/><text x="${bx}" y="${by-14}" text-anchor="middle" font-size="${compact?20:22}">${b.icon}</text><text x="${bx}" y="${by+9}" text-anchor="middle" font-size="${mfit(b.th,r*1.75,16,1)}" font-weight="700" fill="${on?'#fff':c}" ${TF}>${esc(b.th)}</text><text x="${bx}" y="${by+27}" text-anchor="middle" font-size="${mfit(b.zh,r*1.7,11)}" fill="${on?'#fff':'#666'}">${esc(b.zh)}</text></g>`;
+  });
+  const center=`<g class="say" data-say="${esc(t.th)}" style="cursor:pointer"><circle r="${cr}" fill="#86641A"/><circle r="${cr-6}" fill="none" stroke="#E8B84B" stroke-width="2"/><text y="-22" text-anchor="middle" font-size="${compact?28:32}">${t.icon}</text><text y="12" text-anchor="middle" font-size="${mfit(t.th,cr*1.7,22,1)}" font-weight="700" fill="#fff" ${TF}>${esc(t.th)}</text><text y="34" text-anchor="middle" font-size="${mfit(t.zh,cr*1.6,13)}" fill="#FBE7B0">${esc(t.zh)}</text></g>`;
+  const P=12,vb=compact?'-215 -215 430 430':`${x0-P} ${y0-P} ${x1-x0+2*P} ${y1-y0+2*P}`;
+  el.innerHTML=`<svg viewBox="${vb}" width="100%" style="display:block;max-width:${compact?460:Math.round(x1-x0+2*P)}px;margin:0 auto">${lines}${leaves}${nodes}${center}</svg>`;
+}
+function drawPanel(){
+  const t=TOPICS[tpState.i-1],b=t.b[tpState.sel],c=TPC[tpState.sel],el=document.getElementById('tppanel');if(!el)return;
+  el.innerHTML=`<div class="tppanel" style="--c:${c}"><h3 style="margin-top:0;color:${c}">${b.icon} ${th(b.th)}　${esc(b.zh)}　<span class="rom">${esc(b.rom)}</span></h3>
+  <div class="pcards">${b.w.map(w=>`<div class="pcard"><div class="pe">${w[0]}</div>${th(w[1])}<div class="pzh">${esc(w[2])}</div><div class="rom">${esc(w[3])}</div></div>`).join('')}</div>
+  <h3 style="color:${c}">延伸例句</h3>${b.s.map(r=>`<div class="psent">${th(r[0])}<span class="sub">${esc(r[2])}</span><div>${esc(r[1])}</div></div>`).join('')}
+  <div class="fbtns">${t.b.map((x,k)=>`<button class="chip${k===tpState.sel?' on':''}" onclick="tpSel(${k})">${x.icon} ${esc(x.zh)}</button>`).join('')}</div></div>`;
+}
+let tpRT;window.addEventListener('resize',()=>{clearTimeout(tpRT);tpRT=setTimeout(()=>{if(/^#tp\d/.test(location.hash))drawMap();},200);});
 function planBox(){
   return `<h2>學習計畫總覽</h2><div class="plan">${LEVELS.map((l,i)=>`<div><b>${l[0]}</b>（第 ${i*PER+1}–${i*PER+PER} 堂）<br>${esc(l[1].split('：')[1])}<br><span style="color:#86641A">→ ${l[2]}</span></div>`).join('')}</div>
   <div class="box" style="margin-bottom:24px"><b>每堂 45 分鐘的流程：</b>暖身複習 5 分 → 發音／文法重點 12 分 → 詞彙 10 分 → 例句 6 分 → 對話 7 分 → 練習與作業 5 分。<br><b>建議進度：</b>每週 2 堂，約 30 週完成；每 15 堂結束後做一次總複習。<br><b>泰寮互通：</b>綠色「寮語對照」框整理泰文與寮文的對應規則，學泰文的同時就在替寮語打底。</div>`;
@@ -151,7 +239,7 @@ function lesson(n){
 }
 function go(h){location.hash=h;}
 function route(){const h=location.hash;let m;
-  if((m=h.match(/^#L(\d+)$/)))lesson(+m[1]);else if((m=h.match(/^#lv(\d)$/)))home(+m[1]);else home(0);}
+  if((m=h.match(/^#L(\d+)$/)))lesson(+m[1]);else if(h==='#topics')topicsHome();else if((m=h.match(/^#tp(\d+)$/)))topicView(+m[1]);else if((m=h.match(/^#lv(\d)$/)))home(+m[1]);else home(0);}
 window.addEventListener('hashchange',route);route();
 </script>
 </body></html>
