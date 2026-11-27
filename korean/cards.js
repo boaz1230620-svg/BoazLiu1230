@@ -75,7 +75,7 @@ function render(){
   const c=list[st.idx],isK=known.has(c.ko),sent=st.kind==='s';
   const koFace=`<div class="fk ${sent?'fs':''}">${esc(c.ko)}</div>`;
   const zhFace=`<div class="fz">${esc(c.zh)}</div>`;
-  const detail=`<div class="fk ${sent?'fs':''}" style="font-size:${sent?'22px':'34px'}">${esc(c.ko)}</div><div class="fz" style="font-size:22px;margin:8px 0">${esc(c.zh)}</div>
+  const detail=`<div class="fk ${sent?'fs':''}" style="font-size:${sent?'22px':'34px'}">${esc(c.ko)}</div><div class="fz" style="font-size:22px;margin:8px 0">${esc(c.zh)}</div>${sent?(window.scanHTML?scanHTML(c.ko):''):(window.hintHTML?'<div>'+hintHTML(c.ko)+'</div>':'')}
     ${c.pr?`<div class="fd">實際發音 <b>${esc(c.pr)}</b></div>`:''}${c.rom?`<div class="fd rom">${esc(c.rom)}</div>`:''}`;
   const front=st.front==='ko'?koFace:zhFace;
   box.innerHTML=`<div class="prog"><span>${st.idx+1} / ${list.length}</span><span>${unitName(st.lv,c.n)}</span><span>已會 ${kn} / ${total.length}</span></div>

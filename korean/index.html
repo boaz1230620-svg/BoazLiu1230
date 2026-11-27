@@ -97,6 +97,9 @@ details.ans div{margin-top:6px;color:#2d5a1b;background:#F2F9EE;border-radius:8p
 .pcard{border:2px solid var(--c);border-radius:14px;padding:12px;text-align:center;background:#fffdf8}
 .pcard .pe{font-size:44px;line-height:1.2}.pcard .ko{font-size:22px}.pcard .ko::before{content:""}.pzh{font-weight:700;margin:2px 0}.pcard .pp{font-size:13px;margin-bottom:4px}
 .psent{border-left:4px solid var(--c);background:#fffdf8;border-radius:8px;padding:8px 12px;margin:8px 0;line-height:1.6}
+.hint{display:inline-block;font-size:13px;border-radius:6px;padding:1px 7px;margin:4px 4px 0 0;line-height:1.5;font-weight:400}
+.hint b{margin-right:5px;font-size:12px}.hint.h{background:#FDF0E6;color:#8a4b14}.hint.e{background:#E8F1FB;color:#1d4f8a}.hint.m{background:#F1EAFB;color:#5b3a8f}
+.hscan{display:block;font-size:13px;color:#8a4b14;margin-top:3px}
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:8px;display:none;font-size:14px}
 footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 @media(max-width:600px){h1{font-size:32px}.tbl td,.tbl th{font-size:14px;padding:8px}.ko{font-size:17px}.time{font-size:11px}.pr{white-space:normal}}
@@ -109,15 +112,16 @@ footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 </main>
 <div id="toast"></div>
 <footer>「實際發音」欄的［ ］表示照音變規則實際唸出的韓文；空白表示照拼寫唸。羅馬拼音依實際發音標示（含緊音化，如 학교 → hak-kkyo），與官方拼寫法可能不同。<br>朗讀使用裝置內建的韓語語音（ko-KR），若沒有聲音，請在手機或電腦的語言設定中安裝韓語語音。</footer>
-<script src="lessons-1.js?v=202611252100"></script>
-<script src="lessons-2.js?v=202611252100"></script>
-<script src="lessons-3.js?v=202611252100"></script>
-<script src="lessons-4.js?v=202611252100"></script>
-<script src="church.js?v=202611252100"></script>
-<script src="topics.js?v=202611260900"></script>
-<script src="church-prayer.js?v=202611252100"></script>
-<script src="hangul-strokes.js?v=202611252100"></script>
-<script src="cards.js?v=202611252100"></script>
+<script src="lessons-1.js?v=202611272234"></script>
+<script src="lessons-2.js?v=202611272234"></script>
+<script src="lessons-3.js?v=202611272234"></script>
+<script src="lessons-4.js?v=202611272234"></script>
+<script src="church.js?v=202611272234"></script>
+<script src="topics.js?v=202611272234"></script>
+<script src="church-prayer.js?v=202611272234"></script>
+<script src="hints.js?v=202611272234"></script>
+<script src="hangul-strokes.js?v=202611272234"></script>
+<script src="cards.js?v=202611272234"></script>
 <script>
 const LESSONS=window.LESSONS||[];
 const PER=15,TOTAL=60;
@@ -157,7 +161,7 @@ function home(lv){
   if(lv==0)h+=planBox();
   h+=`<h2>${LEVELS[lv][0]}</h2><p style="color:#666">${LEVELS[lv][1]}（${LEVELS[lv][2]}）</p>`;
   h+=`<div class="tools"><button class="tool" onclick="go('#cw${lv}')"><span>🗂️</span><div>單字卡<small>${deckSize(lv,'w')} 張・翻面記憶</small></div></button><button class="tool" onclick="go('#cs${lv}')"><span>💬</span><div>句子卡<small>${deckSize(lv,'s')} 張・例句記憶</small></div></button><button class="tool" onclick="go('#wr${lv}')"><span>✍️</span><div>手寫練習<small>筆順示範・描紅書寫</small></div></button></div>`;
-  if(lv==0)h+=hangulTable();
+  if(lv==0)h+=hangulTable()+hanjaBox();
   h+=`<div class="grid">`;
   for(let i=lv*PER;i<lv*PER+PER;i++){const L=LESSONS[i];if(!L)continue;
     h+=`<div class="card" onclick="go('#L${i+1}')"><div class="k">第 ${i+1} 堂</div><div class="t">${esc(L.t)}</div><div class="d">${esc(L.g)}</div></div>`;}
@@ -178,7 +182,7 @@ function churchView(){
     g.items.forEach(it=>{
       h+=`<div class="phr${g.sec==='pray'?' pray':''}"><div class="pz">${esc(it.zh)}</div><div>${ko(it.ko)}</div>
       <div class="pp">${it.pr?`<span class="pr">${esc(it.pr)}</span>　`:''}<span class="rom">${esc(it.rom)}</span></div>
-      <div class="pw">${it.w.map(w=>`<span>${ko(w[0])}<em>${esc(w[1])}</em></span>`).join('')}</div>
+      ${scanHTML(it.ko)}<div class="pw" style="margin-top:6px">${it.w.map(w=>`<span>${ko(w[0])}<em>${esc(w[1])}</em></span>`).join('')}</div>
       ${it.n?`<div class="pn">💡 ${esc(it.n)}</div>`:''}
       <a class="pwrite" href="#wrch/${encodeURIComponent(it.ko)}">✍️ 寫寫看</a></div>`;
     });
@@ -236,12 +240,16 @@ function drawMap(){
 function drawPanel(){
   const t=TOPICS[tpState.i-1],b=t.b[tpState.sel],c=TPC[tpState.sel],el=document.getElementById('tppanel');if(!el)return;
   el.innerHTML=`<div class="tppanel" style="--c:${c}"><h3 style="margin-top:0;color:${c}">${b.icon} ${ko(b.ko)}　${esc(b.zh)}</h3>
-  <div class="pcards">${b.w.map(w=>`<div class="pcard"><div class="pe">${w[0]}</div>${ko(w[1])}<div class="pzh">${esc(w[2])}</div><div class="pp">${w[3]?`<span class="pr">${esc(w[3])}</span> `:''}<span class="rom">${esc(w[4])}</span></div><a class="pwrite" style="position:static" href="#wrtp/${encodeURIComponent(w[1])}">✍️ 寫寫看</a></div>`).join('')}</div>
-  <h3 style="color:${c}">延伸例句</h3>${b.s.map(r=>`<div class="psent">${ko(r[0])}<span class="sub">${esc(r[2])}</span><div>${esc(r[1])}</div></div>`).join('')}
+  <div class="pcards">${b.w.map(w=>`<div class="pcard"><div class="pe">${w[0]}</div>${ko(w[1])}<div class="pzh">${esc(w[2])}</div>${hintHTML(w[1])}<div class="pp">${w[3]?`<span class="pr">${esc(w[3])}</span> `:''}<span class="rom">${esc(w[4])}</span></div><a class="pwrite" style="position:static" href="#wrtp/${encodeURIComponent(w[1])}">✍️ 寫寫看</a></div>`).join('')}</div>
+  <h3 style="color:${c}">延伸例句</h3>${b.s.map(r=>`<div class="psent">${ko(r[0])}<span class="sub">${esc(r[2])}</span>${scanHTML(r[0])}<div>${esc(r[1])}</div></div>`).join('')}
   <div class="fbtns">${t.b.map((x,k)=>`<button class="chip${k===tpState.sel?' on':''}" onclick="tpSel(${k})">${x.icon} ${esc(x.zh)}</button>`).join('')}</div></div>`;
 }
 let tpRT;window.addEventListener('resize',()=>{clearTimeout(tpRT);tpRT=setTimeout(()=>{if(/^#tp\d/.test(location.hash))drawMap();},200);});
 app.addEventListener('click',e=>{const v=e.target.closest('.say');if(v)speak(v.dataset.say);});
+function hanjaBox(){
+  const R=[["-ng 韻尾 → ㅇ","中 중・生 생・東 동・方 방","聲音最像中文"],["-n 韻尾 → ㄴ","山 산・韓 한・人 인・安 안",""],["-m 韻尾 → ㅁ","三 삼・心 심・音 음・金 김","台語、粵語仍保留 -m"],["入聲 -k → ㄱ","學 학・國 국・六 육・食 식","台語唸起來也短促收 -k"],["入聲 -t → ㄹ","一 일・日 일・發 발・月 월","中古 -t 在韓語變成 ㄹ"],["入聲 -p → ㅂ","十 십・入 입・法 법・業 업","台語「十」tsap（第八聲）也收 -p"],["k、g 聲母 → ㄱ","家 가・國 국・教 교・機 기",""],["h、x 聲母 → ㅎ","韓 한・學 학・會 회・化 화","「學、會」中文唸 x/h，韓語也是 ㅎ"]];
+  return `<h3>💡 漢字音對照規律（看到漢字就能猜韓文）</h3><p style="color:#666;margin-top:0">韓語約六成詞彙是漢字詞，一個漢字＝一個音節。記住下面的對應，像 學校 학교、會議 회의、電話 전화 都能直接猜出來。詞彙表與例句中的「<span class="hint h"><b>漢</b>學(학)校(교)</span>」標示漢字詞，「<span class="hint e"><b>外</b>coffee</span>」標示外來語，「<span class="hint m"><b>聯想</b>삶＝살다＋ㅁ</span>」是固有詞的記憶法。</p><div class="wrap"><table class="tbl"><thead><tr><th>規律</th><th>例字</th><th>小提醒</th></tr></thead><tbody>${R.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1].split('・').map(x=>{const p=x.split(' ');return p[0]+' '+ko(p[1]);}).join('　')}</td><td style="color:#666">${r[2]}</td></tr>`).join('')}</tbody></table></div><br>`;
+}
 function planBox(){
   return `<h2>學習計畫總覽</h2><div class="plan">${LEVELS.map((l,i)=>`<div><b>${l[0]}</b>（第 ${i*PER+1}–${i*PER+PER} 堂）<br>${esc(l[1].split('：')[1])}<br><span style="color:#86641A">→ ${l[2]}</span></div>`).join('')}</div>
   <div class="box" style="margin-bottom:24px"><b>每堂 45 分鐘的流程：</b>暖身複習 5 分 → 發音／文法重點 12 分 → 詞彙 10 分 → 例句 6 分 → 對話 7 分 → 練習與作業 5 分。<br><b>建議進度：</b>每週 2 堂，約 30 週完成；每 15 堂結束後做一次總複習。</div>`;
@@ -261,9 +269,9 @@ function lesson(n){
   h+=`<h3>一、暖身複習（5 分鐘）</h3><div class="box">${n==1?'先聽老師用韓語打招呼「안녕하세요」，猜猜看是什麼意思；再介紹本課程：入門到進階共 60 堂、每堂 45 分鐘，目標 TOPIK II。':'複習第 '+(n-1)+' 堂的詞彙與句型，抽 3 人用上一堂的句型口頭造句，並檢查回家作業。'}${L.c?`<div class="note"><b>文化小知識：</b>${esc(L.c)}</div>`:''}</div>`;
   h+=`<h3>二、發音／文法重點（12 分鐘）</h3><div class="box"><ul>${L.f.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
   if(L.gt)h+=`<div class="wrap" style="margin-top:12px"><table class="tbl"><thead><tr>${L.gt.h.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${L.gt.r.map(r=>`<tr>${r.map(x=>`<td>${esc(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>三、詞彙（10 分鐘）　<a class="back" style="font-size:15px" href="#cw${lv}-${n}">🗂️ 本課單字卡</a>　<a class="back" style="font-size:15px" href="#cs${lv}-${n}">💬 本課句子卡</a></h3><div class="wrap"><table class="tbl"><thead><tr><th>韓文</th><th>中文意思</th><th>實際發音</th><th>羅馬拼音</th></tr></thead><tbody>${L.v.map(r=>`<tr><td>${ko(r[0])}</td><td>${esc(r[1])}</td><td class="pr">${r[2]?esc(r[2]):'<span style="color:#bbb">同拼寫</span>'}</td><td class="rom">${esc(r[3])}</td></tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>韓文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${ko(r[0])}<span class="sub">${esc(r[2]||'')}</span></td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>韓文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${ko(r[1])}<span class="sub">${esc(r[3]||'')}</span></td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
+  h+=`<h3>三、詞彙（10 分鐘）　<a class="back" style="font-size:15px" href="#cw${lv}-${n}">🗂️ 本課單字卡</a>　<a class="back" style="font-size:15px" href="#cs${lv}-${n}">💬 本課句子卡</a></h3><div class="wrap"><table class="tbl"><thead><tr><th>韓文</th><th>中文意思</th><th>實際發音</th><th>羅馬拼音</th></tr></thead><tbody>${L.v.map(r=>`<tr><td>${ko(r[0])}</td><td>${esc(r[1])}${hintHTML(r[0])?'<div>'+hintHTML(r[0])+'</div>':''}</td><td class="pr">${r[2]?esc(r[2]):'<span style="color:#bbb">同拼寫</span>'}</td><td class="rom">${esc(r[3])}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>韓文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${ko(r[0])}<span class="sub">${esc(r[2]||'')}</span>${scanHTML(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>韓文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${ko(r[1])}<span class="sub">${esc(r[3]||'')}</span>${scanHTML(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
   h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂活動</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
   if(L.x)h+=`<b>練習題（點開看答案與解析）</b>${L.x.map((q,i)=>`<details class="ans"><summary>${i+1}. ${esc(q[0])}</summary><div>${esc(q[1])}</div></details>`).join('')}`;
   h+=`<b>回家作業：</b>${esc(L.h)}</div>`;
