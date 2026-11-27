@@ -1,0 +1,146 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>波斯語學習 فارسی</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"PingFang TC","Microsoft JhengHei",sans-serif;background:#F8FAFE;color:#2b2b2b}
+header{background:#EAF0FA;padding:56px 20px 40px;text-align:center;border-bottom:4px solid #3A5BA0}
+h1{font-size:44px;margin:0 0 12px}p.lead{font-size:18px;color:#555;max-width:740px;margin:0 auto;line-height:1.7}
+main{max-width:1020px;margin:0 auto;padding:32px 20px 64px}
+a.back{color:#27427A;text-decoration:none}
+h2{font-size:28px;border-left:6px solid #27427A;padding-left:12px}
+h3{font-size:20px;color:#27427A;margin:28px 0 10px}
+.fa-font{font-family:"Vazirmatn","Noto Naskh Arabic","Geeza Pro","Segoe UI",sans-serif}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.tab{border:2px solid #3A5BA0;background:#fff;color:#27427A;border-radius:999px;padding:8px 20px;font-size:17px;cursor:pointer;font-family:inherit}
+.tab.on{background:#3A5BA0;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.card{background:#fff;border:1px solid #eee;border-top:4px solid #3A5BA0;border-radius:14px;padding:18px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .2s,box-shadow .2s}
+.card.ch{border-top-color:#B5832A}
+.card:hover{box-shadow:0 8px 20px rgba(0,0,0,.14);transform:translateY(-3px)}
+.card .k{font-size:15px;color:#27427A;font-weight:700}.card .t{font-size:18px;margin:6px 0}.card .d{font-size:14px;color:#666;line-height:1.6}
+.grp{font-size:20px;color:#27427A;margin:26px 0 10px;font-weight:700}
+.box{background:#fff;border:1px solid #eee;border-radius:14px;padding:18px 20px;line-height:1.8}
+.time{display:flex;border-radius:10px;overflow:hidden;font-size:13px;margin:10px 0}
+.time div{padding:8px 6px;text-align:center;color:#1f3560;background:#EAF0FA;border-right:2px solid #fff}
+.time div:nth-child(even){background:#D3DFF3}
+.wrap{overflow-x:auto}.tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid #eee}
+.tbl th{background:#EAF0FA;color:#27427A;text-align:left;padding:10px 12px;font-size:15px;white-space:nowrap}
+.tbl td{padding:10px 12px;border-top:1px solid #e1e8f4;font-size:16px;line-height:1.6;vertical-align:top}
+.ko{font-size:24px;line-height:1.9;color:#8E2547;font-family:"Vazirmatn","Noto Naskh Arabic","Geeza Pro","Segoe UI",sans-serif;cursor:pointer;direction:rtl;unicode-bidi:isolate;display:inline-block}.ko:hover{text-decoration:underline}
+.ko::before{content:"🔊 ";font-size:13px}
+.pr{color:#8a5a12}
+.as{color:#2d5a1b;font-size:15px}
+.rom{color:#555;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;font-size:15px}
+.sub{display:block;color:#666;font-size:14px;margin-top:2px;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif}
+ul{margin:6px 0;padding-left:22px;line-height:1.8}
+.nav{display:flex;justify-content:space-between;margin-top:32px;gap:10px}
+.btn{border:1px solid #3A5BA0;background:#fff;color:#27427A;border-radius:10px;padding:10px 16px;cursor:pointer;font-size:15px;font-family:inherit}
+.btn:disabled{opacity:.35;cursor:default}
+.speed{display:flex;gap:8px;align-items:center;justify-content:flex-end;font-size:14px;color:#27427A;margin:0 0 6px}
+.speed button{border:1px solid #3A5BA0;background:#fff;color:#27427A;border-radius:999px;padding:4px 12px;cursor:pointer;font-family:inherit}
+.speed button.on{background:#3A5BA0;color:#fff}
+.note{background:#FFF8EC;border-left:4px solid #B5832A;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:15px;line-height:1.7}
+details.ans{background:#fff;border:1px solid #eee;border-radius:10px;padding:10px 14px;margin:8px 0;line-height:1.8}
+details.ans summary{cursor:pointer;font-weight:600}
+details.ans div{margin-top:6px;color:#2d5a1b;background:#F2F9EE;border-radius:8px;padding:8px 12px}
+.plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:10px 0 24px}
+.plan div{background:#fff;border:1px solid #eee;border-radius:12px;padding:14px;line-height:1.7;font-size:15px}
+.plan b{color:#27427A;font-size:17px}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:8px;display:none;font-size:14px}
+footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
+@media(max-width:600px){h1{font-size:32px}.tbl td,.tbl th{font-size:14px;padding:8px}.ko{font-size:20px}.time{font-size:11px}}
+</style></head><body>
+<header><h1>波斯語學習 <span class="fa-font">فارسی</span></h1><p class="lead">入門、初級、中級、專題各 15 堂，共 60 堂，每堂 45 分鐘。以伊朗的標準波斯語（Fārsi）為主，從 32 個字母學起；每個詞都附羅馬拼音與中文近似音，紅色波斯文點一下就能聽發音。專題包含「事物聯想」與「召會生活」。</p></header>
+<main>
+<p style="margin:0 0 16px"><a class="back" href="../">← 回首頁</a></p>
+<div class="speed">朗讀速度：<button data-r="0.6">慢</button><button data-r="0.8" class="on">中</button><button data-r="1">正常</button></div>
+<div id="app"></div>
+</main>
+<div id="toast"></div>
+<footer>波斯文由右往左書寫，字母借自阿拉伯文，另加 پ چ ژ گ 四個字母。一般書寫不標短母音（a、e、o），所以本課程的羅馬拼音會把母音都寫出來。<br>羅馬拼音：ā 為長的「啊」（嘴形偏圓，像「凹」）；a 短「啊」；e 短「欸」；o 短「喔」；i、u 為長母音「衣」「烏」；ey、ow 為雙母音；kh 似「喝」；gh 為喉部濁擦音（غ 與 ق 在伊朗讀音相同）；zh 如法文 je；ʾ 為喉塞音（ع／ء，口語常不明顯）。<br>「中文近似音」只是幫助入門的大概讀法，請以語音朗讀為準。<br>朗讀使用裝置內建的波斯語語音（fa），若沒有聲音，請在手機或電腦的語言設定中安裝波斯語（فارسی）語音，或改用 Microsoft Edge 瀏覽器。</footer>
+<script src="alpha.js"></script>
+<script src="lessons-1.js"></script>
+<script src="lessons-2.js"></script>
+<script src="lessons-3.js"></script>
+<script src="lessons-4.js"></script>
+<script>
+const LESSONS=window.LESSONS||[];
+const PER=15,TOTAL=60;
+const LEVELS=[
+ ["入門","第 1–15 堂：32 個字母與連寫字形、母音與拼讀規則、問候與禮貌、人稱代名詞與「是」、自我介紹、指示詞、數字、疑問詞、ezāfe 連接結構、「有」的說法","能讀寫字母、拼讀單字、自我介紹（約 CEFR A1）"],
+ ["初級","第 16–30 堂：形容詞、複數、介詞、現在式、受詞 rā、數字與購物、時間日期、過去式、家人、飲食、交通問路、未來式與命令式、健康","能處理日常生活與旅行（約 A2）"],
+ ["中級","第 31–45 堂：完成式、虛擬式、情態動詞、條件句、關係子句、比較級、被動、複合動詞、口語與書面語、讀詩、讀經","能談論經驗、讀簡單經文與詩句（約 B1）"],
+ ["專題","第 46–60 堂：事物聯想（家庭、食物、身體、顏色衣服、房子、城市、自然、節日）與召會生活（聚會、禱告、讀經、唱詩、愛筵、傳福音、見證與受浸）","能用波斯語過召會生活、傳福音"]];
+const TIME=[["0–5","暖身複習"],["5–17","字母／文法重點"],["17–27","詞彙"],["27–33","例句"],["33–40","對話練習"],["40–45","練習與作業"]];
+const W=[5,12,10,6,7,5];
+const app=document.getElementById('app');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let faVoice=null,rate=0.8;
+function pickVoice(){
+  if(!('speechSynthesis' in window))return;
+  const vs=speechSynthesis.getVoices().filter(v=>v.lang.toLowerCase().replace('_','-').startsWith('fa'));
+  faVoice=vs.find(v=>/dilara|farid|google|dariush/i.test(v.name))||vs[0]||null;
+}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',2500);}
+function speak(text){
+  if(!('speechSynthesis' in window)){toast('這個瀏覽器不支援語音朗讀');return;}
+  speechSynthesis.cancel();
+  const t=text.replace(/[（(][^)）]*[)）]/g,' ').replace(/[「」『』'‘’○«»]/g,'').replace(/…/g,'، ').replace(/\s*\/\s*/g,'، ');
+  const u=new SpeechSynthesisUtterance(t);
+  u.lang=(faVoice&&faVoice.lang)||'fa-IR';u.rate=rate;if(faVoice)u.voice=faVoice;
+  if(!faVoice)toast('找不到波斯語語音，請在裝置設定中安裝波斯語（فارسی）語音');
+  speechSynthesis.speak(u);
+}
+document.querySelectorAll('.speed button').forEach(b=>b.onclick=()=>{rate=+b.dataset.r;document.querySelectorAll('.speed button').forEach(x=>x.classList.toggle('on',x===b));});
+app.addEventListener('click',e=>{const v=e.target.closest('.ko');if(v)speak(v.dataset.say||v.textContent);});
+const ko=(t,say)=>`<span class="ko" data-say="${esc(say||t)}">${esc(t)}</span>`;
+
+function home(lv){
+  lv=lv||0;
+  let h=`<div class="tabs">${LEVELS.map((l,i)=>`<button class="tab${i==lv?' on':''}" onclick="go('#lv${i}')">${l[0]}</button>`).join('')}</div>`;
+  if(lv==0)h+=planBox();
+  h+=`<h2>${LEVELS[lv][0]}</h2><p style="color:#666">${LEVELS[lv][1]}（${LEVELS[lv][2]}）</p>`;
+  if(lv==0)h+=alphaTable();
+  let grp=null;h+=`<div class="grid">`;
+  for(let i=lv*PER;i<lv*PER+PER;i++){const L=LESSONS[i];if(!L)continue;
+    if(L.grp&&L.grp!==grp){grp=L.grp;h+=`</div><div class="grp">${esc(grp)}</div><div class="grid">`;}
+    h+=`<div class="card${L.grp&&L.grp.indexOf('召會')>=0?' ch':''}" onclick="go('#L${i+1}')"><div class="k">第 ${i+1} 堂</div><div class="t">${esc(L.t)}</div><div class="d">${esc(L.g)}</div></div>`;}
+  h+=`</div>`;
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function planBox(){
+  return `<h2>學習計畫總覽</h2><div class="plan">${LEVELS.map((l,i)=>`<div><b>${l[0]}</b>（第 ${i*PER+1}–${i*PER+PER} 堂）<br>${esc(l[1].split('：')[1])}<br><span style="color:#27427A">→ ${l[2]}</span></div>`).join('')}</div>
+  <div class="box" style="margin-bottom:24px"><b>每堂 45 分鐘的流程：</b>暖身複習 5 分 → 字母／文法重點 12 分 → 詞彙 10 分 → 例句 6 分 → 對話 7 分 → 練習與作業 5 分。<br><b>建議進度：</b>每週 2 堂，約 30 週完成；每 15 堂結束後做一次總複習。專題課可以在學完入門之後穿插著上。<br><b>好消息：</b>波斯語沒有陰陽性、沒有冠詞、動詞變位很規則，又有大量中文人熟悉的外來詞（pistachio 開心果、bazaar 市集、caravan 商隊、paradise 樂園都來自波斯語），是很適合自學的語言。</div>`;
+}
+function alphaTable(){
+  const A=window.ALPHA||[];
+  const forms=a=>a[5]?`${a[0]}　ـ${a[0]}`:`${a[0]}　${a[0]}ـ　ـ${a[0]}ـ　ـ${a[0]}`;
+  return `<h3>32 個字母總表（由右往左讀；點字母聽字母名稱）</h3><div class="wrap"><table class="tbl"><thead><tr><th>#</th><th>字母</th><th>名稱</th><th>拼音</th><th>中文近似音／發音要點</th><th>字形（獨立・詞首・詞中・詞尾）</th></tr></thead><tbody>${A.map((a,i)=>`<tr><td>${i+1}</td><td style="text-align:center">${ko(a[0],a[1])}</td><td><span class="ko" data-say="${esc(a[1])}" style="font-size:19px">${esc(a[1])}</span><span class="sub">${esc(a[2])}</span></td><td class="rom">${esc(a[3])}</td><td class="pr">${esc(a[4])}</td><td class="fa-font" style="direction:rtl;font-size:22px;white-space:nowrap">${forms(a)}</td></tr>`).join('')}</tbody></table></div>
+  <h3>母音（以 ب 為例）</h3><div class="wrap"><table class="tbl"><thead><tr><th>寫法</th><th>名稱</th><th>讀音</th><th>例</th></tr></thead><tbody>${[["بَ","zebar 上符（短 a）","a（短「啊」）","ba"],["بِ","zir 下符（短 e）","e（短「欸」）","be"],["بُ","pish 前符（短 o）","o（短「喔」）","bo"],["با","alef 長母音","ā（圓唇長「凹」）","bā"],["بی","ye 長母音","i（長「衣」）","bi"],["بو","vāv 長母音","u（長「烏」）","bu"],["آ","alef bā kolāh 戴帽 alef","詞首的 ā","āb 水"],["اَ اِ اُ","詞首短母音","詞首的 a／e／o 用 alef 承載","asb 馬、esm 名字、ostād 老師"]].map(r=>`<tr><td>${ko(r[0])}</td><td>${esc(r[1])}</td><td class="rom">${esc(r[2])}</td><td class="rom">${esc(r[3])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">ا د ذ ر ز ژ و 七個字母不與「後面（左邊）」的字母相連，所以只有兩種字形。短母音一般不寫出來，要靠熟悉單字來讀。</p><br>`;
+}
+function lesson(n){
+  const L=LESSONS[n-1];if(!L)return home(0);const lv=Math.floor((n-1)/PER);
+  let h=`<p><a class="back" href="#lv${lv}">← ${LEVELS[lv][0]}課程列表</a></p>`;
+  h+=`<h2>第 ${n} 堂　${esc(L.t)}</h2><div class="box"><b>學習目標：</b>${esc(L.g)}<br><b>時間：</b>45 分鐘　<b>程度：</b>${LEVELS[lv][0]}${L.grp?'・'+esc(L.grp):''}（${LEVELS[lv][2]}）</div>`;
+  h+=`<h3>時間分配</h3><div class="time">${TIME.map((t,i)=>`<div style="flex:${W[i]}">${t[0]} 分<br>${t[1]}</div>`).join('')}</div>`;
+  h+=`<h3>一、暖身複習（5 分鐘）</h3><div class="box">${n==1?'老師把右手放在胸前說「سلام（salām，你好、平安）」，全班回應「سلام」；再介紹本課程：入門、初級、中級、專題共 60 堂、每堂 45 分鐘，從 32 個字母學起。':'複習第 '+(n-1)+' 堂的詞彙與句型，抽 3 人用上一堂的句型口頭造句，並檢查回家作業。'}${L.c?`<div class="note"><b>文化小知識：</b>${esc(L.c)}</div>`:''}</div>`;
+  h+=`<h3>二、${lv==0&&n<=7?'字母／發音':'文法／用法'}重點（12 分鐘）</h3><div class="box"><ul>${L.f.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
+  if(L.gt)h+=`<div class="wrap" style="margin-top:12px"><table class="tbl"><thead><tr>${L.gt.h.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${L.gt.r.map(r=>`<tr>${r.map(x=>`<td>${/[؀-ۿ]/.test(x)?`<span class="fa-font" style="font-size:19px">${esc(x)}</span>`:esc(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  const hasA=L.v.some(r=>r[4]);
+  h+=`<h3>三、詞彙（10 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>波斯文</th><th>中文意思</th><th>羅馬拼音</th><th>中文近似音</th>${hasA?'<th>聯想</th>':''}</tr></thead><tbody>${L.v.map(r=>`<tr><td>${ko(r[0])}</td><td>${esc(r[1])}</td><td class="rom">${esc(r[2])}</td><td class="pr">${esc(r[3])}</td>${hasA?`<td class="as">${esc(r[4]||'')}</td>`:''}</tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>波斯文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${ko(r[0])}<span class="sub">${esc(r[2]||'')}</span></td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>波斯文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${ko(r[1])}<span class="sub">${esc(r[3]||'')}</span></td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
+  h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂活動</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
+  if(L.x)h+=`<b>練習題（點開看答案與解析）</b>${L.x.map((q,i)=>`<details class="ans"><summary>${i+1}. ${esc(q[0])}</summary><div>${esc(q[1])}</div></details>`).join('')}`;
+  h+=`<b>回家作業：</b>${esc(L.h)}</div>`;
+  h+=`<div class="nav"><button class="btn" ${n==1?'disabled':''} onclick="go('#L${n-1}')">← 上一堂</button><button class="btn" ${n==TOTAL?'disabled':''} onclick="go('#L${n+1}')">下一堂 →</button></div>`;
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function go(h){location.hash=h;}
+function route(){const h=location.hash;let m;
+  if((m=h.match(/^#L(\d+)$/)))lesson(+m[1]);else if((m=h.match(/^#lv(\d)$/)))home(+m[1]);else home(0);}
+window.addEventListener('hashchange',route);route();
+</script>
+</body></html>
