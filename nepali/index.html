@@ -1,0 +1,128 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>尼泊爾語學習 नेपाली</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"PingFang TC","Microsoft JhengHei",sans-serif;background:#FFF8F9;color:#2b2b2b}
+header{background:#FBE7EB;padding:56px 20px 40px;text-align:center;border-bottom:4px solid #B8102F}
+h1{font-size:44px;margin:0 0 12px}p.lead{font-size:18px;color:#555;max-width:780px;margin:0 auto;line-height:1.7}
+main{max-width:1020px;margin:0 auto;padding:32px 20px 64px}
+a.back{color:#8A0C23;text-decoration:none}
+h2{font-size:28px;border-left:6px solid #8A0C23;padding-left:12px}
+h3{font-size:20px;color:#8A0C23;margin:28px 0 10px}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.tab{border:2px solid #B8102F;background:#fff;color:#8A0C23;border-radius:999px;padding:8px 20px;font-size:17px;cursor:pointer;font-family:inherit}
+.tab.on{background:#B8102F;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.card{background:#fff;border:1px solid #eee;border-top:4px solid #B8102F;border-radius:14px;padding:18px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .2s,box-shadow .2s}
+.card:hover{box-shadow:0 8px 20px rgba(0,0,0,.14);transform:translateY(-3px)}
+.card .k{font-size:15px;color:#8A0C23;font-weight:700}.card .t{font-size:18px;margin:6px 0}.card .d{font-size:14px;color:#666;line-height:1.6}
+.card.sec{border-top-color:#C98A1B}
+.box{background:#fff;border:1px solid #eee;border-radius:14px;padding:18px 20px;line-height:1.8}
+.time{display:flex;border-radius:10px;overflow:hidden;font-size:13px;margin:10px 0}
+.time div{padding:8px 6px;text-align:center;color:#333;background:#FBE7EB;border-right:2px solid #fff}
+.time div:nth-child(even){background:#F3C3CD}
+.wrap{overflow-x:auto}.tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid #eee}
+.tbl th{background:#FBE7EB;color:#8A0C23;text-align:left;padding:10px 12px;font-size:15px;white-space:nowrap}
+.tbl td{padding:10px 12px;border-top:1px solid #f1dade;font-size:16px;line-height:1.6;vertical-align:top}
+.ko{font-size:24px;line-height:1.8;color:#1d3b8a;font-family:"Noto Sans Devanagari","Nirmala UI","Mangal",sans-serif;cursor:pointer;display:inline-block}.ko:hover{text-decoration:underline}
+.ko::after{content:" 🔊";font-size:13px}
+.tbl td .ko.sm{font-size:21px}.tbl td .ko.sm::after{content:""}
+.pr{color:#8a5a12}
+.nt{font-family:"Noto Sans Devanagari","Nirmala UI","Mangal",sans-serif;font-size:1.1em}
+.rom{color:#555;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;font-size:15px}
+.sub{display:block;color:#666;font-size:14px;margin-top:2px;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif}
+.spk{display:inline-block;background:#FBE7EB;color:#8A0C23;border-radius:999px;padding:2px 10px;font-size:14px;white-space:nowrap}
+ul{margin:6px 0;padding-left:22px;line-height:1.8}
+.nav{display:flex;justify-content:space-between;margin-top:32px;gap:10px}
+.btn{border:1px solid #B8102F;background:#fff;color:#8A0C23;border-radius:10px;padding:10px 16px;cursor:pointer;font-size:15px;font-family:inherit}
+.btn:disabled{opacity:.35;cursor:default}
+.speed{display:flex;gap:8px;align-items:center;justify-content:flex-end;font-size:14px;color:#8A0C23;margin:0 0 6px;flex-wrap:wrap}
+.speed button{border:1px solid #B8102F;background:#fff;color:#8A0C23;border-radius:999px;padding:4px 12px;cursor:pointer;font-family:inherit}
+.speed button.on{background:#B8102F;color:#fff}
+.note{background:#FFF8EC;border-left:4px solid #C98A1B;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:15px;line-height:1.7}
+.plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:10px 0 24px}
+.plan div{background:#fff;border:1px solid #eee;border-radius:12px;padding:14px;line-height:1.7;font-size:15px}
+.plan b{color:#8A0C23;font-size:17px}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:8px;display:none;font-size:14px;max-width:90%}
+footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8;max-width:900px;margin:0 auto}
+@media(max-width:600px){h1{font-size:30px}.tbl td,.tbl th{font-size:14px;padding:8px}.ko{font-size:21px}.time{font-size:11px}}
+</style></head><body>
+<header><h1>尼泊爾語學習 <span class="nt">नेपाली</span></h1><p class="lead">尼泊爾語（नेपाली）是尼泊爾的國語，也通行於印度大吉嶺、錫金與不丹南部，約 3,000 萬人使用，用天城體（देवनागरी）書寫。課程分入門、初級、中級、專題（事物聯想、召會生活）四級，每級 15 堂，共 60 堂，每堂 45 分鐘。每個詞附拼音與中文近似音，藍色尼泊爾文點一下就能聽發音。</p></header>
+<main>
+<p style="margin:0 0 16px"><a class="back" href="../">← 回首頁</a></p>
+<div class="speed">朗讀速度：<button data-r="0.6">慢</button><button data-r="0.8" class="on">中</button><button data-r="1">正常</button></div>
+<div id="app"></div>
+</main>
+<div id="toast"></div>
+<footer>拼音：a 讀作短而含糊的「ㄜ／喔」，aa 讀作開口的「阿」；大寫 T D N 表示捲舌音，h 表示送氣（kh、th、bh）。尼泊爾語的「你」分三級（ता／तिमी／तपाईं），本課程對大人一律用最尊敬的 तपाईं。<br>🔊 朗讀使用裝置內建的尼泊爾語語音（ne-NP）；若裝置沒有尼泊爾語語音，會改用印地語語音（hi-IN）讀出天城體，讀音相近但不完全相同。</footer>
+<script src="alpha.js?v=20261128"></script>
+<script src="lessons-1.js?v=20261128"></script>
+<script src="lessons-2.js?v=20261128"></script>
+<script src="lessons-3.js?v=20261128"></script>
+<script src="lessons-4.js?v=20261128"></script>
+<script>
+const CFG={"lang": "ne-NP", "vre": "^ne", "short": "尼泊爾語", "levels": [["入門", "第 1–15 堂：天城體字母（母音、子音、母音符號、連字）、問候 नमस्ते、自我介紹、三級敬語、數字、家人、這是什麼、時間", "能拼讀簡單的尼泊爾文，打招呼、介紹自己、說數字"], ["初級", "第 16–30 堂：市場買東西、點餐、問路、交通、現在式、過去式、未來式、天氣、看醫生、打電話、旅館、喜好", "能在加德滿都處理日常生活"], ["中級", "第 31–45 堂：完成式、比較、條件、原因、能力與義務、敬語動詞、敘述經驗、表達意見、節慶文化（德賽節、燈節）、職場、教育、說故事", "能用連貫的句子敘述與表達看法"], ["專題", "第 46–60 堂：事物聯想（家、廚房、城市、大自然、身體、衣服顏色、情感）與召會生活（問候聖徒、聚會、禱告與呼求主名、唱詩、讀經與晨興、傳福音、擘餅、愛筵與接待）", "能用尼泊爾語參加聚會、與聖徒交通、簡單傳福音"]], "time": [["0–5", "暖身複習"], ["5–15", "發音／句型重點"], ["15–25", "詞彙"], ["25–31", "例句"], ["31–40", "會話練習"], ["40–45", "練習與作業"]], "w": [5, 10, 10, 6, 9, 5], "plan": "<b>每堂 45 分鐘的流程：</b>暖身複習 5 分 → 發音／句型重點 10 分 → 詞彙 10 分 → 例句 6 分 → 會話練習 9 分 → 練習與作業 5 分。<br><b>建議進度：</b>每週 2–3 堂，約半年完成；每 15 堂結束後做一次總複習。每天至少 10 分鐘「聽 → 跟讀 → 說」。<br><b>專題的用法：</b>「事物聯想」以一個中心詞向外聯想出一串相關的詞，幫助記憶；「召會生活」學聚會、禱告、唱詩、讀經、傳福音時用得到的話，可以和初級、中級交錯著上。", "latin": false};
+const LESSONS=window.LESSONS||[],PER=15,TOTAL=LESSONS.length,LEVELS=CFG.levels;
+const app=document.getElementById('app');
+const escA=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const NT=/([ऀ-৿က-႟ក-៿᧠-᧿ꩠ-ꩿ][ऀ-৿က-႟ក-៿᧠-᧿ꩠ-ꩿ​-‍\s।॥၊။៕។?!]*[ऀ-৿က-႟ក-៿᧠-᧿ꩠ-ꩿ।॥၊။៕។])|([ऀ-৿က-႟ក-៿᧠-᧿])/g;
+const esc=s=>CFG.latin?escA(s):escA(s).replace(NT,'<span class="nt">$&</span>');
+let voice=null,rate=0.8;
+function pickVoice(){
+  if(!('speechSynthesis' in window))return;
+  const all=speechSynthesis.getVoices(),re=new RegExp(CFG.vre,'i');
+  let vs=all.filter(v=>re.test(v.lang));
+  if(!vs.length&&CFG.lang=='ne-NP')vs=all.filter(v=>/^(mr|hi)/i.test(v.lang));
+  voice=vs.find(v=>/google/i.test(v.name))||vs[0]||null;
+}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',3000);}
+function speak(text){
+  if(!('speechSynthesis' in window)){toast('這個瀏覽器不支援語音朗讀');return;}
+  speechSynthesis.cancel();
+  const t=text.replace(/[（(][^)）]*[)）]/g,' ').replace(/[「」『』…○]/g,' ').replace(/\s*[\/／]\s*/g,', ');
+  const u=new SpeechSynthesisUtterance(t);
+  u.lang=(voice&&voice.lang)||CFG.lang;u.rate=rate;if(voice)u.voice=voice;
+  if(!voice)toast('找不到'+CFG.short+'語音，請在裝置語言設定中安裝');
+  speechSynthesis.speak(u);
+}
+document.querySelectorAll('.speed button').forEach(b=>b.onclick=()=>{rate=+b.dataset.r;document.querySelectorAll('.speed button').forEach(x=>x.classList.toggle('on',x===b));});
+app.addEventListener('click',e=>{const v=e.target.closest('.ko');if(v)speak(v.dataset.say||v.textContent);});
+const ko=(t,say,cls)=>`<span class="ko${cls?' '+cls:''}" data-say="${escA(say||t)}">${escA(t)}</span>`;
+
+function home(lv){
+  let h=`<div class="tabs">${LEVELS.map((l,i)=>`<button class="tab${i==lv?' on':''}" onclick="go('#lv${i}')">${l[0]}</button>`).join('')}</div>`;
+  if(lv==0)h+=`<h2>學習計畫總覽</h2><div class="plan">${LEVELS.map((l,i)=>`<div><b>${l[0]}</b>（第 ${i*PER+1}–${i*PER+PER} 堂）<br>${esc(l[1].split('：')[1])}<br><span style="color:#555">→ ${esc(l[2])}</span></div>`).join('')}</div><div class="box" style="margin-bottom:24px">${CFG.plan}</div>`;
+  h+=`<h2>${LEVELS[lv][0]}</h2><p style="color:#666">${esc(LEVELS[lv][1])}（目標：${esc(LEVELS[lv][2])}）</p>`;
+  if(lv==0)h+=alphaTables();
+  h+=`<div class="grid">`;
+  for(let i=lv*PER;i<lv*PER+PER;i++){const L=LESSONS[i];if(!L)continue;
+    h+=`<div class="card${L.tag=='召會生活'?' sec':''}" onclick="go('#L${i+1}')"><div class="k">第 ${i+1} 堂${L.tag?'・'+L.tag:''}</div><div class="t">${esc(L.t)}</div><div class="d">${esc(L.g)}</div></div>`;}
+  h+=`</div>`;
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function alphaTables(){
+  return (window.ALPHA||[]).map(T=>`<h3>${esc(T.c)}</h3><div class="wrap"><table class="tbl"><thead><tr>${T.h.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${T.r.map(r=>`<tr>${r.map((x,j)=>`<td${(T.rc||[]).includes(j)?' class="rom"':''}>${(T.k||[0]).includes(j)&&x?ko(x,null,'sm'):esc(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>${T.n?`<p style="color:#666;font-size:14px">${esc(T.n)}</p>`:''}`).join('')+'<br>';
+}
+function lesson(n){
+  const L=LESSONS[n-1];if(!L)return home(0);const lv=Math.floor((n-1)/PER);
+  let h=`<p><a class="back" href="#lv${lv}">← ${LEVELS[lv][0]}課程列表</a></p>`;
+  h+=`<h2>第 ${n} 堂　${esc(L.t)}</h2><div class="box"><b>學習目標：</b>${esc(L.g)}<br><b>時間：</b>45 分鐘　<b>程度：</b>${LEVELS[lv][0]}${L.tag?'（'+L.tag+'）':''}</div>`;
+  h+=`<h3>時間分配</h3><div class="time">${CFG.time.map((t,i)=>`<div style="flex:${CFG.w[i]}">${t[0]} 分<br>${t[1]}</div>`).join('')}</div>`;
+  h+=`<h3>一、暖身複習（5 分鐘）</h3><div class="box">${L.w?esc(L.w):(n==1?'介紹本課程：入門、初級、中級、專題共 60 堂、每堂 45 分鐘；先聽老師說幾句'+CFG.short+'，猜猜看是什麼意思。':'複習第 '+(n-1)+' 堂的詞彙卡片，抽 3 人用上一堂的句型口頭回答，檢查回家作業。')}${L.c?`<div class="note"><b>文化小知識：</b>${esc(L.c)}</div>`:''}</div>`;
+  h+=`<h3>二、發音／句型重點（10 分鐘）</h3><div class="box"><ul>${L.f.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
+  const rom=L.v.some(r=>r[2]),ap=L.v.some(r=>r[3]);
+  h+=`<h3>三、詞彙（10 分鐘）${L.tag=='事物聯想'?'：從中心詞向外聯想':''}</h3><div class="wrap"><table class="tbl"><thead><tr><th>${CFG.short}</th><th>中文意思</th>${rom?'<th>拼音</th>':''}${ap?'<th>中文近似音</th>':''}</tr></thead><tbody>${L.v.map(r=>`<tr><td>${ko(r[0])}</td><td>${esc(r[1])}</td>${rom?`<td class="rom">${esc(r[2]||'')}</td>`:''}${ap?`<td class="pr">${esc(r[3]||'')}</td>`:''}</tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>${CFG.short}${CFG.latin?'':'／拼音'}</th><th>中文</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${ko(r[0])}${r[2]?`<span class="sub">${esc(r[2])}</span>`:''}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>五、會話練習（9 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>${CFG.short}${CFG.latin?'':'／拼音'}</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap"><span class="spk">${esc(r[0])}</span></td><td>${ko(r[1])}${r[3]?`<span class="sub">${esc(r[3])}</span>`:''}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先聽兩遍、全體跟讀一遍，再兩人一組分角色對話；熟了以後換掉關鍵字（名字、地點、數字）再說一次。</p>`;
+  h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂練習</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><b>回家作業：</b>${esc(L.h)}</div>`;
+  h+=`<div class="nav"><button class="btn" ${n==1?'disabled':''} onclick="go('#L${n-1}')">← 上一堂</button><button class="btn" ${n==TOTAL?'disabled':''} onclick="go('#L${n+1}')">下一堂 →</button></div>`;
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function go(h){location.hash=h;}
+function route(){const h=location.hash;let m;
+  if((m=h.match(/^#L(\d+)$/)))lesson(+m[1]);else if((m=h.match(/^#lv(\d)$/)))home(+m[1]);else home(0);}
+window.addEventListener('hashchange',route);route();
+</script>
+</body></html>
