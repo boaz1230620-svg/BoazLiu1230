@@ -948,6 +948,7 @@ renderForeign();
       var note = esc(e.note);
       if(e.season==='寒假' && e.name.indexOf('期末特會')!==-1){
         note += (note ? '<br>' : '') + '<a class="conf-btn" href="https://docs.google.com/spreadsheets/d/1pTo533NFcZNT7zFNKwjYRLDO58SRF8h0vs6TwBlgeok/edit?gid=0#gid=0" target="_blank" rel="noopener">配搭服事表</a>';
+        note += '<br><a class="conf-btn" href="https://forms.gle/cE9HrmEh1dRiFTe28" target="_blank" rel="noopener">報名連結</a>';
       }
       h += '<tr><td class="cdate">'+esc(e.date)+'</td><td style="text-align:left">'+esc(e.name)+'</td><td>'+esc(e.theme)+'</td><td>'+esc(e.place)+'</td><td>'+esc(e.fellow)+'</td><td style="text-align:left">'+esc(e.target)+'</td><td style="text-align:left">'+note+'</td></tr>';
     });
