@@ -98,6 +98,9 @@ table.data td:first-child,table.data th:first-child{text-align:left;white-space:
 .fr-btn{display:inline-block;padding:10px 20px;border-radius:999px;background:var(--amber);color:#fff;font-weight:700;font-size:16px;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.12)}
 .fr-btn:hover{filter:brightness(1.08)}
 .fr-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.conf-btn{display:inline-block;padding:5px 10px;border-radius:999px;background:var(--amber);color:#fff;font-weight:700;font-size:13px;text-decoration:none;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.conf-btn:hover{filter:brightness(1.08)}
+.conf-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .fr-how{margin:12px 0 8px;padding:10px 14px;background:var(--amber-soft);border-radius:10px;font-size:14px;line-height:1.7}
 .fr-tiles{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:12px;margin:6px 0 14px}
 .fr-tile{background:var(--surface-alt);border-radius:12px;padding:16px;text-align:center}
@@ -942,7 +945,11 @@ renderForeign();
     var div = document.createElement('div'); div.className='month';
     var h = '<h3>'+season+'</h3><div style="overflow-x:auto"><table class="data conf"><colgroup><col style="width:16%"><col style="width:19%"><col style="width:16%"><col style="width:12%"><col style="width:10%"><col style="width:17%"><col style="width:10%"></colgroup><tr><th>日期</th><th>特會</th><th>主題</th><th>地點</th><th>相調地點</th><th>對象</th><th>備註</th></tr>';
     evs.forEach(function(e){
-      h += '<tr><td class="cdate">'+esc(e.date)+'</td><td style="text-align:left">'+esc(e.name)+'</td><td>'+esc(e.theme)+'</td><td>'+esc(e.place)+'</td><td>'+esc(e.fellow)+'</td><td style="text-align:left">'+esc(e.target)+'</td><td style="text-align:left">'+esc(e.note)+'</td></tr>';
+      var note = esc(e.note);
+      if(e.season==='寒假' && e.name.indexOf('期末特會')!==-1){
+        note += (note ? '<br>' : '') + '<a class="conf-btn" href="https://docs.google.com/spreadsheets/d/1pTo533NFcZNT7zFNKwjYRLDO58SRF8h0vs6TwBlgeok/edit?gid=0#gid=0" target="_blank" rel="noopener">配搭服事表</a>';
+      }
+      h += '<tr><td class="cdate">'+esc(e.date)+'</td><td style="text-align:left">'+esc(e.name)+'</td><td>'+esc(e.theme)+'</td><td>'+esc(e.place)+'</td><td>'+esc(e.fellow)+'</td><td style="text-align:left">'+esc(e.target)+'</td><td style="text-align:left">'+note+'</td></tr>';
     });
     div.innerHTML = h + '</table></div>';
     host.appendChild(div);
