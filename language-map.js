@@ -23,7 +23,11 @@
     "緬甸語": ["burmese/", "緬甸語學習"],
     "孟加拉語": ["bengali/", "孟加拉語學習"],
     "尼泊爾語": ["nepali/", "尼泊爾語學習"],
-    "印尼語": ["indonesian/", "印尼語學習"]
+    "印尼語": ["indonesian/", "印尼語學習"],
+    "捷克語": ["czech/", "捷克語學習"],
+    "斯洛伐克語": ["slovak/", "斯洛伐克語學習"],
+    "羅馬尼亞語": ["romanian/", "羅馬尼亞語學習"],
+    "義大利語": ["italian/", "義大利語學習"]
   };
   var NS = "http://www.w3.org/2000/svg", VW = 1000, VH = 520;
   var root = document.getElementById("langMap");
