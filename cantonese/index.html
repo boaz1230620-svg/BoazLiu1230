@@ -40,7 +40,7 @@ ul{margin:6px 0;padding-left:22px;line-height:1.8}
 footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 @media(max-width:600px){h1{font-size:32px}.tbl td,.tbl th{font-size:14px;padding:8px}.de{font-size:17px}.time{font-size:11px}}
 </style></head><body>
-<header><h1>粵語學習</h1><p class="lead">重在聽得懂、讀得懂，也會說粵語｜入門、初級、中級、專題各 15 堂，共 60 堂，每堂 45 分鐘。每個詞句都附粵拼（Jyutping）與國語對照，藍色粵語點一下就能聽發音。</p></header>
+<header><h1>粵語學習</h1><p class="lead">重在聽得懂、讀得懂，也會說粵語｜入門、初級、中級、專題各 15 堂，共 60 堂，每堂 45 分鐘。詞彙、例句、對話都附粵拼（Jyutping）與國語對照，藍色粵語點一下就能聽發音。</p></header>
 <main>
 <p style="margin:0 0 16px"><a class="back" href="../">← 回首頁</a></p>
 <div class="speed">朗讀速度：<button data-r="0.6">慢</button><button data-r="0.8" class="on">中</button><button data-r="1">正常</button></div>
@@ -118,7 +118,7 @@ function lesson(n){
   h+=`<h3>二、發音／語法重點（10 分鐘）</h3><div class="box"><ul>${L.f.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
   h+=`<h3>三、詞彙（12 分鐘）</h3><div class="wrap" id="tv"><table class="tbl"><thead><tr><th>粵語</th><th>粵拼</th><th>國語意思</th></tr></thead><tbody>${L.v.map(r=>`<tr><td>${de(r[0])}</td><td>${jp(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div>${playBtn('tv')}`;
   h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap" id="ts"><table class="tbl"><thead><tr><th>粵語</th><th>國語</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${de(r[0])}<br>${jp(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div>${playBtn('ts')}`;
-  h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap" id="td"><table class="tbl"><thead><tr><th>角色</th><th>粵語</th><th>國語</th></tr></thead><tbody>${L.d.map(r=>`<tr><td>${esc(r[0])}</td><td>${de(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div>${playBtn('td')}<p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
+  h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap" id="td"><table class="tbl"><thead><tr><th>角色</th><th>粵語</th><th>國語</th></tr></thead><tbody>${L.d.map(r=>`<tr><td>${esc(r[0])}</td><td>${de(r[1])}${r[3]?'<br>'+jp(r[3]):''}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div>${playBtn('td')}<p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
   h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂練習</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><b>回家作業：</b>${esc(L.h)}</div>`;
   h+=`<div class="nav"><button class="btn" ${n==1?'disabled':''} onclick="go('#L${n-1}')">← 上一堂</button><button class="btn" ${n==TOTAL?'disabled':''} onclick="go('#L${n+1}')">下一堂 →</button></div>`;
   app.innerHTML=h;window.scrollTo(0,0);
