@@ -18,7 +18,12 @@
     "俄語": ["russian/", "俄語學習"],
     "德語": ["german/", "德語學習"],
     "粵語": ["cantonese/", "粵語學習"],
-    "寮語": ["lao/", "人生的奧祕寮語中文"]
+    "寮語": ["lao/", "人生的奧祕寮語中文"],
+    "高棉語": ["khmer/", "柬埔寨語學習"],
+    "緬甸語": ["burmese/", "緬甸語學習"],
+    "孟加拉語": ["bengali/", "孟加拉語學習"],
+    "尼泊爾語": ["nepali/", "尼泊爾語學習"],
+    "印尼語": ["indonesian/", "印尼語學習"]
   };
   var NS = "http://www.w3.org/2000/svg", VW = 1000, VH = 520;
   var root = document.getElementById("langMap");
