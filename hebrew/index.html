@@ -1,0 +1,168 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>希伯來語學習 עִבְרִית</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"PingFang TC","Microsoft JhengHei",sans-serif;background:#F6F8FD;color:#2b2b2b}
+header{background:#E6ECFA;padding:56px 20px 40px;text-align:center;border-bottom:4px solid #1F4BA5}
+h1{font-size:44px;margin:0 0 12px}p.lead{font-size:18px;color:#555;max-width:780px;margin:0 auto;line-height:1.7}
+main{max-width:1020px;margin:0 auto;padding:32px 20px 64px}
+a.back{color:#163A80;text-decoration:none}
+h2{font-size:28px;border-left:6px solid #163A80;padding-left:12px}
+h3{font-size:20px;color:#163A80;margin:28px 0 10px}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.tab{border:2px solid #1F4BA5;background:#fff;color:#163A80;border-radius:999px;padding:8px 20px;font-size:17px;cursor:pointer;font-family:inherit}
+.tab.on{background:#1F4BA5;color:#fff}
+.tracks{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 8px}
+.trk{border:2px solid #1F4BA5;background:#fff;color:#163A80;border-radius:14px;padding:14px 16px;font-size:18px;cursor:pointer;font-family:inherit;text-align:left;line-height:1.5}
+.trk small{display:block;font-size:14px;color:#666}
+.trk.on{background:#1F4BA5;color:#fff}.trk.on small{color:#DCE5F8}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.card{background:#fff;border:1px solid #eee;border-top:4px solid #1F4BA5;border-radius:14px;padding:18px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .2s,box-shadow .2s}
+.card:hover{box-shadow:0 8px 20px rgba(0,0,0,.14);transform:translateY(-3px)}
+.card .k{font-size:15px;color:#163A80;font-weight:700}.card .t{font-size:18px;margin:6px 0}.card .d{font-size:14px;color:#666;line-height:1.6}
+.card.sec{border-top-color:#C98A1B}
+.box{background:#fff;border:1px solid #eee;border-radius:14px;padding:18px 20px;line-height:1.8}
+.time{display:flex;border-radius:10px;overflow:hidden;font-size:13px;margin:10px 0}
+.time div{padding:8px 6px;text-align:center;color:#13305f;background:#E6ECFA;border-right:2px solid #fff}
+.time div:nth-child(even){background:#C9D6F2}
+.wrap{overflow-x:auto}.tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid #eee}
+.tbl th{background:#E6ECFA;color:#163A80;text-align:left;padding:10px 12px;font-size:15px;white-space:nowrap}
+.tbl td{padding:10px 12px;border-top:1px solid #dde4f3;font-size:16px;line-height:1.6;vertical-align:top}
+.ko{font-size:26px;line-height:1.8;color:#1d3b8a;font-family:"Noto Serif Hebrew","SBL Hebrew","Times New Roman",serif;cursor:pointer;display:inline-block;direction:rtl;unicode-bidi:isolate}.ko:hover{text-decoration:underline}
+.ko::after{content:" 🔊";font-size:13px}
+.tbl td .ko.sm{font-size:21px}.tbl td .ko.sm::after{content:""}
+.pr{color:#8a5a12}
+.he{font-family:"Noto Serif Hebrew","SBL Hebrew","Times New Roman",serif;font-size:1.15em;direction:rtl;unicode-bidi:isolate}
+.rom{color:#555;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;font-size:15px}
+.sub{display:block;color:#666;font-size:14px;margin-top:2px;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;direction:ltr}
+.spk{display:inline-block;background:#E6ECFA;color:#163A80;border-radius:999px;padding:2px 10px;font-size:14px;white-space:nowrap}
+ul{margin:6px 0;padding-left:22px;line-height:1.8}
+.nav{display:flex;justify-content:space-between;margin-top:32px;gap:10px}
+.btn{border:1px solid #1F4BA5;background:#fff;color:#163A80;border-radius:10px;padding:10px 16px;cursor:pointer;font-size:15px;font-family:inherit}
+.btn:disabled{opacity:.35;cursor:default}
+.speed{display:flex;gap:8px;align-items:center;justify-content:flex-end;font-size:14px;color:#163A80;margin:0 0 6px;flex-wrap:wrap}
+.speed button{border:1px solid #1F4BA5;background:#fff;color:#163A80;border-radius:999px;padding:4px 12px;cursor:pointer;font-family:inherit}
+.speed button.on{background:#1F4BA5;color:#fff}
+.note{background:#FFF8EC;border-left:4px solid #C98A1B;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:15px;line-height:1.7}
+details.ans{background:#fff;border:1px solid #eee;border-radius:10px;padding:10px 14px;margin:8px 0;line-height:1.8}
+details.ans summary{cursor:pointer;font-weight:600}
+details.ans div{margin-top:6px;color:#2d5a1b;background:#F2F9EE;border-radius:8px;padding:8px 12px}
+.plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:10px 0 24px}
+.plan div{background:#fff;border:1px solid #eee;border-radius:12px;padding:14px;line-height:1.7;font-size:15px}
+.plan b{color:#163A80;font-size:17px}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:8px;display:none;font-size:14px;max-width:90%}
+footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8;max-width:900px;margin:0 auto}
+@media(max-width:600px){h1{font-size:30px}.tbl td,.tbl th{font-size:14px;padding:8px}.ko{font-size:22px}.time{font-size:11px}.tracks{grid-template-columns:1fr}}
+</style></head><body>
+<header><h1>希伯來語學習 <span class="he">עִבְרִית</span></h1><p class="lead">兩條路線：<b>聖經希伯來語</b>以「讀」為主，目標是能讀希伯來文舊約；<b>現代希伯來語</b>兼顧聽、說、讀，目標是能在以色列生活、和當地弟兄姊妹交通。每條路線分入門、初級、中級、專題（事物聯想、召會生活）四級，每級 15 堂，每堂 45 分鐘。藍色希伯來文點一下就能聽發音。</p></header>
+<main>
+<p style="margin:0 0 16px"><a class="back" href="../">← 回首頁</a></p>
+<div class="speed">朗讀速度：<button data-r="0.6">慢</button><button data-r="0.8" class="on">中</button><button data-r="1">正常</button></div>
+<div id="app"></div>
+</main>
+<div id="toast"></div>
+<footer>希伯來文由右往左讀。聖經經文依馬所拉經文（BHS／列寧格勒抄本）的子音與母音點，為方便初學省略了誦讀符號（teʿamim）；「中文直譯」是配合文法分析的逐字直譯，不是任何一本中文譯本。<br>聖經希伯來語的拼音採學術拼音（ā ē ō 為長母音，ᵊ 為有聲 shewa，ʾ ʿ 為喉音，ḥ 為喉擦音，š 為 sh）；現代希伯來語的拼音採以色列一般讀音（ch＝喉音「赫」，ts＝צ）。<br>🔊 朗讀使用裝置內建的「現代希伯來語」語音（he-IL），所以聖經經文也會用現代讀音讀出（ו 讀 v、ע 與 א 不發音、ת 不分 t／th）。若沒有聲音，請在手機或電腦的語言設定中安裝希伯來語（עברית）語音。</footer>
+<script src="alpha.js"></script>
+<script src="bh-1.js"></script>
+<script src="bh-2.js"></script>
+<script src="bh-3.js"></script>
+<script src="bh-4.js"></script>
+<script src="mh-1.js"></script>
+<script src="mh-2.js"></script>
+<script src="mh-3.js"></script>
+<script src="mh-4.js"></script>
+<script>
+const PER=15;
+const TRACKS={
+ b:{name:"聖經希伯來語",he:"עִבְרִית מִקְרָאִית",sub:"以讀為主：讀懂希伯來文舊約",L:window.BH||[],
+  LEVELS:[
+   ["入門","第 1–15 堂：22 個字母與詞尾形、母音點、shewa 與強弱點、音節與拼讀、名詞的性與數、冠詞、連接詞 וְ、介系詞、形容詞、代名詞、附屬形（屬格結構）、代名詞詞尾，最後逐字讀申命記 6:4–5「以色列啊，你要聽」","能正確拼讀有母音點的經文、認出名詞片語"],
+   ["初級","第 16–30 堂：三字母字根、Qal 完成式與未完成式、敘事用的 waw 連續式、命令式、不定詞、分詞、喉音與弱動詞、Niphal、Piel、Hiphil、Hithpael 等字幹，最後逐字讀創世記 1:1–5","能用字典與字形表自己解析一節經文的每一個字"],
+   ["中級","第 31–45 堂：敘事文法、詩歌平行體、名詞句、關係子句與條件句、字義研究（חֶסֶד、בְּרִית、שָׁלוֹם）、神的名字，讀出埃及記 3、詩篇 1、以賽亞書 53、創世記 12、路得記 1、耶利米書 31，以及馬所拉經文與工具書","能從文法分析進到經文分析與字義研究"],
+   ["專題","第 46–60 堂：事物聯想（字根聯想、身體、受造之物、數字與時間、人名、地名）與召會生活（會眾、呼求主名、讚美、祝福、弟兄和睦、帳幕與奉獻、逾越節、牧養）","把舊約的字連到生活與召會生活，讀經時有聯想、有享受"]],
+  TIME:[["0–5","暖身複習"],["5–17","文法重點"],["17–27","詞彙"],["27–33","例句"],["33–40","經文研讀"],["40–45","練習與作業"]],W:[5,12,10,6,7,5],
+  SEC:["文法重點（12 分鐘）","詞彙（10 分鐘）","例句（6 分鐘）","經文研讀（7 分鐘）"],DH:["經文","希伯來文／拼音","中文直譯與分析"],
+  plan:"<b>每堂 45 分鐘的流程：</b>暖身複習 5 分 → 文法重點 12 分 → 詞彙 10 分 → 例句 6 分 → 經文研讀 7 分 → 練習與作業 5 分。<br><b>建議進度：</b>每週 2 堂，約 30 週完成；每 15 堂結束後做一次總複習。<br><b>詞彙原則：</b>優先學舊約常用字，括號中的數字是該字在舊約出現的大約次數（約 500 個常用字就涵蓋舊約大部分的字數）。<br><b>工具：</b>希伯來文聖經（BHS 或 BHQ）、一本希伯來文－中文／英文字典（如 BDB、HALOT）、一本文法書，以及線上逐字對照工具。"},
+ m:{name:"現代希伯來語",he:"עִבְרִית מְדֻבֶּרֶת",sub:"聽說讀並重：在以色列生活與交通",L:window.MH||[],
+  LEVELS:[
+   ["入門","第 1–15 堂：問候、字母印刷體與手寫體、母音與無母音點拼讀、自我介紹、陽性與陰性、國籍、數字、這是什麼、家庭、現在式動詞、喜歡與想要、星期與時間、點餐","能用簡單句子打招呼、介紹自己、點餐"],
+   ["初級","第 16–30 堂：數字與價錢、問路、交通、過去式、未來式、情態詞（要、能、可以）、介系詞詞尾、受詞 אֶת、天氣、購物、看醫生、打電話、比較","能處理日常生活的對話，讀懂簡單的告示"],
+   ["中級","第 31–45 堂：動詞七種字幹（binyanim）、附屬結構、關係子句與條件句、禮貌請求、新聞聽力、節期與文化、口語、職場與學校、讀報紙標題、表達意見","能讀沒有母音點的文字、聽懂一般談話並表達看法"],
+   ["專題","第 46–60 堂：事物聯想（家、廚房、城市、大自然、身體、衣服顏色、情感）與召會生活（問候弟兄姊妹、聚會、禱告與呼求主名、唱詩、讀經與晨興、傳福音、擘餅、愛筵與接待）","能用希伯來語參加聚會、與聖徒交通、簡單傳福音"]],
+  TIME:[["0–5","暖身複習"],["5–15","句型與文法"],["15–25","詞彙"],["25–30","例句"],["30–40","會話聽說"],["40–45","練習與作業"]],W:[5,10,10,5,10,5],
+  SEC:["句型與文法（10 分鐘）","詞彙（10 分鐘）","例句（5 分鐘）","會話聽說（10 分鐘）"],DH:["角色","希伯來文／拼音","中文"],
+  plan:"<b>每堂 45 分鐘的流程：</b>暖身複習 5 分 → 句型與文法 10 分 → 詞彙 10 分 → 例句 5 分 → 會話聽說 10 分 → 練習與作業 5 分。<br><b>建議進度：</b>每週 2–3 堂；每天至少 10 分鐘「聽 → 跟讀 → 說」。<br><b>母音點：</b>以色列日常文字不加母音點。本課程的詞彙都附母音點；入門的句子也附母音點，初級以後的句子與會話用一般寫法（無母音點），靠拼音輔助，慢慢習慣。<br><b>陽性／陰性：</b>「你」和動詞、形容詞都分男女；課文以「陽性／陰性」並列，例如 אַתָּה／אַתְּ。"}};
+const app=document.getElementById('app');
+const escA=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const esc=s=>escA(s).replace(/([֐-׿יִ-ﭏ][֐-׿יִ-ﭏ\s־׃"'״׳.,?!]*[֐-׿יִ-ﭏ])|([֐-׿יִ-ﭏ])/g,'<span class="he">$&</span>');
+const HE=/[א-ת]/,CJK=/[　-鿿＀-￯]/;
+let heVoice=null,rate=0.8;
+function pickVoice(){
+  if(!('speechSynthesis' in window))return;
+  const vs=speechSynthesis.getVoices().filter(v=>/^(he|iw)/i.test(v.lang));
+  heVoice=vs.find(v=>/google|carmit/i.test(v.name))||vs[0]||null;
+}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',3000);}
+function speak(text){
+  if(!('speechSynthesis' in window)){toast('這個瀏覽器不支援語音朗讀');return;}
+  speechSynthesis.cancel();
+  const t=text.replace(/[（(][^)）]*[)）]/g,' ').replace(/[֑-ֽ֯]/g,'').replace(/[־]/g,' ').replace(/[׃]/g,'. ').replace(/[「」『』…○]/g,' ').replace(/\s*[\/／]\s*/g,', ');
+  const u=new SpeechSynthesisUtterance(t);
+  u.lang=(heVoice&&heVoice.lang)||'he-IL';u.rate=rate;if(heVoice)u.voice=heVoice;
+  if(!heVoice)toast('找不到希伯來語語音，請在裝置設定中安裝希伯來語（עברית）語音');
+  speechSynthesis.speak(u);
+}
+document.querySelectorAll('.speed button').forEach(b=>b.onclick=()=>{rate=+b.dataset.r;document.querySelectorAll('.speed button').forEach(x=>x.classList.toggle('on',x===b));});
+app.addEventListener('click',e=>{const v=e.target.closest('.ko');if(v)speak(v.dataset.say||v.textContent);});
+const ko=(t,say,cls)=>`<span class="ko${cls?' '+cls:''}" data-say="${escA(say||t)}">${escA(t)}</span>`;
+const cell=x=>(HE.test(x)&&!CJK.test(x))?ko(x,null,'sm'):esc(x);
+
+function trackTabs(tk){
+  return `<div class="tracks">${Object.keys(TRACKS).map(k=>{const T=TRACKS[k];return `<button class="trk${k==tk?' on':''}" onclick="go('#${k}0')">${T.name} <span class="he">${T.he}</span><small>${T.sub}</small></button>`;}).join('')}</div>`;
+}
+function home(tk,lv){
+  const T=TRACKS[tk];
+  let h=trackTabs(tk)+`<div class="tabs">${T.LEVELS.map((l,i)=>`<button class="tab${i==lv?' on':''}" onclick="go('#${tk}${i}')">${l[0]}</button>`).join('')}</div>`;
+  if(lv==0)h+=`<h2>${T.name}　學習計畫總覽</h2><div class="plan">${T.LEVELS.map((l,i)=>`<div><b>${l[0]}</b>（第 ${i*PER+1}–${i*PER+PER} 堂）<br>${esc(l[1].split('：')[1])}<br><span style="color:#163A80">→ ${esc(l[2])}</span></div>`).join('')}</div><div class="box" style="margin-bottom:24px">${T.plan}</div>`;
+  h+=`<h2>${T.name}・${T.LEVELS[lv][0]}</h2><p style="color:#666">${esc(T.LEVELS[lv][1])}（目標：${esc(T.LEVELS[lv][2])}）</p>`;
+  if(lv==0)h+=alphaTable(tk);
+  h+=`<div class="grid">`;
+  for(let i=lv*PER;i<lv*PER+PER;i++){const L=T.L[i];if(!L)continue;
+    h+=`<div class="card${L.tag=='召會生活'?' sec':''}" onclick="go('#${tk}L${i+1}')"><div class="k">第 ${i+1} 堂${L.tag?'・'+L.tag:''}</div><div class="t">${esc(L.t)}</div><div class="d">${esc(L.g)}</div></div>`;}
+  h+=`</div>`;
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function alphaTable(tk){
+  const A=window.ALPHA||[],bib=tk=='b';
+  let h=`<h3>22 個字母總表（由右往左讀；點字母聽字母名稱）</h3><div class="wrap"><table class="tbl"><thead><tr><th>#</th><th>字母</th><th>詞尾形</th><th>名稱</th><th>${bib?'聖經讀音':'現代讀音'}</th><th>中文近似音／發音要點</th><th>數值</th></tr></thead><tbody>${A.map((a,i)=>`<tr><td>${i+1}</td><td>${ko(a[0],a[2],'sm')}</td><td class="he" style="font-size:24px">${escA(a[1])}</td><td><span class="ko sm" data-say="${escA(a[2])}">${escA(a[2])}</span><span class="sub">${esc(a[3])}</span></td><td class="rom">${esc(bib?a[4]:a[5])}</td><td class="pr">${esc(a[6])}</td><td>${a[7]}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>母音點（以 <span class="he">ב</span> 示範）</h3><div class="wrap"><table class="tbl"><thead><tr><th>符號</th><th>名稱</th><th>${bib?'學術拼音':'現代讀音'}</th><th>長短</th><th>中文近似音</th></tr></thead><tbody>${(window.VOWELS||[]).map(r=>`<tr><td>${ko(r[0],null,'sm')}</td><td>${esc(r[1])}</td><td class="rom">${esc(bib?r[2]:r[3])}</td><td>${esc(r[4])}</td><td class="pr">${esc(r[5])}</td></tr>`).join('')}</tbody></table></div>`;
+  if(bib)h+=`<h3>其他符號</h3><div class="wrap"><table class="tbl"><thead><tr><th>符號</th><th>名稱</th><th>說明</th><th>例</th></tr></thead><tbody>${(window.MARKS||[]).map(r=>`<tr><td class="he" style="font-size:24px">${escA(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${ko(r[3],null,'sm')}<span class="sub">${esc(r[4])}</span></td></tr>`).join('')}</tbody></table></div>`;
+  return h+'<br>';
+}
+function lesson(tk,n){
+  const T=TRACKS[tk],L=T.L[n-1];if(!L)return home(tk,0);const lv=Math.floor((n-1)/PER),TOTAL=T.L.length,bib=tk=='b';
+  let h=`<p><a class="back" href="#${tk}${lv}">← ${T.name}・${T.LEVELS[lv][0]}課程列表</a></p>`;
+  h+=`<h2>第 ${n} 堂　${esc(L.t)}</h2><div class="box"><b>學習目標：</b>${esc(L.g)}<br><b>時間：</b>45 分鐘　<b>路線：</b>${T.name}　<b>程度：</b>${T.LEVELS[lv][0]}${L.tag?'（'+L.tag+'）':''}</div>`;
+  h+=`<h3>時間分配</h3><div class="time">${T.TIME.map((t,i)=>`<div style="flex:${T.W[i]}">${t[0]} 分<br>${t[1]}</div>`).join('')}</div>`;
+  h+=`<h3>一、暖身複習（5 分鐘）</h3><div class="box">${L.w?esc(L.w):(n==1?'介紹本課程：入門、初級、中級、專題共 60 堂、每堂 45 分鐘。':'複習第 '+(n-1)+' 堂的詞彙與重點，抽 3 人朗讀上一堂的'+(bib?'經文':'會話')+'，檢查回家作業。')}${L.c?`<div class="note"><b>背景小知識：</b>${esc(L.c)}</div>`:''}</div>`;
+  h+=`<h3>二、${T.SEC[0]}</h3><div class="box"><ul>${L.f.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
+  const tabs=L.gt?(Array.isArray(L.gt)?L.gt:[L.gt]):[];
+  tabs.forEach(G=>{h+=`${G.c?`<p style="margin:14px 0 4px;color:#163A80;font-weight:600">${esc(G.c)}</p>`:''}<div class="wrap" style="margin-top:8px"><table class="tbl"><thead><tr>${G.h.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${G.r.map(r=>`<tr>${r.map(x=>`<td>${cell(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;});
+  const ap=L.v.some(r=>r[3]);
+  h+=`<h3>三、${T.SEC[1]}</h3><div class="wrap"><table class="tbl"><thead><tr><th>希伯來文</th><th>中文意思${bib?'（舊約次數）':''}</th><th>拼音</th>${ap?'<th>中文近似音</th>':''}</tr></thead><tbody>${L.v.map(r=>`<tr><td>${ko(r[0])}</td><td>${esc(r[1])}</td><td class="rom">${esc(r[2])}</td>${ap?`<td class="pr">${esc(r[3]||'')}</td>`:''}</tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>四、${T.SEC[2]}</h3><div class="wrap"><table class="tbl"><thead><tr><th>希伯來文／拼音</th><th>中文${bib?'直譯':''}</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${ko(r[0])}<span class="sub">${esc(r[2]||'')}</span></td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>五、${T.SEC[3]}</h3><div class="wrap"><table class="tbl"><thead><tr>${T.DH.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap">${bib?esc(r[0]):`<span class="spk">${esc(r[0])}</span>`}</td><td>${ko(r[1])}<span class="sub">${esc(r[3]||'')}</span></td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">${bib?'先全體跟讀，再請學員逐字說出字形（性、數、狀態／字幹、時態、人稱）與字根。':'先聽兩遍、跟讀一遍，再兩人一組分角色對話；熟了以後換掉關鍵字（名字、地點、數字）再說一次。'}</p>`;
+  h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂活動</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
+  if(L.x)h+=`<b>練習題（點開看答案與解析）</b>${L.x.map((q,i)=>`<details class="ans"><summary>${i+1}. ${esc(q[0])}</summary><div>${esc(q[1])}</div></details>`).join('')}`;
+  h+=`<b>回家作業：</b>${esc(L.h)}</div>`;
+  h+=`<div class="nav"><button class="btn" ${n==1?'disabled':''} onclick="go('#${tk}L${n-1}')">← 上一堂</button><button class="btn" ${n==TOTAL?'disabled':''} onclick="go('#${tk}L${n+1}')">下一堂 →</button></div>`;
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function go(h){location.hash=h;}
+function route(){const h=location.hash;let m;
+  if((m=h.match(/^#([bm])L(\d+)$/)))lesson(m[1],+m[2]);else if((m=h.match(/^#([bm])(\d)$/)))home(m[1],+m[2]);else home('b',0);}
+window.addEventListener('hashchange',route);route();
+</script>
+</body></html>
