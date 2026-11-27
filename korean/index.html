@@ -84,6 +84,7 @@ details.ans div{margin-top:6px;color:#2d5a1b;background:#F2F9EE;border-radius:8p
 .pw .ko{font-size:15px}.pw .ko::before{content:""}.pw em{font-style:normal;color:#666;margin-left:4px}
 .pn{margin-top:8px;background:#F2F9EE;color:#2d5a1b;border-radius:8px;padding:6px 10px;font-size:14px}
 .pwrite{position:absolute;top:12px;right:14px;font-size:13px;color:#86641A;text-decoration:none}
+.tab.ai{border-color:#c8372d;color:#c8372d;display:inline-flex;align-items:center}
 .tab.topic{border-color:#6AA84F;color:#3d7a22}.tab.topic.on{background:#6AA84F;color:#fff}
 .tpgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
 .tpcard{background:#fff;border:1px solid #eee;border-top:6px solid var(--c);border-radius:16px;padding:16px;cursor:pointer;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .2s,box-shadow .2s}
@@ -168,7 +169,7 @@ function home(lv){
   h+=`</div>`;
   app.innerHTML=h;window.scrollTo(0,0);
 }
-function tabs(cur){return `<div class="tabs">${LEVELS.map((l,i)=>`<button class="tab${i===cur?' on':''}" onclick="go('#lv${i}')">${l[0]}</button>`).join('')}<button class="tab church${cur==='ch'?' on':''}" onclick="go('#church')">⛪ 召會生活</button><button class="tab topic${cur==='tp'?' on':''}" onclick="go('#topics')">🧩 專題</button></div>`;}
+function tabs(cur){return `<div class="tabs">${LEVELS.map((l,i)=>`<button class="tab${i===cur?' on':''}" onclick="go('#lv${i}')">${l[0]}</button>`).join('')}<button class="tab church${cur==='ch'?' on':''}" onclick="go('#church')">⛪ 召會生活</button><button class="tab topic${cur==='tp'?' on':''}" onclick="go('#topics')">🧩 專題</button><a class="tab ai" href="https://claude.ai/artifact/X5EJsjaoube6uGWpc1JvCb" target="_blank" rel="noopener" style="text-decoration:none">🤖 AI 對話</a></div>`;}
 function churchView(){
   const C=window.CHURCH||[];const total=C.reduce((a,g)=>a+g.items.length,0);
   const nT=C.filter(g=>g.sec!=='pray').reduce((a,g)=>a+g.items.length,0),nP=total-nT;
