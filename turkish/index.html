@@ -45,6 +45,7 @@ footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 </main>
 <div id="toast"></div>
 <footer>音標中的 ˈ 標在重音音節前；土耳其語大多數字的重音在最後一個音節。中文近似音只是輔助，請以點擊朗讀與老師發音為準。<br>朗讀使用瀏覽器內建土耳其語語音（tr-TR），若無聲音請在裝置設定中安裝土耳其語語音。</footer>
+<script src="../approx.js?v=20261128"></script>
 <script src="lessons-1.js?v=20261126"></script>
 <script src="lessons-2.js?v=20261126"></script>
 <script src="lessons-3.js?v=20261126"></script>
@@ -109,8 +110,8 @@ function lesson(n){
   h+=`<h3>二、發音／語法重點（10 分鐘）</h3><div class="box"><ul>${L.f.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
   h+=`<h3>三、詞彙（12 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>土耳其文</th><th>中文意思</th><th>IPA</th><th>中文近似音</th></tr></thead><tbody>${L.v.map(r=>`<tr><td>${tr(r[0])}</td><td>${esc(r[1])}</td><td class="ipa">[${esc(r[2])}]</td><td class="phon">${esc(r[3])}</td></tr>`).join('')}</tbody></table></div>`;
   const sp=L.s.some(r=>r[2]);
-  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>土耳其文</th><th>中文</th>${sp?'<th>中文近似音</th>':''}</tr></thead><tbody>${L.s.map(r=>`<tr><td>${tr(r[0])}</td><td>${esc(r[1])}</td>${sp?`<td class="phon">${esc(r[2]||'')}</td>`:''}</tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>土耳其文</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td>${esc(r[0])}</td><td>${tr(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
+  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>土耳其文</th><th>中文</th>${sp?'<th>中文近似音</th>':''}</tr></thead><tbody>${L.s.map(r=>`<tr><td>${tr(r[0])}${r[2]?'':ZYH(r[0],'tr')}</td><td>${esc(r[1])}</td>${sp?`<td class="phon">${esc(r[2]||'')}</td>`:''}</tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>土耳其文</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td>${esc(r[0])}</td><td>${tr(r[1])}${ZYH(r[1],'tr')}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
   h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂練習</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><b>回家作業：</b>${esc(L.h)}</div>`;
   h+=`<div class="nav"><button class="btn" ${n==1?'disabled':''} onclick="go('#L${n-1}')">← 上一堂</button><button class="btn" ${n==TOTAL?'disabled':''} onclick="go('#L${n+1}')">下一堂 →</button></div>`;
   app.innerHTML=h;window.scrollTo(0,0);

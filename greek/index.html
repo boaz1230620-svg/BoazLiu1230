@@ -57,6 +57,7 @@ footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 </main>
 <div id="toast"></div>
 <footer>經文採用通行的新約希臘文批判版本（NA28／UBS5／SBLGNT）的讀法；「中文直譯」為配合文法分析的逐字直譯，不是任何一本中文譯本。<br>拼音與「中文近似音」採神學院通用的「學術讀音」（伊拉斯謨讀音，Erasmian）：η＝ē（長 e）、ω＝ō（長 o）、θ＝th（如英文 think）、φ＝ph（f）、χ＝ch（喉音「赫」）、υ＝y（u 或德文 ü）、ʽ（粗氣號）＝h。<br>🔊 朗讀使用裝置內建的「現代希臘語」語音（el-GR），所以 η、ι、υ、ει、οι 都會讀成 i，β 讀成 v（兩種讀音的差別見第 2 堂）。若沒有聲音，請在手機或電腦的語言設定中安裝希臘語（Ελληνικά）語音。</footer>
+<script src="../approx.js?v=20261128"></script>
 <script src="alpha.js"></script>
 <script src="lessons-1.js"></script>
 <script src="lessons-2.js"></script>
@@ -133,8 +134,8 @@ function lesson(n){
   const tabs=L.gt?(Array.isArray(L.gt)?L.gt:[L.gt]):[];
   tabs.forEach(T=>{h+=`${T.c?`<p style="margin:14px 0 4px;color:#1E4F8A;font-weight:600">${esc(T.c)}</p>`:''}<div class="wrap" style="margin-top:8px"><table class="tbl"><thead><tr>${T.h.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${T.r.map(r=>`<tr>${r.map(x=>`<td>${cell(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;});
   h+=`<h3>三、詞彙（10 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>希臘文</th><th>中文意思（新約次數）</th><th>拼音</th><th>中文近似音</th></tr></thead><tbody>${L.v.map(r=>`<tr><td>${ko(r[0])}</td><td>${esc(r[1])}</td><td class="rom">${esc(r[2])}</td><td class="pr">${esc(r[3])}</td></tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>希臘文／拼音</th><th>中文直譯</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${ko(r[0])}<span class="sub">${esc(r[2]||'')}</span></td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>五、經文研讀（7 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>經文</th><th>希臘文／拼音</th><th>中文直譯與分析</th></tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${ko(r[1])}<span class="sub">${esc(r[3]||'')}</span></td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再請學員逐字說出字形（格、數、性／時態、語態、語氣、人稱）。</p>`;
+  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>希臘文／拼音</th><th>中文直譯</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${ko(r[0])}<span class="sub">${esc(r[2]||'')}</span>${ZYH(r[2]||'','grc')}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>五、經文研讀（7 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>經文</th><th>希臘文／拼音</th><th>中文直譯與分析</th></tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${ko(r[1])}<span class="sub">${esc(r[3]||'')}</span>${ZYH(r[3]||'','grc')}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再請學員逐字說出字形（格、數、性／時態、語態、語氣、人稱）。</p>`;
   h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂活動</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
   if(L.x)h+=`<b>練習題（點開看答案與解析）</b>${L.x.map((q,i)=>`<details class="ans"><summary>${i+1}. ${esc(q[0])}</summary><div>${esc(q[1])}</div></details>`).join('')}`;
   h+=`<b>回家作業：</b>${esc(L.h)}</div>`;

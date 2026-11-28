@@ -63,6 +63,7 @@ footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8;
 </main>
 <div id="toast"></div>
 <footer>希伯來文由右往左讀。聖經經文依馬所拉經文（BHS／列寧格勒抄本）的子音與母音點，為方便初學省略了誦讀符號（teʿamim）；「中文直譯」是配合文法分析的逐字直譯，不是任何一本中文譯本。<br>聖經希伯來語的拼音採學術拼音（ā ē ō 為長母音，ᵊ 為有聲 shewa，ʾ ʿ 為喉音，ḥ 為喉擦音，š 為 sh）；現代希伯來語的拼音採以色列一般讀音（ch＝喉音「赫」，ts＝צ）。<br>🔊 朗讀使用裝置內建的「現代希伯來語」語音（he-IL），所以聖經經文也會用現代讀音讀出（ו 讀 v、ע 與 א 不發音、ת 不分 t／th）。若沒有聲音，請在手機或電腦的語言設定中安裝希伯來語（עברית）語音。</footer>
+<script src="../approx.js?v=20261128"></script>
 <script src="alpha.js"></script>
 <script src="bh-1.js"></script>
 <script src="bh-2.js"></script>
@@ -152,8 +153,8 @@ function lesson(tk,n){
   tabs.forEach(G=>{h+=`${G.c?`<p style="margin:14px 0 4px;color:#163A80;font-weight:600">${esc(G.c)}</p>`:''}<div class="wrap" style="margin-top:8px"><table class="tbl"><thead><tr>${G.h.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${G.r.map(r=>`<tr>${r.map(x=>`<td>${cell(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;});
   const ap=L.v.some(r=>r[3]);
   h+=`<h3>三、${T.SEC[1]}</h3><div class="wrap"><table class="tbl"><thead><tr><th>希伯來文</th><th>中文意思${bib?'（舊約次數）':''}</th><th>拼音</th>${ap?'<th>中文近似音</th>':''}</tr></thead><tbody>${L.v.map(r=>`<tr><td>${ko(r[0])}</td><td>${esc(r[1])}</td><td class="rom">${esc(r[2])}</td>${ap?`<td class="pr">${esc(r[3]||'')}</td>`:''}</tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>四、${T.SEC[2]}</h3><div class="wrap"><table class="tbl"><thead><tr><th>希伯來文／拼音</th><th>中文${bib?'直譯':''}</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${ko(r[0])}<span class="sub">${esc(r[2]||'')}</span></td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>五、${T.SEC[3]}</h3><div class="wrap"><table class="tbl"><thead><tr>${T.DH.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap">${bib?esc(r[0]):`<span class="spk">${esc(r[0])}</span>`}</td><td>${ko(r[1])}<span class="sub">${esc(r[3]||'')}</span></td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">${bib?'先全體跟讀，再請學員逐字說出字形（性、數、狀態／字幹、時態、人稱）與字根。':'先聽兩遍、跟讀一遍，再兩人一組分角色對話；熟了以後換掉關鍵字（名字、地點、數字）再說一次。'}</p>`;
+  h+=`<h3>四、${T.SEC[2]}</h3><div class="wrap"><table class="tbl"><thead><tr><th>希伯來文／拼音</th><th>中文${bib?'直譯':''}</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${ko(r[0])}<span class="sub">${esc(r[2]||'')}</span>${ZYH(r[2]||'','he')}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>五、${T.SEC[3]}</h3><div class="wrap"><table class="tbl"><thead><tr>${T.DH.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap">${bib?esc(r[0]):`<span class="spk">${esc(r[0])}</span>`}</td><td>${ko(r[1])}<span class="sub">${esc(r[3]||'')}</span>${ZYH(r[3]||'','he')}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">${bib?'先全體跟讀，再請學員逐字說出字形（性、數、狀態／字幹、時態、人稱）與字根。':'先聽兩遍、跟讀一遍，再兩人一組分角色對話；熟了以後換掉關鍵字（名字、地點、數字）再說一次。'}</p>`;
   h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂活動</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
   if(L.x)h+=`<b>練習題（點開看答案與解析）</b>${L.x.map((q,i)=>`<details class="ans"><summary>${i+1}. ${esc(q[0])}</summary><div>${esc(q[1])}</div></details>`).join('')}`;
   h+=`<b>回家作業：</b>${esc(L.h)}</div>`;

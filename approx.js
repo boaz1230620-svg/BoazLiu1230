@@ -92,7 +92,7 @@ function render(ph){ // ph: phoneme string with spaces & punctuation
 function rep(s,pairs){for(var k=0;k<pairs.length;k+=2)s=s.replace(pairs[k],pairs[k+1]);return s;}
 function dedouble(s){return s.replace(/([bcdfgklmnprstvzSZCJx])\1/g,'$1');}
 var L={};
-function fin(s){return s.replace(/g\b/g,'k').replace(/d\b/g,'t').replace(/b\b/g,'p');}
+function fin(s){return s.replace(/g(?![A-Za-z@ø])/g,'k').replace(/d(?![A-Za-z@ø])/g,'t').replace(/b(?![A-Za-z@ø])/g,'p');}
 L.it=function(s){s=s.toLowerCase().replace(/[àá]/g,'a').replace(/[èé]/g,'e').replace(/[ìí]/g,'i').replace(/[òó]/g,'o').replace(/[ùú]/g,'u').replace(/['’]/g,' ');
   s=rep(s,[/y/g,'i',/j/g,'Y',/x/g,'ks',/gli(?=[aeou])/g,'lY',/gli/g,'lYi',/gn/g,'nY',/sch/g,'sk',/sci(?=[aou])/g,'S',/sc(?=[ei])/g,'S',/ch/g,'k',/gh/g,'g',/cci(?=[aou])/g,'C',/cc(?=[ei])/g,'C',/ci(?=[aou])/g,'C',/c(?=[ei])/g,'C',/ggi(?=[aou])/g,'J',/gg(?=[ei])/g,'J',/gi(?=[aou])/g,'J',/g(?=[ei])/g,'J',/qu/g,'kw',/c/g,'k',/h/g,'',/zz/g,'c',/z/g,'c']);
   return dedouble(s);};
@@ -125,7 +125,7 @@ L.tr=function(s){s=s.replace(/İ/g,'i').replace(/I/g,'ı').toLowerCase();
 L.ru=function(s){s=s.toLowerCase();var m={а:'a',б:'b',в:'v',г:'g',д:'d',е:'Ye',ё:'Yo',ж:'Z',з:'z',и:'i',й:'Y',к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'H',ц:'c',ч:'C',ш:'S',щ:'S',ъ:'',ы:'i',ь:'',э:'e',ю:'Yu',я:'Ya'};
   s=s.replace(/[а-яё]/g,function(c){return m[c];});
   s=s.replace(/([bvgdzZklmnprstfHcCS])Ye/g,'$1e');
-  return fin(s);};
+  return fin(dedouble(s));};
 L.vi=function(s){s=s.toLowerCase().normalize('NFC');
   var t='';for(var i=0;i<s.length;i++){var d=s[i].normalize('NFD');t+=(d[0]+d.slice(1).replace(/[̣̀́̃̉]/g,'')).normalize('NFC');}
   s=t;
@@ -134,8 +134,8 @@ L.vi=function(s){s=s.toLowerCase().normalize('NFC');
 L.ja=function(s){s=s.toLowerCase();
   s=rep(s,[/ā/g,'a',/ī/g,'i',/ū/g,'u',/ē/g,'e',/ō/g,'o',/ou(?=[^aeiou]|$)/g,'o',/n'/g,'n ',/([kstpgdbcj])\1/g,'$1',/tch/g,'ch',/y/g,'Y',/shi/g,'Si',/sh/g,'S',/chi/g,'Ci',/ch/g,'C',/tsu/g,'cu',/ji/g,'Ji',/j/g,'J',/su\b/g,'s',/n(?=[bpm])/g,'m']);
   return s;};
-L.ko=function(s){s=s.toLowerCase().replace(/-/g,'');
-  s=rep(s,[/yeo/g,'Yo',/eo/g,'o',/eu/g,'@',/yae/g,'Ye',/ae/g,'e',/oe/g,'we',/ui/g,'@i',/kk/g,'G',/tt/g,'D',/pp/g,'B',/ss/g,'s',/jj/g,'J',/ch/g,'C',/j/g,'J',/y/g,'Y',/ng/g,'N',/G/g,'g',/D/g,'d',/B/g,'b']);
+L.ko=function(s){s=s.toLowerCase().replace(/ng(?=[-\s,.?!]|$)/g,'N').replace(/ng-/g,'N').replace(/-/g,'');
+  s=rep(s,[/yeo/g,'Yo',/eo/g,'o',/eu/g,'@',/yae/g,'Ye',/ae/g,'e',/oe/g,'we',/ui/g,'@i',/kk/g,'G',/tt/g,'D',/pp/g,'B',/ss/g,'s',/jj/g,'J',/ch/g,'C',/j/g,'J',/y/g,'Y',/G/g,'g',/D/g,'d',/B/g,'b']);
   return fin(s);};
 L.th=function(s){s=strip(s.toLowerCase()).replace(/-/g,'');
   s=rep(s,[/ʉa/g,'@a',/ʉ/g,'@',/ɛ/g,'e',/ɔ/g,'o',/ə/g,'@',/ue/g,'@',/oe/g,'@',/ae/g,'e',/([aeiou@])\1/g,'$1',/kh/g,'K',/th/g,'T',/ph/g,'P',/ch/g,'C',/k/g,'g',/t/g,'d',/p/g,'b',/K/g,'k',/T/g,'t',/P/g,'p',/j/g,'J',/y/g,'Y',/ng/g,'N']);

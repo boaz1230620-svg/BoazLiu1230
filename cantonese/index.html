@@ -48,6 +48,7 @@ footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 </main>
 <div id="toast"></div>
 <footer>粵拼字尾的數字 1–6 是聲調：1 高平、2 高升、3 中平、4 低降、5 低升、6 低平。以香港粵語（廣州話）為準。<br>朗讀使用粵語語音（zh-HK），若無聲音請在裝置設定中安裝「中文（香港）」或「粵語」語音。</footer>
+<script src="../approx.js?v=20261128"></script>
 <script src="lessons-1.js"></script>
 <script src="lessons-2.js"></script>
 <script src="lessons-3.js"></script>
@@ -117,8 +118,8 @@ function lesson(n){
   h+=`<h3>一、暖身複習（5 分鐘）</h3><div class="box">${L.w?esc(L.w):(n==1?'先聽一段香港街頭的粵語對話，猜猜看說了什麼；再介紹本課程：入門、初級、中級、專題四級，共 60 堂，每堂 45 分鐘。':'複習第 '+(n-1)+' 堂的詞彙，點讀詞彙表跟讀一遍，注意聲調；再抽 3 人用上一堂的句型口頭回答。')}${L.c?`<div class="note"><b>粵語小知識：</b>${esc(L.c)}</div>`:''}</div>`;
   h+=`<h3>二、發音／語法重點（10 分鐘）</h3><div class="box"><ul>${L.f.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
   h+=`<h3>三、詞彙（12 分鐘）</h3><div class="wrap" id="tv"><table class="tbl"><thead><tr><th>粵語</th><th>粵拼</th><th>國語意思</th></tr></thead><tbody>${L.v.map(r=>`<tr><td>${de(r[0])}</td><td>${jp(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div>${playBtn('tv')}`;
-  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap" id="ts"><table class="tbl"><thead><tr><th>粵語</th><th>國語</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${de(r[0])}<br>${jp(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div>${playBtn('ts')}`;
-  h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap" id="td"><table class="tbl"><thead><tr><th>角色</th><th>粵語</th><th>國語</th></tr></thead><tbody>${L.d.map(r=>`<tr><td>${esc(r[0])}</td><td>${de(r[1])}${r[3]?'<br>'+jp(r[3]):''}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div>${playBtn('td')}<p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
+  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap" id="ts"><table class="tbl"><thead><tr><th>粵語</th><th>國語</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${de(r[0])}<br>${jp(r[1])}${ZYH(r[1],'yue')}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div>${playBtn('ts')}`;
+  h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap" id="td"><table class="tbl"><thead><tr><th>角色</th><th>粵語</th><th>國語</th></tr></thead><tbody>${L.d.map(r=>`<tr><td>${esc(r[0])}</td><td>${de(r[1])}${r[3]?'<br>'+jp(r[3])+ZYH(r[3],'yue'):''}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div>${playBtn('td')}<p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
   h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂練習</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><b>回家作業：</b>${esc(L.h)}</div>`;
   h+=`<div class="nav"><button class="btn" ${n==1?'disabled':''} onclick="go('#L${n-1}')">← 上一堂</button><button class="btn" ${n==TOTAL?'disabled':''} onclick="go('#L${n+1}')">下一堂 →</button></div>`;
   app.innerHTML=h;window.scrollTo(0,0);

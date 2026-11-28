@@ -57,6 +57,7 @@ footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 </main>
 <div id="toast"></div>
 <footer>「假名」欄是漢字的讀音；空白表示本身就是假名。羅馬拼音採平文式（ふ＝fu、し＝shi、つ＝tsu），長音以 ā ī ū ē ō 表示，促音以重複子音表示（きって＝kitte）。<br>朗讀使用裝置內建的日語語音（ja-JP），若沒有聲音，請在手機或電腦的語言設定中安裝日語語音。</footer>
+<script src="../approx.js?v=20261128"></script>
 <script src="lessons-1.js"></script>
 <script src="lessons-2.js"></script>
 <script src="lessons-3.js"></script>
@@ -131,8 +132,8 @@ function lesson(n){
   h+=`<h3>二、發音／文法重點（12 分鐘）</h3><div class="box"><ul>${L.f.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
   if(L.gt)h+=`<div class="wrap" style="margin-top:12px"><table class="tbl"><thead><tr>${L.gt.h.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${L.gt.r.map(r=>`<tr>${r.map(x=>`<td>${esc(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
   h+=`<h3>三、詞彙（10 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>日文</th><th>假名</th><th>羅馬拼音</th><th>中文意思</th></tr></thead><tbody>${L.v.map(r=>`<tr><td>${ja(r[0],r[1]||r[0])}</td><td class="kn">${r[1]?esc(r[1]):'<span style="color:#bbb">—</span>'}</td><td class="rom">${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>日文／假名／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${ja(r[0])}${subs(r[2],r[3])}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>日文／假名／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${ja(r[1])}${subs(r[3],r[4])}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
+  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>日文／假名／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${ja(r[0])}${subs(r[2],r[3])}${ZYH(r[3]||'','ja')}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>日文／假名／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${ja(r[1])}${subs(r[3],r[4])}${ZYH(r[4]||'','ja')}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
   h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂活動</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
   if(L.x)h+=`<b>練習題（點開看答案與解析）</b>${L.x.map((q,i)=>`<details class="ans"><summary>${i+1}. ${esc(q[0])}</summary><div>${esc(q[1])}</div></details>`).join('')}`;
   h+=`<b>回家作業：</b>${esc(L.h)}</div>`;
