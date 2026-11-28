@@ -41,6 +41,7 @@ footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 </main>
 <div id="toast"></div>
 <footer>近似音只是輔助，請以點擊朗讀與老師發音為準。朗讀使用瀏覽器內建俄語語音，若無聲音請在裝置設定中安裝俄語語音。</footer>
+<script src="../approx.js?v=20261128"></script>
 <script src="lessons.js"></script>
 <script>
 const LEVELS=[["入門","第 1–10 堂：西里爾字母、發音、問候與自我介紹"],["初級","第 11–20 堂：基本句型與日常生活情境"],["中級","第 21–30 堂：過去式、未來式、格變化、敘事與校園、教會情境"],["專題","第 31–40 堂：文學、歷史、文化、旅遊、商務與福音主題"]];
@@ -86,8 +87,8 @@ function lesson(n){
   h+=`<h3>一、暖身複習（5 分鐘）</h3><div class="box">${n==1?'認識俄羅斯：人口約 1.4 億，首都莫斯科，官方語言是俄語，使用西里爾字母。俄語是聯合國六種官方語言之一。':'複習第 '+(n-1)+' 堂詞彙卡片，抽 3 人用上一堂句型口頭回答。'}</div>`;
   h+=`<h3>二、發音／語法重點（15 分鐘）</h3><div class="box"><ul>${L.f.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
   h+=`<h3>三、詞彙（15 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>俄文</th><th>中文意思</th><th>中文／注音近似音</th></tr></thead><tbody>${L.v.map(r=>`<tr><td>${ru(r[0])}</td><td>${esc(r[1])}</td><td class="phon">${esc(r[2])}</td></tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>四、例句（10 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>俄文</th><th>中文</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${ru(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>五、對話練習（10 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>俄文</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td>${esc(r[0])}</td><td>${ru(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
+  h+=`<h3>四、例句（10 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>俄文</th><th>中文</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${ru(r[0])}${ZYH(r[0],'ru')}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>五、對話練習（10 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>俄文</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td>${esc(r[0])}</td><td>${ru(r[1])}${ZYH(r[1],'ru')}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
   h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂練習</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><b>回家作業：</b>${esc(L.h)}</div>`;
   h+=`<div class="nav"><button class="btn" ${n==1?'disabled':''} onclick="go('#L${n-1}')">← 上一堂</button><button class="btn" ${n==40?'disabled':''} onclick="go('#L${n+1}')">下一堂 →</button></div>`;
   app.innerHTML=h;window.scrollTo(0,0);

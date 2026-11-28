@@ -72,6 +72,7 @@ footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8}
 </main>
 <div id="toast"></div>
 <footer>拼音說明：長母音寫兩個字母（aa、ii、uu、ee、ɛɛ、ɔɔ、oo、əə、ʉʉ）；k／c／t／p 為不送氣音（像注音 ㄍ／ㄐ／ㄉ／ㄅ），kh／ch／th／ph 為送氣音（像 ㄎ／ㄑ／ㄊ／ㄆ）；ɛ 像「ㄝ」張大嘴，ɔ 像「喔」張大嘴，ʉ 像不圓唇的「ㄨ」，ə 像「ㄜ」。<br>聲調：a 中平、à 低、â 降、á 高、ǎ 升。<br>朗讀使用裝置內建的泰語語音（th-TH），若沒有聲音，請在手機或電腦的語言設定中安裝泰語語音。</footer>
+<script src="../approx.js?v=20261128"></script>
 <script src="lessons-1.js"></script>
 <script src="lessons-2.js"></script>
 <script src="lessons-3.js"></script>
@@ -140,7 +141,7 @@ function topicView(n){
   h+=`<div class="tphead"><span class="tpbig">${t.img?`<img src="${t.img}" alt="${esc(t.zh)}" style="width:88px;height:88px;display:block">`:t.icon}</span><div><div class="tpno">專題 ${n} / ${T.length}</div><h2 style="margin:4px 0;border:0;padding:0">${th(t.th)}　${esc(t.zh)}</h2><span class="rom">${esc(t.rom)}</span>　<span style="color:#888">${esc(t.desc)}</span></div></div>`;
   h+=`<div class="box"><b>核心句型</b>${t.pat.map(r=>`<div style="margin-top:6px">${th(r[0])}<span class="sub">${esc(r[2])}　｜　${esc(r[1])}</span></div>`).join('')}</div>`;
   h+=`<div class="mapwrap"><div id="tpmap"></div><div class="maphint">點分支看圖卡與例句；點任何泰文聽發音</div></div><div id="tppanel"></div>`;
-  h+=`<h3>💬 情境會話</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>泰文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${t.d.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${th(r[1])}<span class="sub">${esc(r[3]||'')}</span></td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色；熟練後把圖卡裡的單字換進去，練出自己的版本。</p>`;
+  h+=`<h3>💬 情境會話</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>泰文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${t.d.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${th(r[1])}<span class="sub">${esc(r[3]||'')}</span>${ZYH(r[3]||'','th')}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色；熟練後把圖卡裡的單字換進去，練出自己的版本。</p>`;
   if(t.tip)h+=`<div class="tip"><b>💡 會話小提醒：</b>${esc(t.tip)}</div>`;
   if(t.glos)h+=`<h3>📘 主恢復用語對照（中・泰・英）</h3><div class="wrap"><table class="tbl"><thead><tr><th>中文</th><th>泰文／羅馬拼音</th><th>English</th></tr></thead><tbody>${t.glos.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${th(r[1])}<span class="sub">${esc(r[2])}</span></td><td class="rom">${esc(r[3])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">整理自《中老英泰屬靈用語對照表》；聖經名稱與經文用語參考泰文恢復本（gbrtbooks.com）。</p>`;
   h+=`<div class="nav"><button class="btn" ${n==1?'disabled':''} onclick="go('#tp${n-1}')">← 上一個專題</button><button class="btn" ${n==T.length?'disabled':''} onclick="go('#tp${n+1}')">下一個專題 →</button></div>`;
@@ -188,7 +189,7 @@ function drawPanel(){
   const t=TOPICS[tpState.i-1],b=t.b[tpState.sel],c=TPC[tpState.sel],el=document.getElementById('tppanel');if(!el)return;
   el.innerHTML=`<div class="tppanel" style="--c:${c}"><h3 style="margin-top:0;color:${c}">${b.icon} ${th(b.th)}　${esc(b.zh)}　<span class="rom">${esc(b.rom)}</span></h3>
   <div class="pcards">${b.w.map(w=>`<div class="pcard"><div class="pe">${w[0]}</div>${th(w[1])}<div class="pzh">${esc(w[2])}</div><div class="rom">${esc(w[3])}</div></div>`).join('')}</div>
-  <h3 style="color:${c}">延伸例句</h3>${b.s.map(r=>`<div class="psent">${th(r[0])}<span class="sub">${esc(r[2])}</span><div>${esc(r[1])}</div></div>`).join('')}
+  <h3 style="color:${c}">延伸例句</h3>${b.s.map(r=>`<div class="psent">${th(r[0])}<span class="sub">${esc(r[2])}</span>${ZYH(r[2]||'','th')}<div>${esc(r[1])}</div></div>`).join('')}
   <div class="fbtns">${t.b.map((x,k)=>`<button class="chip${k===tpState.sel?' on':''}" onclick="tpSel(${k})">${x.icon} ${esc(x.zh)}</button>`).join('')}</div></div>`;
 }
 let tpRT;window.addEventListener('resize',()=>{clearTimeout(tpRT);tpRT=setTimeout(()=>{if(/^#tp\d/.test(location.hash))drawMap();},200);});
@@ -229,8 +230,8 @@ function lesson(n){
   h+=`<h3>二、發音／文法重點（12 分鐘）</h3><div class="box"><ul>${L.f.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>${L.l?`<div class="lao"><b>寮語對照：</b>${esc(L.l)}</div>`:''}</div>`;
   if(L.gt)h+=`<div class="wrap" style="margin-top:12px"><table class="tbl"><thead><tr>${L.gt.h.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${L.gt.r.map(r=>`<tr>${r.map(x=>`<td>${esc(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
   h+=`<h3>三、詞彙（10 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>泰文</th><th>中文意思</th><th>羅馬拼音</th><th>聲調</th></tr></thead><tbody>${L.v.map(r=>`<tr><td>${th(r[0])}</td><td>${esc(r[1])}</td><td class="rom">${esc(r[2])}</td><td class="tone">${esc(r[3]||'')}</td></tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>泰文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${th(r[0])}<span class="sub">${esc(r[2]||'')}</span></td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>泰文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${th(r[1])}<span class="sub">${esc(r[3]||'')}</span></td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
+  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>泰文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${th(r[0])}<span class="sub">${esc(r[2]||'')}</span>${ZYH(r[2]||'','th')}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>五、對話練習（7 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>泰文／羅馬拼音</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${th(r[1])}<span class="sub">${esc(r[3]||'')}</span>${ZYH(r[3]||'','th')}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先全體跟讀，再兩人一組互換角色練習。</p>`;
   h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂活動</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
   if(L.x)h+=`<b>練習題（點開看答案與解析）</b>${L.x.map((q,i)=>`<details class="ans"><summary>${i+1}. ${esc(q[0])}</summary><div>${esc(q[1])}</div></details>`).join('')}`;
   h+=`<b>回家作業：</b>${esc(L.h)}</div>`;

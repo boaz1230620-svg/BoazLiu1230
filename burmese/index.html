@@ -31,6 +31,7 @@ h3{font-size:20px;color:#7A5606;margin:28px 0 10px}
 .pr{color:#8a5a12}
 .nt{font-family:"Noto Sans Myanmar","Myanmar Text","Padauk",sans-serif;font-size:1.1em}
 .rom{color:#555;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;font-size:15px}
+.zy{display:block;color:#8a5a00;font-size:14px;margin-top:2px}.zy::before{content:"近似音：";color:#aaa;font-size:12px}
 .sub{display:block;color:#666;font-size:14px;margin-top:2px;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif}
 .spk{display:inline-block;background:#FBF1D6;color:#7A5606;border-radius:999px;padding:2px 10px;font-size:14px;white-space:nowrap}
 ul{margin:6px 0;padding-left:22px;line-height:1.8}
@@ -56,6 +57,7 @@ footer{text-align:center;color:#999;padding:24px;font-size:14px;line-height:1.8;
 </main>
 <div id="toast"></div>
 <footer>緬甸語有三個聲調（低平、高、短促）加上入聲：入門的字母表用 à／á／a̰ 標出聲調；課文拼音採通俗拼法（例如 mingalaba），字尾的「:」表示高調、「.」表示短促調，不另標低平調。中文近似音只是輔助。課程用的是口語體（ရ ယ ပြော），書面體另有一套助詞，中級會介紹。<br>🔊 朗讀使用裝置內建的緬甸語語音（my-MM）；若沒有聲音，請在裝置語言設定中安裝緬甸語語音，並使用 Unicode 字型（不要用 Zawgyi）。</footer>
+<script src="../approx.js?v=20261128"></script>
 <script src="alpha.js?v=20261128"></script>
 <script src="lessons-1.js?v=20261128"></script>
 <script src="lessons-2.js?v=20261128"></script>
@@ -89,6 +91,7 @@ function speak(text){
 }
 document.querySelectorAll('.speed button').forEach(b=>b.onclick=()=>{rate=+b.dataset.r;document.querySelectorAll('.speed button').forEach(x=>x.classList.toggle('on',x===b));});
 app.addEventListener('click',e=>{const v=e.target.closest('.ko');if(v)speak(v.dataset.say||v.textContent);});
+const APL=CFG.lang.slice(0,2);const zy=(nat,rom)=>{const a=window.APPROX?window.APPROX(CFG.latin?nat:rom,APL):'';return a?`<span class="zy">${escA(a)}</span>`:'';};
 const ko=(t,say,cls)=>`<span class="ko${cls?' '+cls:''}" data-say="${escA(say||t)}">${escA(t)}</span>`;
 
 function home(lv){
@@ -114,8 +117,8 @@ function lesson(n){
   h+=`<h3>二、發音／句型重點（10 分鐘）</h3><div class="box"><ul>${L.f.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
   const rom=L.v.some(r=>r[2]),ap=L.v.some(r=>r[3]);
   h+=`<h3>三、詞彙（10 分鐘）${L.tag=='事物聯想'?'：從中心詞向外聯想':''}</h3><div class="wrap"><table class="tbl"><thead><tr><th>${CFG.short}</th><th>中文意思</th>${rom?'<th>拼音</th>':''}${ap?'<th>中文近似音</th>':''}</tr></thead><tbody>${L.v.map(r=>`<tr><td>${ko(r[0])}</td><td>${esc(r[1])}</td>${rom?`<td class="rom">${esc(r[2]||'')}</td>`:''}${ap?`<td class="pr">${esc(r[3]||'')}</td>`:''}</tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>${CFG.short}${CFG.latin?'':'／拼音'}</th><th>中文</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${ko(r[0])}${r[2]?`<span class="sub">${esc(r[2])}</span>`:''}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
-  h+=`<h3>五、會話練習（9 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>${CFG.short}${CFG.latin?'':'／拼音'}</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap"><span class="spk">${esc(r[0])}</span></td><td>${ko(r[1])}${r[3]?`<span class="sub">${esc(r[3])}</span>`:''}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先聽兩遍、全體跟讀一遍，再兩人一組分角色對話；熟了以後換掉關鍵字（名字、地點、數字）再說一次。</p>`;
+  h+=`<h3>四、例句（6 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>${CFG.short}${CFG.latin?'':'／拼音'}</th><th>中文</th></tr></thead><tbody>${L.s.map(r=>`<tr><td>${ko(r[0])}${r[2]?`<span class="sub">${esc(r[2])}</span>`:''}${zy(r[0],r[2])}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
+  h+=`<h3>五、會話練習（9 分鐘）</h3><div class="wrap"><table class="tbl"><thead><tr><th>角色</th><th>${CFG.short}${CFG.latin?'':'／拼音'}</th><th>中文</th></tr></thead><tbody>${L.d.map(r=>`<tr><td style="white-space:nowrap"><span class="spk">${esc(r[0])}</span></td><td>${ko(r[1])}${r[3]?`<span class="sub">${esc(r[3])}</span>`:''}${zy(r[1],r[3])}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p style="color:#666;font-size:14px">先聽兩遍、全體跟讀一遍，再兩人一組分角色對話；熟了以後換掉關鍵字（名字、地點、數字）再說一次。</p>`;
   h+=`<h3>六、練習與作業（5 分鐘）</h3><div class="box"><b>課堂練習</b><ul>${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><b>回家作業：</b>${esc(L.h)}</div>`;
   h+=`<div class="nav"><button class="btn" ${n==1?'disabled':''} onclick="go('#L${n-1}')">← 上一堂</button><button class="btn" ${n==TOTAL?'disabled':''} onclick="go('#L${n+1}')">下一堂 →</button></div>`;
   app.innerHTML=h;window.scrollTo(0,0);
